@@ -11,8 +11,8 @@ InputManager:
     descriptiveNegativeName: Player 1 - Backward Motion
     negativeButton: s
     positiveButton: w
-    altNegativeButton: down
-    altPositiveButton: up
+    altNegativeButton: 
+    altPositiveButton: 
     gravity: 1000
     dead: 0
     sensitivity: 0
@@ -23,12 +23,108 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: P1_Rotate
-    descriptiveName: Player 1 - Rotate
-    descriptiveNegativeName: 
+    descriptiveName: Player 1 - Rotate Right
+    descriptiveNegativeName: Player 1 - Rotate Left
     negativeButton: a
     positiveButton: d
-    altNegativeButton: left
-    altPositiveButton: right
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0
+    sensitivity: 0
+    snap: 1
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: P1_Fire
+    descriptiveName: Player 1 - Fire
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: space
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0
+    sensitivity: 0
+    snap: 1
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: P1_Powerup
+    descriptiveName: Player 1 - use Stored Powerup
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: left shift
+    altNegativeButton: 
+    altPositiveButton: left ctrl
+    gravity: 1000
+    dead: 0
+    sensitivity: 0
+    snap: 1
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: P2_FwdBack
+    descriptiveName: Player 2 - Forward Motion
+    descriptiveNegativeName: Player 2 - Backward Motion
+    negativeButton: down
+    positiveButton: up
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0
+    sensitivity: 0
+    snap: 1
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: P2_Rotate
+    descriptiveName: Player 2 - Rotate Right
+    descriptiveNegativeName: Player 2 - Rotate Left
+    negativeButton: left
+    positiveButton: right
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0
+    sensitivity: 0
+    snap: 1
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: P1_Fire
+    descriptiveName: Player 1 - Fire
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: right ctrl
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0
+    sensitivity: 0
+    snap: 1
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: P2_Powerup
+    descriptiveName: Player 2 - Use Powerup
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: enter
+    altNegativeButton: 
+    altPositiveButton: 
     gravity: 1000
     dead: 0
     sensitivity: 0
