@@ -2,33 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This script handles the movement behaviors for tank objects.
+ * 
+ * This script should be attached to a tank object, and will automatically be attached if 
+ * a TankData component is added to the tank first.
+ */
+
 public class TankMover : MonoBehaviour
 {
-    private Transform tankTf;
-    private CharacterController tankCc;
     private TankData tankData;
 
-	void Awake ()
+	private void Awake ()
     {
         // Component reference assignmentss
-        tankTf = this.gameObject.transform;
-        tankCc = this.gameObject.GetComponent<CharacterController>();
         tankData = this.gameObject.GetComponent<TankData>();
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-
 	}
 
     public void Move(float axisValue)
     {
-        tankCc.SimpleMove(tankTf.forward * axisValue * tankData.moveSpeed);
+        tankData.tankCc.SimpleMove(tankData.tankTf.forward * axisValue * tankData.moveSpeed);
     }
 
     public void Rotate(float axisValue)
     {
-        tankTf.Rotate(tankTf.transform.up * tankData.rotateSpeed * axisValue * Time.deltaTime, Space.Self);
+        tankData.tankTf.Rotate(tankData.tankTf.transform.up * tankData.rotateSpeed * axisValue * Time.deltaTime, Space.Self);
     }
 }
