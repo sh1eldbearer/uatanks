@@ -27,7 +27,7 @@ public class BulletCollider : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         // If this bullet hits a tank
-        if (other.gameObject.GetComponent<BulletData>() != null)
+        if (other.gameObject.GetComponent<TankData>() != null)
         {
             // If this bullet was fired by a player tank
             if (this.tag == "Player")
