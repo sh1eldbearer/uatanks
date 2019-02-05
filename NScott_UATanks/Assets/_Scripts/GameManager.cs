@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("Player 2's score.")]
     public int p2Score = 0;
     [Space]
+    [Header("Point Values")]
     [Tooltip("The base value an enemy tank is worth when it's destroyed.")]
     [Range(10,10000)] public int baseTankValue = 100;
     [Tooltip("For every hit point over the starting value, an enemy tank will be worth " +
@@ -103,5 +105,18 @@ public class GameManager : MonoBehaviour
         barFadeTime = Mathf.Clamp(barFadeTime, 0.1f, 2f);
         baseTankValue = Mathf.Clamp(baseTankValue, 10, 10000);
         bonusModifer = Mathf.Clamp(bonusModifer, 0f, 3f);
+
+        // Updates player's scores
+        try
+        {
+            p1Score = players[0].score;
+        }
+        catch { }
+
+        try
+        {
+            p2Score = players[1].score;
+        }
+        catch { }
     }
 }

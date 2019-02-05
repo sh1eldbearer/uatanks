@@ -57,7 +57,7 @@ public class InputController : MonoBehaviour
             else if (p1Input == null)
             {
                 Debug.LogWarning("Warning: multiple InputControllers detected for player 2.\n" +
-                    "Please reassign " + this.name + " to player 2.");
+                    "Please reassign " + this.name + " to player 1.");
 
             }
         }

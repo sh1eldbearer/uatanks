@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class DisplayFiringCooldown : MonoBehaviour
 {
     /* Public Variables */
-    public const float OVERFILL = 0.0001f;
+    public const float OVERFILL = 0.01f;
 
     /* Private Variables */
     private TankData tankData; // Used to check the tank's firing cooldown
@@ -26,7 +26,7 @@ public class DisplayFiringCooldown : MonoBehaviour
         // Component reference assignments
         tankData = this.gameObject.GetComponentInParent<TankData>();
         slider = this.gameObject.GetComponent<Transform>().Find("Firing Cooldown Bar").GetComponent<Slider>();
-        fillArea =slider.GetComponent<Transform>().Find("Fill Area").Find("Fill").GetComponent<Image>();
+        fillArea = slider.GetComponent<Transform>().Find("Fill Area").Find("Fill").GetComponent<Image>();
     }
 
     // Use this for initialization
