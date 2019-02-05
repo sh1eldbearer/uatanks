@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
+
 /*
  * This script handles the collision behavior for the bullet prefab object.
  * 

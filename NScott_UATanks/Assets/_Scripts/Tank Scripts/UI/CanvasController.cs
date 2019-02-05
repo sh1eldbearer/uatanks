@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
+
 /*
  * Forces the canvas object this script is attached to to rotate to match the facing of its 
  * assigned camera.

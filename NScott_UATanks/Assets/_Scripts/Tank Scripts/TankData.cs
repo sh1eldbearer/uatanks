@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 [RequireComponent(typeof(TankMover))]
 [RequireComponent(typeof(TankShooter))]
 [RequireComponent(typeof(TankHealthManager))]

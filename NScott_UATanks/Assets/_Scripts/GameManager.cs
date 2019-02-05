@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
+
 /* 
  * GameManager used for configuring game settings by designers, and for disseminating that information
  * to the rest of the game at runtime.

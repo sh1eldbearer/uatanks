@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
+
 /*
  * Adjusts the health display (the hearts) for this tank.
  *  

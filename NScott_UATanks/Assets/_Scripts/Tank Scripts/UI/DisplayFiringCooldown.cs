@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
+
 /*
  * Displays a visual representation of time left before a tank can fire again.
  * 

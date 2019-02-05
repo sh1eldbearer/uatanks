@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
+
 /*
  * This script adjusts the score accumulated by a player tank.
  * It should only be attached to a player tank object - never to an enemy tank!

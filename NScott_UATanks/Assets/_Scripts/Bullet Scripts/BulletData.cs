@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 [RequireComponent(typeof(BulletMover))]
 [RequireComponent(typeof(BulletCollider))]
 [RequireComponent(typeof(BulletTimer))]

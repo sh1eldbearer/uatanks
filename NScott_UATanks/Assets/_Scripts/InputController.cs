@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
+
 /*
  * This script handles player input for the game.
  * An InputController component should be placed in an empty game object within the scene.
@@ -24,7 +26,9 @@ public class InputController : MonoBehaviour
 
     // Enumerator for allowing designers to configure input managers for each tank
     private enum PlayerNumber { Player1, Player2 }
+#pragma warning disable IDE0044 // Add readonly modifier
     [SerializeField] private PlayerNumber playerNumber;
+#pragma warning restore IDE0044 // Add readonly modifier
 
     private void Awake()
     {
