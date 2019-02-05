@@ -12,7 +12,8 @@ using UnityEngine;
 public class TankScorer : MonoBehaviour
 {
     /* Public Variables */
-
+    [Tooltip("The accumulated score of this tank.")]
+    public int score;
 
     /* Private Variables */
     private TankData tankData; // Used to get the player number of this tank object
@@ -39,6 +40,6 @@ public class TankScorer : MonoBehaviour
         }
 
         // Adds the tank's value to the player's score
-        tankData.score += scoreValue;
+        score += scoreValue;
     }
 }

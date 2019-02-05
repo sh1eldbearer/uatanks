@@ -17,9 +17,6 @@ public class TankData : MonoBehaviour
 {
     /* Public Variables */
     [HideInInspector]public int playerNumber; // This player's player number (determined by its index in GameManager.players)
-
-    [Tooltip("The accumulated score of this tank.")]
-    public int score;
     
     [Header("Health")]
     [Tooltip("The current number of HP this tank has.")]
