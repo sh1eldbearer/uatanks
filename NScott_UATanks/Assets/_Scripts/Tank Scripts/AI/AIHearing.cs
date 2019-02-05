@@ -13,16 +13,29 @@ using UnityEngine;
 
 public class AIHearing : MonoBehaviour
 {
+    /* Public Variables */
 
-	// Use this for initialization
-	void Start ()
+
+    /* Private Variables */
+    private AIController controller;
+    private TankData tankData;
+
+    private void Awake()
+    {
+        // Component reference assignments
+        controller = this.gameObject.GetComponent<AIController>();
+        tankData = this.gameObject.GetComponent<TankData>();
+    }
+
+    // Use this for initialization
+    private void Start ()
     {
 		
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    private void Update ()
     {
-		
+
 	}
 }

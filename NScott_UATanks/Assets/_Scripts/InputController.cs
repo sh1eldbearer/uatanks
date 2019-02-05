@@ -105,8 +105,8 @@ public class InputController : MonoBehaviour
         }
 
         // Component reference assignments
-        tankMover = tankData.gameObject.GetComponent<TankMover>();
-        tankShooter = tankData.gameObject.GetComponent<TankShooter>();
+        tankMover = tankData.tankMover;
+        tankShooter = tankData.tankShooter;
     }
 	
 	// Update is called once per frame
