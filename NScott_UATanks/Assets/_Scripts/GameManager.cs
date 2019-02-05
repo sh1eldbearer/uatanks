@@ -111,13 +111,13 @@ public class GameManager : MonoBehaviour
         // Updates player's scores
         try
         {
-            p1Score = players[0].tankScorer.score;
+            p1Score = players[0].score;
         }
         catch { }
 
         try
         {
-            p2Score = players[1].tankScorer.score;
+            p2Score = players[1].score;
         }
         catch { }
     }

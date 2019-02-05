@@ -16,12 +16,9 @@ public class TankScorer : MonoBehaviour
     public int score;
 
     /* Private Variables */
-    private TankData tankData; // Used to get the player number of this tank object
 
     private void Awake()
     {
-        // Component reference assignments
-        tankData = this.gameObject.GetComponent<TankData>();
     }
 
     /// <summary>

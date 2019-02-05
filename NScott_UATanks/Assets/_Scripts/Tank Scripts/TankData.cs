@@ -46,6 +46,8 @@ public class TankData : MonoBehaviour
 
     [Header("GameObject and Component References")]
     [HideInInspector] public Transform tankTf; // The transform component of this tank object
+    [HideInInspector] public TankMover tankMover; // The TankMover component of this tank object
+    [HideInInspector] public TankShooter tankShooter; // The TankShooter component of this tank object
     [HideInInspector] public CharacterController tankCc; // The CharacterController component of this tank object
     [HideInInspector] public TankHealthManager tankHealthMan; // The TankHealthManager component of this tank object
     [HideInInspector] public TankScorer tankScorer; // The Scorer component of this tank object
@@ -57,6 +59,8 @@ public class TankData : MonoBehaviour
     {
         // Component reference assignments
         tankTf = this.gameObject.GetComponent<Transform>();
+        tankMover = this.gameObject.GetComponent<TankMover>();
+        tankShooter = this.gameObject.GetComponent<TankShooter>();
         tankCc = this.gameObject.GetComponent<CharacterController>();
         tankHealthMan = this.gameObject.GetComponent<TankHealthManager>();
         tankScorer = this.gameObject.GetComponent<TankScorer>();
