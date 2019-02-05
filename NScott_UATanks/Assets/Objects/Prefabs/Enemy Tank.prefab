@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4294426036320730}
   - component: {fileID: 33480326719453896}
   - component: {fileID: 23728373001531654}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 224455870185041882}
   - component: {fileID: 222032877198045432}
   - component: {fileID: 114733179241704174}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 224540727439315914}
   - component: {fileID: 222777562553432802}
   - component: {fileID: 114041271262539322}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4962831685670254}
   - component: {fileID: 33313812670392398}
   - component: {fileID: 23871265533170356}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Shell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 224215822815295148}
   - component: {fileID: 222849239165561924}
   - component: {fileID: 114912972719100738}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 224350639864417728}
   - component: {fileID: 222892032961682452}
   - component: {fileID: 114503567880454764}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 224489395216178218}
   - component: {fileID: 222810091213117264}
   - component: {fileID: 114739425982041012}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 224334841570688552}
   - component: {fileID: 222103739791780286}
   - component: {fileID: 114843313090411652}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ GameObject:
   - component: {fileID: 224735075163503122}
   - component: {fileID: 222385052364043510}
   - component: {fileID: 114800309012555896}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 224783896659159628}
   - component: {fileID: 222138018232256036}
   - component: {fileID: 114850073797440838}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4046255250872964}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 224423249228801432}
   - component: {fileID: 222747964794486916}
   - component: {fileID: 114512274932465258}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 114215758364049690}
   - component: {fileID: 114146435226617436}
   - component: {fileID: 114799036963294884}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Canvas
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 4593304088976738}
   - component: {fileID: 33403184747163580}
   - component: {fileID: 23984936374567276}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,7 +259,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224982990858033466}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 224506171126215350}
   - component: {fileID: 222514405530476386}
   - component: {fileID: 114865389444214150}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +297,11 @@ GameObject:
   - component: {fileID: 114389060609219782}
   - component: {fileID: 114916699991267740}
   - component: {fileID: 114086549910736748}
-  m_Layer: 0
+  - component: {fileID: 114166657342159330}
+  - component: {fileID: 114160411199241922}
+  - component: {fileID: 114817208350954950}
+  - component: {fileID: 114224087218670970}
+  m_Layer: 9
   m_Name: Enemy Tank
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -314,7 +318,7 @@ GameObject:
   - component: {fileID: 224587492795255314}
   - component: {fileID: 222952393646240432}
   - component: {fileID: 114156754412550130}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +335,7 @@ GameObject:
   - component: {fileID: 4992856962340092}
   - component: {fileID: 33472690923494278}
   - component: {fileID: 23923279100391256}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -347,7 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4764664890460122}
   - component: {fileID: 33190929528706154}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -364,7 +368,7 @@ GameObject:
   - component: {fileID: 224634551421093030}
   - component: {fileID: 222043975572051174}
   - component: {fileID: 114915147279295838}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,7 +383,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4151815616596590}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -396,7 +400,7 @@ GameObject:
   - component: {fileID: 224551229617841206}
   - component: {fileID: 222283018371072440}
   - component: {fileID: 114429193477151150}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,7 +417,7 @@ GameObject:
   - component: {fileID: 224158938927904330}
   - component: {fileID: 222190366849619642}
   - component: {fileID: 114414231274870226}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +434,7 @@ GameObject:
   - component: {fileID: 224595849678633112}
   - component: {fileID: 222928039730724560}
   - component: {fileID: 114417319995383698}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -447,7 +451,7 @@ GameObject:
   - component: {fileID: 224502437992281054}
   - component: {fileID: 222623927167724238}
   - component: {fileID: 114600925546984604}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Heart 8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +468,7 @@ GameObject:
   - component: {fileID: 224626492862735640}
   - component: {fileID: 222482595569907926}
   - component: {fileID: 114912195841873924}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -480,7 +484,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224314827165536520}
   - component: {fileID: 114821880117780718}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Firing Cooldown Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -495,7 +499,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4917154998000610}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -897,6 +901,35 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114160411199241922
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1622881790795316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c75552e07c3dd4faa14b6ed5c459cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114166657342159330
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1622881790795316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d7003581ad4114ea1790c23fca57f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tankData: {fileID: 0}
+  vision: {fileID: 0}
+  hearing: {fileID: 0}
+  visionDistance: 10
+  visionAngle: 90
+  currentTarget: {fileID: 0}
+  personality: 0
 --- !u!114 &114215758364049690
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -906,6 +939,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02dbdeeed45dc4b49bb37469e8850bcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114224087218670970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1622881790795316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfdbcc0f99d36794986e9b42cb14d418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114387649632910046
@@ -941,6 +985,8 @@ MonoBehaviour:
   firingTimeout: 1.5
   firingTimer: 0
   tankTf: {fileID: 0}
+  tankMover: {fileID: 0}
+  tankShooter: {fileID: 0}
   tankCc: {fileID: 0}
   tankHealthMan: {fileID: 0}
   tankScorer: {fileID: 0}
@@ -1209,7 +1255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76b29e153fee4eb429c273a021a83306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeTimeout: 1
 --- !u!114 &114800309012555896
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1237,6 +1282,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114817208350954950
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1622881790795316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b307954ab9408b43a33401aa48acee2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114821880117780718
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1468,13 +1524,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1
+  m_Height: 2
   m_Radius: 0.65
   m_SlopeLimit: 90
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.001
+  m_StepOffset: 1
+  m_SkinWidth: 0.065
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0.25, z: 0.1}
+  m_Center: {x: 0, y: 0.75, z: 0.1}
 --- !u!222 &222032877198045432
 CanvasRenderer:
   m_ObjectHideFlags: 1

@@ -917,6 +917,30 @@ Prefab:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 968952606}
+    - target: {fileID: 114166657342159330, guid: ca9df129184f62145bf6c7df895dc686,
+        type: 2}
+      propertyPath: visionDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 143656605360356920, guid: ca9df129184f62145bf6c7df895dc686,
+        type: 2}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114166657342159330, guid: ca9df129184f62145bf6c7df895dc686,
+        type: 2}
+      propertyPath: visionAngle
+      value: 22.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1967255990436530, guid: ca9df129184f62145bf6c7df895dc686, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114817208350954950, guid: ca9df129184f62145bf6c7df895dc686,
+        type: 2}
+      propertyPath: tankLayer.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca9df129184f62145bf6c7df895dc686, type: 2}
   m_IsPrefabAsset: 0
@@ -1833,12 +1857,12 @@ Prefab:
     - target: {fileID: 143960304183393050, guid: adf35d827d7b7ca44b3a5893d10b14e7,
         type: 2}
       propertyPath: m_Height
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 143960304183393050, guid: adf35d827d7b7ca44b3a5893d10b14e7,
         type: 2}
       propertyPath: m_Center.y
-      value: 0.25
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 114780331208695528, guid: adf35d827d7b7ca44b3a5893d10b14e7,
         type: 2}
@@ -1984,6 +2008,11 @@ Prefab:
         type: 2}
       propertyPath: firingTimeout
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 143960304183393050, guid: adf35d827d7b7ca44b3a5893d10b14e7,
+        type: 2}
+      propertyPath: m_SlopeLimit
+      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114717780198954108, guid: adf35d827d7b7ca44b3a5893d10b14e7, type: 2}
