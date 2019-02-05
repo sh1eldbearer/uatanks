@@ -16,6 +16,9 @@ public class TankData : MonoBehaviour
 {
     /* Public Variables */
     [HideInInspector]public int playerNumber; // This player's player number (determined by its index in GameManager.players)
+
+    [Tooltip("The accumulated score of this tank.")]
+    public int score;
     
     [Header("Health")]
     [Tooltip("The current number of HP this tank has.")]
@@ -48,7 +51,7 @@ public class TankData : MonoBehaviour
     [HideInInspector] public CharacterController tankCc; // The CharacterController component of this tank object
     [HideInInspector] public TankHealthManager tankHealthMan; // The TankHealthManager component of this tank object
     [HideInInspector] public TankScorer tankScorer; // The Scorer component of this tank object
-    public Transform bulletSpawn; // The bullet spawn point attached to this tank object
+    [HideInInspector] public Transform bulletSpawn; // The bullet spawn point attached to this tank object
 
     /* Private Variables */
 

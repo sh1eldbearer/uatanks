@@ -1980,6 +1980,11 @@ Prefab:
       propertyPath: bulletMoveForce
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114536502630629596, guid: adf35d827d7b7ca44b3a5893d10b14e7,
+        type: 2}
+      propertyPath: firingTimeout
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114717780198954108, guid: adf35d827d7b7ca44b3a5893d10b14e7, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: adf35d827d7b7ca44b3a5893d10b14e7, type: 2}
@@ -2272,7 +2277,7 @@ MonoBehaviour:
   p1RotateCamera: 1
   player2Camera: {fileID: 0}
   p2RotateCamera: 1
-  barFadeTime: 0.25
+  barFadeTime: 0.5
   players: []
   enemies: []
   p1Score: 0

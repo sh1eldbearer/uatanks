@@ -36,14 +36,7 @@ public class TankScorer : MonoBehaviour
             scoreValue += (int)((GameManager.gm.baseTankValue * GameManager.gm.bonusModifer) * (deadTankHP - GameManager.gm.enemyStartingHP));
         }
 
-        // Determines which player's score to add the point value to
-        if (tankData.playerNumber == 1)
-        {
-            GameManager.gm.p1Score += scoreValue;
-        }
-        else if (tankData.playerNumber == 2)
-        {
-            GameManager.gm.p2Score += scoreValue;
-        }
+        // Adds the tank's value to the player's score
+        tankData.score += scoreValue;
     }
 }
