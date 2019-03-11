@@ -26,9 +26,9 @@ public class InputController : MonoBehaviour
 
     // Enumerator for allowing designers to configure input managers for each tank
     private enum PlayerNumber { Player1, Player2 }
-#pragma warning disable IDE0044 // Add readonly modifier
+    #pragma warning disable IDE0044 // Removes "make readonly" message from Visual Studio
     [SerializeField] private PlayerNumber playerNumber;
-#pragma warning restore IDE0044 // Add readonly modifier
+    #pragma warning restore IDE0044 
 
     private void Awake()
     {

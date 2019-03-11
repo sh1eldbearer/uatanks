@@ -15,11 +15,16 @@ public class AIVision : MonoBehaviour
 {
     /* Public Variables */
 
-
     /* Private Variables */
     private AIController controller;
     private TankData tankData;
     private Transform tankTf;
+    
+    private Vector3[] vectorToPlayers = { Vector3.zero, Vector3.zero };
+    private float[] angleToPlayers = { 0f, 0f };
+    private bool[] canSeePlayers = { false, false };
+
+    [SerializeField] private Vector3 leftPoint, rightPoint;
 
     private void Awake()
     {
@@ -29,31 +34,72 @@ public class AIVision : MonoBehaviour
     }
 
     // Use this for initialization
-    private void Start ()
+    private void Start()
     {
         // Component reference assignments dependant on other scripts
         tankTf = tankData.tankTf;
     }
 
-    // Update is called once per frame
-    private void Update ()
+    // Checks to see if either of the players is within the vision range of this tank
+    public void LookForTarget()
     {
-        RaycastHit objectSeen;
-
-        if (Physics.Raycast(tankTf.position, tankTf.forward, out objectSeen, controller.visionDistance))
+        foreach (var player in GameManager.gm.players)
         {
-            if (objectSeen.collider.tag == "Player" && objectSeen.collider.GetComponent<TankData>())
+            int index = GameManager.gm.players.IndexOf(player);
+
+            vectorToPlayers[index] = player.tankTf.position - tankTf.position;
+            angleToPlayers[index] = Vector3.Angle(vectorToPlayers[index], tankTf.forward);
+
+            if (angleToPlayers[index] < controller.visionAngle / 2)
             {
-                controller.currentTarget = objectSeen.collider.GetComponent<Transform>();
+                RaycastHit hitInfo;
+
+                if (Physics.Raycast(tankTf.position, vectorToPlayers[index], out hitInfo, 
+                    controller.visionDistance))
+                {
+                    if (hitInfo.collider.gameObject == player.gameObject)
+                    {
+                        canSeePlayers[index] = true;
+                    }
+                    else
+                    {
+                        canSeePlayers[index] = false;
+                    }
+                }
+                else
+                {
+                    canSeePlayers[index] = false;
+                }
             }
             else
             {
-                controller.ClearTarget();
+                canSeePlayers[index] = false;
             }
+        }
+
+        if (canSeePlayers[0] == true && canSeePlayers[1] == true)
+        {
+            // This shouldn't be running right now
+        }
+        else if (canSeePlayers[0] == true)
+        {
+            controller.SetTarget(GameManager.gm.players[0].tankTf);
+        }
+        else if (canSeePlayers[1] == true)
+        {
+            controller.SetTarget(GameManager.gm.players[1].tankTf);
         }
         else
         {
-            controller.ClearTarget();
+            controller.ClearTargetData();
         }
+    }
+
+    // Calculates a new Vector3 that is a x of degrees off of the object's forward axis
+    public Vector3 VectorFromForward(float angle)
+    {
+        Transform tankTf = this.gameObject.GetComponent<Transform>();
+        angle += tankTf.eulerAngles.z;
+        return new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), 0.0f, Mathf.Cos(angle * Mathf.Deg2Rad));
     }
 }

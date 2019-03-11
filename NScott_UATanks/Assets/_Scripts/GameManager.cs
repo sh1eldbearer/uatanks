@@ -52,6 +52,10 @@ public class GameManager : MonoBehaviour
     [Tooltip("Determines if player 2's camera can rotate with the tank as it moves.")]
     public bool p2RotateCamera = false;
 
+    [Header("Layers & LayerMasks")]
+    [Tooltip("The layer for tank objects.")]
+    public LayerMask tankLayer;
+
     [Header("UI Settings")]
     [Tooltip("The length of time it takes for any cooldown bars to fade out when " +
         "their countdowns have completed.")]

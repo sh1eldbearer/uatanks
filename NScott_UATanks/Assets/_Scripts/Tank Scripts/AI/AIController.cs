@@ -21,25 +21,38 @@ public enum AIPersonality
 
 public class AIController : MonoBehaviour
 {
+    #pragma warning disable IDE0044 // Removes "make readonly" message from Visual Studio
+    [SerializeField] private AIPersonality personality;
+    #pragma warning restore IDE0044
+
     /* Public Variables */
+    [HideInInspector] public RoomData roomData;
     [HideInInspector] public TankData tankData;
+    [HideInInspector] public AIBehaviors behaviors;
     [HideInInspector] public AIVision vision;
     [HideInInspector] public AIHearing hearing;
 
     [Header("Vision Settings")]
     [Range(1f, 50f)] public float visionDistance = 10f;
+    [Range(10f, 180f)] public float visionAngle = 90f;
 
+    [Header("Target Information")]
     public Transform currentTarget;
+    public Vector3 targetPosition;
+    public TankData targetData;
+
+    [Header("Target Settings")]
+    public float waypointCloseEnough = 2f;
+    public float tankCloseEnough = 20f;
 
     /* Private Variables */
-#pragma warning disable IDE0044 // Add readonly modifier
-    [SerializeField] private AIPersonality personality;
-#pragma warning restore IDE0044 // Add readonly modifier
+
 
     private void Awake()
     {
         // Component reference assignments
         tankData = this.gameObject.GetComponent<TankData>();
+        behaviors = this.gameObject.GetComponent<AIBehaviors>();
         vision = this.gameObject.GetComponent<AIVision>();
         hearing = this.gameObject.GetComponent<AIHearing>();
     }
@@ -47,8 +60,8 @@ public class AIController : MonoBehaviour
     // Use this for initialization
     private void Start ()
     {
-		
-	}
+        roomData = this.gameObject.GetComponentInParent<RoomData>();
+    }
 
     // Update is called once per frame
     private void Update ()
@@ -58,28 +71,59 @@ public class AIController : MonoBehaviour
 		switch (personality)
         {
             case AIPersonality.Standard:
+                behaviors.Standard();
                 break;
             case AIPersonality.Coward:
+                behaviors.Coward();
                 break;
             case AIPersonality.Mechanic:
+                behaviors.Mechanic();
                 break;
             case AIPersonality.Captain:
+                behaviors.Captain();
                 break;
             case AIPersonality.Reaper:
+                behaviors.Reaper();
                 break;
         }
 	}
 
+    public void SetTarget(Transform newTarget)
+    {
+        currentTarget = newTarget;
+        UpdateTargetPosition();
+        targetData = newTarget.gameObject.GetComponent<TankData>();
+    }
+
+    public void UpdateTargetPosition()
+    {
+        targetPosition = new Vector3(currentTarget.position.x, tankData.tankTf.position.y, currentTarget.position.z);
+    }
+
     public void ClearTarget()
     {
         currentTarget = null;
+        targetPosition = Vector3.zero;
+        ClearTargetData();
+    }
+
+    public void ClearTargetData()
+    {
+        targetData = null;
     }
 
     private void OnDrawGizmosSelected()
     {
         Transform tankTf = this.gameObject.GetComponent<Transform>();
+        AIVision vision = this.gameObject.GetComponent<AIVision>();            
 
+        // Previews the tank's vision distance
         Gizmos.color = Color.red;
         Gizmos.DrawLine(tankTf.position, tankTf.position + tankTf.forward * visionDistance);
+
+        // Previews the tank's vision angle
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(tankTf.position, tankTf.position + vision.VectorFromForward(-visionAngle / 2) * visionAngle);
+        Gizmos.DrawLine(tankTf.position, tankTf.position + vision.VectorFromForward(visionAngle / 2) * visionAngle);
     }
 }

@@ -95,6 +95,14 @@ public class TankHealthManager : MonoBehaviour
         if (tankData.tankTf.tag == "Player")
         {
             // Tank is a player
+            if (tankData.gameObject == GameManager.gm.players[0])
+            {
+                GameManager.gm.player1Camera.transform.parent = null;
+            }
+            else
+            {
+                // GameManager.gm.player2Camera.transform.parent = null;
+            }
             GameManager.gm.players.Remove(tankData);
         }
         else if (tankData.tankTf.tag == "Enemy")
