@@ -257,6 +257,11 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114817208350954950, guid: ca9df129184f62145bf6c7df895dc686,
+        type: 2}
+      propertyPath: lossOfVisionTimer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca9df129184f62145bf6c7df895dc686, type: 2}
   m_IsPrefabAsset: 0
@@ -1079,6 +1084,11 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114817208350954950, guid: ca9df129184f62145bf6c7df895dc686,
+        type: 2}
+      propertyPath: lossOfVisionTimer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca9df129184f62145bf6c7df895dc686, type: 2}
   m_IsPrefabAsset: 0
@@ -1255,6 +1265,11 @@ Prefab:
         type: 2}
       propertyPath: tankCloseEnough
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114817208350954950, guid: ca9df129184f62145bf6c7df895dc686,
+        type: 2}
+      propertyPath: lossOfVisionTimer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca9df129184f62145bf6c7df895dc686, type: 2}
@@ -1690,6 +1705,11 @@ Prefab:
     - target: {fileID: 1622881790795316, guid: ca9df129184f62145bf6c7df895dc686, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114817208350954950, guid: ca9df129184f62145bf6c7df895dc686,
+        type: 2}
+      propertyPath: lossOfVisionTimer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca9df129184f62145bf6c7df895dc686, type: 2}

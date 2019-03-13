@@ -39,11 +39,12 @@ public class AIController : MonoBehaviour
     [Header("Target Information")]
     public Transform currentTarget;
     public Vector3 targetPosition;
-    public TankData targetData;
+    public TankData targetTankData;
 
     [Header("Target Settings")]
     public float waypointCloseEnough = 2f;
     public float tankCloseEnough = 20f;
+    public float maxPursuitTime = 3f;
 
     /* Private Variables */
 
@@ -92,7 +93,7 @@ public class AIController : MonoBehaviour
     {
         currentTarget = newTarget;
         UpdateTargetPosition();
-        targetData = newTarget.gameObject.GetComponent<TankData>();
+        targetTankData = newTarget.gameObject.GetComponent<TankData>();
     }
 
     public void UpdateTargetPosition()
@@ -100,16 +101,21 @@ public class AIController : MonoBehaviour
         targetPosition = new Vector3(currentTarget.position.x, tankData.tankTf.position.y, currentTarget.position.z);
     }
 
-    public void ClearTarget()
+    public void ClearAllTargetInfo()
+    {
+        ClearCurrentTarget();
+        ClearTargetData();
+    }
+
+    public void ClearCurrentTarget()
     {
         currentTarget = null;
         targetPosition = Vector3.zero;
-        ClearTargetData();
     }
 
     public void ClearTargetData()
     {
-        targetData = null;
+        targetTankData = null;
     }
 
     private void OnDrawGizmosSelected()

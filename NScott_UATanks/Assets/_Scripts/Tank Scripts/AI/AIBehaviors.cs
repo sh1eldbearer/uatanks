@@ -23,6 +23,8 @@ public class AIBehaviors : MonoBehaviour
     private AIVision vision;
     private AIHearing hearing;
 
+    [SerializeField] private float investigateTimer = 0;
+
     private void Awake()
     {
         // Component reference assignments
@@ -42,13 +44,16 @@ public class AIBehaviors : MonoBehaviour
     // Standard AI tank behavior
     public void Standard()
     {
-        if (controller.targetData == null)
+        vision.LookForTarget();
+        // So long as the tank has no player tank currently targeted
+        if (controller.targetTankData == null && 
+            (controller.currentTarget == null || controller.currentTarget.gameObject.GetComponent<TankData>() == null))
         {
-            vision.LookForTarget();
             Patrol();
         }
         else
         {
+            UpdateTimer();
             MoveTowardTarget(controller.tankCloseEnough);
             tankData.tankShooter.FireBullet();
         }
@@ -57,7 +62,7 @@ public class AIBehaviors : MonoBehaviour
     // Coward AI tank behavior
     public void Coward()
     {
-        if (controller.targetData == null)
+        if (controller.targetTankData == null)
         {
             vision.LookForTarget();
             Patrol();
@@ -67,7 +72,7 @@ public class AIBehaviors : MonoBehaviour
             FleeFromTarget();
             if (DistanceCheck(controller.targetPosition) > controller.visionDistance)
             {
-                controller.ClearTarget();
+                controller.ClearAllTargetInfo();
             }
         }
     }
@@ -90,6 +95,39 @@ public class AIBehaviors : MonoBehaviour
 
     }
 
+    public void UpdateTimer()
+    {
+        if (controller.targetTankData == null)
+        {
+            if (CheckTimer())
+            {
+                controller.ClearAllTargetInfo();
+            }
+        }
+        else
+        {
+            ResetTimer();
+        }
+    }
+
+    public bool CheckTimer()
+    {
+        if (investigateTimer < controller.maxPursuitTime)
+        {
+            investigateTimer += Time.deltaTime;
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public void ResetTimer()
+    {
+        investigateTimer = 0f;
+    }
+
     public float DistanceCheck(Vector3 targetPosition)
     {
         return Vector3.Distance(targetPosition, tankTf.position);
@@ -106,7 +144,7 @@ public class AIBehaviors : MonoBehaviour
             {
                 if (tankTf.forward != rotationVector)
                 {
-                    tankData.tankMover.Move(1 * tankData.reverseSpeedRate);
+                    tankData.tankMover.Move(1 * GameManager.gm.reverseSpeedRate);
                 }
                 else
                 {
@@ -125,7 +163,7 @@ public class AIBehaviors : MonoBehaviour
             tankData.tankMover.Rotate(fleeVector);
             if (tankTf.forward != fleeVector)
             {
-                tankData.tankMover.Move(1 * tankData.reverseSpeedRate);
+                tankData.tankMover.Move(1 * GameManager.gm.reverseSpeedRate);
             }
             else
             {
