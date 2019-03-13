@@ -301,6 +301,7 @@ GameObject:
   - component: {fileID: 114160411199241922}
   - component: {fileID: 114817208350954950}
   - component: {fileID: 114224087218670970}
+  - component: {fileID: 114560010724773992}
   m_Layer: 9
   m_Name: Enemy Tank
   m_TagString: Enemy
@@ -923,13 +924,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d7003581ad4114ea1790c23fca57f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomData: {fileID: 0}
   tankData: {fileID: 0}
+  behaviors: {fileID: 0}
   vision: {fileID: 0}
   hearing: {fileID: 0}
+  personality: 0
   visionDistance: 10
   visionAngle: 90
+  hearingRadius: 10
   currentTarget: {fileID: 0}
-  personality: 0
+  targetPosition: {x: 0, y: 0, z: 0}
+  targetTankData: {fileID: 0}
+  waypointCloseEnough: 2
+  tankCloseEnough: 20
+  maxPursuitTime: 3
 --- !u!114 &114215758364049690
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -977,19 +986,21 @@ MonoBehaviour:
   playerNumber: 0
   currentHP: 0
   maxHP: 3
-  moveSpeed: 10
-  reverseSpeedRate: 0.75
-  rotateSpeed: 45
-  bulletDamage: 1
-  bulletMoveForce: 500
-  firingTimeout: 1.5
+  currentMoveSpeed: 8
+  currentTurnSpeed: 45
+  currentBulletDamage: 1
+  currentBulletMoveSpeed: 5
+  currentFiringCooldown: 1.5
   firingTimer: 0
+  isMakingNoise: 0
+  noiseDecayTime: 0.25
   tankTf: {fileID: 0}
   tankMover: {fileID: 0}
   tankShooter: {fileID: 0}
   tankCc: {fileID: 0}
   tankHealthMan: {fileID: 0}
   tankScorer: {fileID: 0}
+  tankNoisemaker: {fileID: 0}
   bulletSpawn: {fileID: 4764664890460122}
 --- !u!114 &114414231274870226
 MonoBehaviour:
@@ -1163,6 +1174,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114560010724773992
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1622881790795316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f5c93b19041a964e91a298c72d8ee45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114600925546984604
 MonoBehaviour:
   m_ObjectHideFlags: 1

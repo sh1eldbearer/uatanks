@@ -19,12 +19,6 @@ public class AIVision : MonoBehaviour
     private AIController controller;
     private TankData tankData;
     private Transform tankTf;
-    
-    private Vector3[] vectorToPlayers = { Vector3.zero, Vector3.zero };
-    private float[] angleToPlayers = { 0f, 0f };
-    private bool[] canSeePlayers = { false, false };
-
-    [SerializeField] private Vector3 leftPoint, rightPoint;
 
     private void Awake()
     {
@@ -40,9 +34,15 @@ public class AIVision : MonoBehaviour
         tankTf = tankData.tankTf;
     }
 
-    // Checks to see if either of the players is within the vision range of this tank
+    /// <summary>
+    /// Checks to see if either of the players is within the vision range of this tank
+    /// </summary>
     public void LookForTarget()
     {
+        Vector3[] vectorToPlayers = { Vector3.zero, Vector3.zero };
+        float[] angleToPlayers = { 0f, 0f };
+        bool[] canSeePlayers = { false, false };
+
         foreach (var player in GameManager.gm.players)
         {
             int index = GameManager.gm.players.IndexOf(player);
@@ -79,7 +79,16 @@ public class AIVision : MonoBehaviour
 
         if (canSeePlayers[0] == true && canSeePlayers[1] == true)
         {
-            // This shouldn't be running right now
+            // If both players are visible, uses whichever player is closest
+            if (controller.behaviors.DistanceCheck(GameManager.gm.players[0].tankTf.position) < 
+                controller.behaviors.DistanceCheck(GameManager.gm.players[1].tankTf.position))
+            {
+                controller.SetTarget(GameManager.gm.players[0].tankTf);
+            }
+            else
+            {
+                controller.SetTarget(GameManager.gm.players[1].tankTf);
+            }
         }
         else if (canSeePlayers[0] == true)
         {
@@ -95,7 +104,12 @@ public class AIVision : MonoBehaviour
         }
     }
 
-    // Calculates a new Vector3 that is a x of degrees off of the object's forward axis
+    /// <summary>
+    /// Calculates a new Vector3 that is a x of degrees off of the object's forward axis
+    /// </summary>
+    /// <param name="angle">The angle between the outer edge of the the tank's cone of vision
+    /// and the Vector3.Forward</param>
+    /// <returns>The vector representing the outer edge of the tank's cone of vision.</returns>
     public Vector3 VectorFromForward(float angle)
     {
         Transform tankTf = this.gameObject.GetComponent<Transform>();

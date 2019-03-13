@@ -37,8 +37,8 @@ public class BulletData : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        moveForce = bulletOwner.bulletMoveForce;
-        bulletDamage = bulletOwner.bulletDamage;
+        moveForce = bulletOwner.currentBulletMoveSpeed;
+        bulletDamage = bulletOwner.currentBulletDamage;
         bulletLifeSpan = GameManager.gm.bulletLifeSpan;
     }
 }

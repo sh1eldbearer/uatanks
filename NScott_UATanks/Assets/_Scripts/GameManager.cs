@@ -23,17 +23,42 @@ public class GameManager : MonoBehaviour
     [Tooltip("Determines if enemy tanks can damage each other")]
     public bool enemyFriendlyFire = false;
 
+    [Header("General Tank Settings")]
+    [Tooltip("The speed at which tanks can move in reverse, represented as a percentage " +
+        "of the tank's base movement speed.")]
+    [Range(0.1f, 1f)] public float reverseSpeedRate = 0.75f;
+
     [Header("Player Tank Settings")]
     [Tooltip("The amount of HP a player tank starts with.")]
     [Range(1, 5)] public int playerStartingHP = 3;
     [Tooltip("The maximum amount of HP a player can earn after upgrades during a game.")]
     [Range(5, 15)] public int playerHPCap = 10;
+    [Tooltip("The starting movement speed of player tanks.")]
+    [Range(5f, 10f)] public float playerStartingMoveSpeed = 8f;
+    [Tooltip("The starting turning speed of player tanks.")]
+    [Range(20f, 90f)] public float playerStartingTurnSpeed = 45f;
+    [Tooltip("The starting damage of bullets fired by the player.")]
+    [Range(1, 3)] public int playerStartingBulletDamage = 1;
+    [Tooltip("The starting movement speed of bullets fired by the player.")]
+    [Range(2.5f, 5f)] public float playerStartingBulletSpeed = 5f;
+    [Tooltip("The starting length of the player's firing cooldown.")]
+    [Range(1f, 3f)] public float playerStartingFiringCooldown = 1.5f;
 
     [Header("Enemy Tank Settings")]
     [Tooltip("The amount of HP an enemy tank starts with.")]
     [Range(1, 5)] public int enemyStartingHP = 3;
     [Tooltip("The maximum amount of HP an enemy can earn after upgrades during a game.")]
     [Range(5, 15)] public int enemyHPCap = 15;
+    [Tooltip("The starting movement speed of enemy tanks.")]
+    [Range(5f, 10f)] public float enemyStartingMoveSpeed = 8f;
+    [Tooltip("The starting turning speed of enemy tanks.")]
+    [Range(20f, 90f)] public float enemyStartingTurnSpeed = 45f;
+    [Tooltip("The starting damage of bullets fired by the enemy.")]
+    [Range(1, 3)] public int enemyStartingBulletDamage = 1;
+    [Tooltip("The starting movement speed of bullets fired by the enemy.")]
+    [Range(2.5f, 5f)] public float enemyStartingBulletSpeed = 5f;
+    [Tooltip("The starting length of the enemy's firing cooldown.")]
+    [Range(1f, 3f)] public float enemyStartingFiringCooldown = 1.5f;
 
     [Header("Bullet Settings")]
     [Tooltip("The bullet prefab object instantiated by a tank when it fires.")]

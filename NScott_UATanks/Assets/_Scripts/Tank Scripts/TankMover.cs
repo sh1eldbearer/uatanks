@@ -29,13 +29,13 @@ public class TankMover : MonoBehaviour
     public void Move(float axisValue)
     {
         tankData.tankCc.SimpleMove(tankData.tankTf.forward * axisValue * 
-            tankData.moveSpeed);
+            tankData.currentMoveSpeed);
     }
 
     // Rotates the tank around the y-axis
     public void Rotate(float axisValue)
     {
-        tankData.tankTf.Rotate(tankData.tankTf.transform.up * tankData.rotateSpeed * 
+        tankData.tankTf.Rotate(tankData.tankTf.transform.up * tankData.currentTurnSpeed * 
             axisValue * Time.deltaTime, Space.Self);
     }
 
@@ -43,7 +43,7 @@ public class TankMover : MonoBehaviour
     public void Rotate(Vector3 targetVector)
     {
         tankData.tankTf.rotation = Quaternion.RotateTowards(tankData.tankTf.rotation,
-            Quaternion.LookRotation(targetVector), tankData.rotateSpeed * Time.deltaTime);
+            Quaternion.LookRotation(targetVector), tankData.currentTurnSpeed * Time.deltaTime);
         tankData.tankTf.eulerAngles = new Vector3(0f, tankData.tankTf.eulerAngles.y, 0f);
     }
 }

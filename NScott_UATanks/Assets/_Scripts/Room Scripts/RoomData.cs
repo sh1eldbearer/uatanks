@@ -19,15 +19,4 @@ public class RoomData : MonoBehaviour
     /* Private Variables */
 
     
-    // Use this for initialization
-    void Start ()
-    {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-
-    }
 }

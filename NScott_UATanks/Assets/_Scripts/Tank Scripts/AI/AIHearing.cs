@@ -33,9 +33,33 @@ public class AIHearing : MonoBehaviour
 		
 	}
 
-    // Update is called once per frame
-    private void Update ()
+    /// <summary>
+    /// Listens for the noises being made by enemy tanks
+    /// </summary>
+    /// <param name="tagName">The tag for which to check for valid targets</param>
+    public void Listen (string tagName)
     {
+        if (controller.targetTankData == null)
+        {
+            Collider[] soundSources = Physics.OverlapSphere(tankData.tankTf.position, controller.hearingRadius, GameManager.gm.tankLayer);
+            Debug.Log(soundSources);
 
+            foreach (Collider source in soundSources)
+            {
+                TankData otherTank = source.GetComponent<TankData>();
+                if (otherTank != null)
+                {
+                    if (otherTank.tag != tagName)
+                    {
+                        continue;
+                    }
+                    else if (otherTank.isMakingNoise)
+                    {
+                        controller.SetTarget(otherTank.tankTf);
+                        break;
+                    }
+                }
+            }
+        }
 	}
 }

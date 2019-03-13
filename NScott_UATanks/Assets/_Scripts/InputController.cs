@@ -124,7 +124,7 @@ public class InputController : MonoBehaviour
             else if (Input.GetAxisRaw("P1_FwdBack") < 0)
             {
                 // Tanks move slower in reverse than they do moving forward
-                tankMover.Move(Input.GetAxisRaw("P1_FwdBack") * tankData.reverseSpeedRate);
+                tankMover.Move(Input.GetAxisRaw("P1_FwdBack") * GameManager.gm.reverseSpeedRate);
             }
             // Rotation left/right
             if (Input.GetAxisRaw("P1_Rotate") != 0)
@@ -153,7 +153,7 @@ public class InputController : MonoBehaviour
             else if (Input.GetAxisRaw("P2_FwdBack") < 0)
             {
                 // Tanks move slower in reverse than they do moving forward
-                tankMover.Move(Input.GetAxisRaw("P2_FwdBack") * tankData.reverseSpeedRate);
+                tankMover.Move(Input.GetAxisRaw("P2_FwdBack") * GameManager.gm.reverseSpeedRate);
             }
             // Rotation left/right
             if (Input.GetAxisRaw("P2_Rotate") != 0)
