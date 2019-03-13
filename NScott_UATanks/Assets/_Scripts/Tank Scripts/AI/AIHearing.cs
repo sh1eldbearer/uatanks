@@ -27,12 +27,6 @@ public class AIHearing : MonoBehaviour
         tankData = this.gameObject.GetComponent<TankData>();
     }
 
-    // Use this for initialization
-    private void Start ()
-    {
-		
-	}
-
     /// <summary>
     /// Listens for the noises being made by enemy tanks
     /// </summary>

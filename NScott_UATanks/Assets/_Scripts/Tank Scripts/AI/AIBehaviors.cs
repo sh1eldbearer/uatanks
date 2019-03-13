@@ -51,8 +51,8 @@ public class AIBehaviors : MonoBehaviour
             hearing.Listen("Player");
         }
 
-        // So long as the tank has no player tank currently targeted
-        if (controller.targetTankData == null && 
+        // So long as the tank has no player tank currently targeted, patrol waypoints
+        if (controller.targetTankData == null &&
             (controller.currentTarget == null || controller.currentTarget.gameObject.GetComponent<TankData>() == null))
         {
             Patrol();
@@ -70,9 +70,17 @@ public class AIBehaviors : MonoBehaviour
     /// </summary>
     public void Coward()
     {
+        vision.LookForTarget();
+        // If the tank doesn't see anything, listens for something
         if (controller.targetTankData == null)
         {
-            vision.LookForTarget();
+            hearing.Listen("Player");
+        }
+
+        // So long as the tank has no player tank currently targeted, patrol waypoints
+        if (controller.targetTankData == null &&
+            (controller.currentTarget == null || controller.currentTarget.gameObject.GetComponent<TankData>() == null))
+        {
             Patrol();
         }
         else
