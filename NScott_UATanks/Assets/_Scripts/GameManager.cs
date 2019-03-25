@@ -59,6 +59,13 @@ public class GameManager : MonoBehaviour
     [Range(2.5f, 5f)] public float enemyStartingBulletSpeed = 5f;
     [Tooltip("The starting length of the enemy's firing cooldown.")]
     [Range(1f, 3f)] public float enemyStartingFiringCooldown = 1.5f;
+    [Tooltip("The distance at which an enemy tank considers itself \"close enough\" to a waypoint.")]
+    [Range(1f, 10f)] public float waypointCloseEnoughDistance = 2f;
+    [Tooltip("The distance at which an enemy tank considers itself \"close enough\" to a target tank.")]
+    [Range(1f, 25f)] public float tankCloseEnoughDistance = 15f;
+    [Tooltip("The maximum length of time an enemy tank will pursue a player without seeing them, before " +
+        "returning to their default behavior.\nNOTE: Reaper tanks will ignore this value!")]
+    [Range(1f, 10f)] public float maxPursuitTime = 3f;
 
     [Header("Bullet Settings")]
     [Tooltip("The bullet prefab object instantiated by a tank when it fires.")]

@@ -54,6 +54,10 @@ public class TankData : MonoBehaviour
     [HideInInspector] public TankScorer tankScorer; // The Scorer component of this tank object
     [HideInInspector] public TankNoisemaker tankNoisemaker; // The TankNoisemaker component of this tank object
     [HideInInspector] public Transform bulletSpawn; // The bullet spawn point attached to this tank object
+    // The Transform components of the GameObjects used as origin points for obstacle avoidance raycasting
+    [HideInInspector] public Transform originRayCastTf;
+    [HideInInspector] public Transform leftRaycastTf;
+    [HideInInspector] public Transform rightRaycastTf;
 
     /* Private Variables */
 

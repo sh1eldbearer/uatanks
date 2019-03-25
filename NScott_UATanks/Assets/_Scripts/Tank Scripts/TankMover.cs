@@ -46,4 +46,19 @@ public class TankMover : MonoBehaviour
             Quaternion.LookRotation(targetVector), tankData.currentTurnSpeed * Time.deltaTime);
         tankData.tankTf.eulerAngles = new Vector3(0f, tankData.tankTf.eulerAngles.y, 0f);
     }
+
+    // Rotates a part of the tank around the y-axis
+    public void RotatePart(Transform rotateTf, float axisValue)
+    {
+        rotateTf.Rotate(rotateTf.transform.up * tankData.currentTurnSpeed *
+            axisValue * Time.deltaTime, Space.Self);
+    }
+
+    // Rotates a part of the tank toward a target vector
+    public void RotatePart(Transform rotateTf, Vector3 targetVector)
+    {
+        rotateTf.rotation = Quaternion.RotateTowards(rotateTf.rotation,
+            Quaternion.LookRotation(targetVector), tankData.currentTurnSpeed * Time.deltaTime);
+        rotateTf.eulerAngles = new Vector3(0f, rotateTf.eulerAngles.y, 0f);
+    }
 }

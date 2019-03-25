@@ -33,6 +33,7 @@ public class AIController : MonoBehaviour
     [Header("Vision Settings")]
     [Range(1f, 50f)] public float visionDistance = 10f;
     [Range(10f, 180f)] public float visionAngle = 90f;
+    [Range(0.01f, 0.99f)] public float avoidanceRange = 0.5f;
 
     [Header("Hearing Settings")]
     [Range(2f, 50f)] public float hearingRadius = 10f;
@@ -43,9 +44,9 @@ public class AIController : MonoBehaviour
     public TankData targetTankData;
 
     [Header("Target Settings")]
-    public float waypointCloseEnough = 2f;
-    public float tankCloseEnough = 20f;
-    public float maxPursuitTime = 3f;
+    [HideInInspector] public float waypointCloseEnough = 2f;
+    [HideInInspector] public float tankCloseEnough = 20f;
+    [HideInInspector] public float maxPursuitTime = 3f;
 
     /* Private Variables */
 
@@ -63,6 +64,9 @@ public class AIController : MonoBehaviour
     private void Start ()
     {
         roomData = this.gameObject.GetComponentInParent<RoomData>();
+        waypointCloseEnough = GameManager.gm.waypointCloseEnoughDistance;
+        tankCloseEnough = GameManager.gm.tankCloseEnoughDistance;
+        maxPursuitTime = GameManager.gm.maxPursuitTime;
     }
 
     // Update is called once per frame
@@ -90,7 +94,7 @@ public class AIController : MonoBehaviour
 	}
 
     /// <summary>
-    /// Sets the target and all related information of this AI tank
+    /// Sets the target and all related information of this AI tank.
     /// </summary>
     /// <param name="newTarget">The Transform component of the tank's new target.</param>
     public void SetTarget(Transform newTarget)
@@ -105,7 +109,8 @@ public class AIController : MonoBehaviour
     /// </summary>
     public void UpdateTargetPosition()
     {
-        targetPosition = new Vector3(currentTarget.position.x, tankData.tankTf.position.y, currentTarget.position.z);
+        targetPosition = new Vector3(currentTarget.position.x, 
+            tankData.tankTf.position.y, currentTarget.position.z);
     }
 
     /// <summary>
@@ -127,7 +132,9 @@ public class AIController : MonoBehaviour
     }
 
     /// <summary>
-    /// Clears the TankData component of this tank's current target.
+    /// Clears the TankData component of this tank's current target (retains the transform
+    /// and position of the target to allow this tank to investigate the last known position
+    /// of the other tank).
     /// </summary>
     public void ClearTargetData()
     {
@@ -137,6 +144,7 @@ public class AIController : MonoBehaviour
     // Shows a visual representation of the size of this tank's cone of vision
     private void OnDrawGizmosSelected()
     {
+        TankData tankData = this.gameObject.GetComponent<TankData>();
         Transform tankTf = this.gameObject.GetComponent<Transform>();
         AIVision vision = this.gameObject.GetComponent<AIVision>();            
 
@@ -149,5 +157,11 @@ public class AIController : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(tankTf.position, tankTf.position + vision.VectorFromForward(-visionAngle / 2) * visionAngle);
         Gizmos.DrawLine(tankTf.position, tankTf.position + vision.VectorFromForward(visionAngle / 2) * visionAngle);
+
+        // Previews the tank's obstacle checking
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(tankData.leftRaycastTf.position, tankData.leftRaycastTf.position + tankData.leftRaycastTf.forward * (visionDistance * avoidanceRange));
+        Gizmos.DrawLine(tankData.rightRaycastTf.position, tankData.rightRaycastTf.position + tankData.rightRaycastTf.forward * (visionDistance * avoidanceRange));
+        Gizmos.DrawLine(tankData.originRayCastTf.position, tankData.originRayCastTf.position + tankData.originRayCastTf.forward * (visionDistance * avoidanceRange));
     }
 }

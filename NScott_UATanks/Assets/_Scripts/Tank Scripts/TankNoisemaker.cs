@@ -13,25 +13,19 @@ public class TankNoisemaker : MonoBehaviour
 
 
     /* Private Variables */
-    private TankData tankData;
-
-    private float decayTimer = 0f;
+    private TankData tankData; // The TankData component of this tank
+    private float decayTimer = 0f; // The time since this tank has made sound
 
     private void Awake()
     {
         // Component reference assignments
         tankData = this.gameObject.GetComponent<TankData>();
     }
-
-    // Use this for initialization
-    void Start ()
-    {
-        
-	}
 	
 	// Update is called once per frame
 	void Update ()
     {
+        // If the timer has reached zero, the tank is no longer making noise
         if (decayTimer <= 0f)
         {
             tankData.isMakingNoise = false;
@@ -43,7 +37,7 @@ public class TankNoisemaker : MonoBehaviour
 	}
 
     /// <summary>
-    /// 
+    /// Has the tank "make noise", so that enemy tanks can hear it
     /// </summary>
     public void MakeNoise()
     {

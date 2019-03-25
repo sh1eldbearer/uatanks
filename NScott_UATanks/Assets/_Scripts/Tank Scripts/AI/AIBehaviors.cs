@@ -44,7 +44,7 @@ public class AIBehaviors : MonoBehaviour
     // Standard AI tank behavior
     public void Standard()
     {
-        vision.LookForTarget();
+        vision.LookForATarget();
         // If the tank doesn't see anything, listens for something
         if (controller.targetTankData == null)
         {
@@ -70,7 +70,7 @@ public class AIBehaviors : MonoBehaviour
     /// </summary>
     public void Coward()
     {
-        vision.LookForTarget();
+        vision.LookForATarget();
         // If the tank doesn't see anything, listens for something
         if (controller.targetTankData == null)
         {
@@ -108,7 +108,99 @@ public class AIBehaviors : MonoBehaviour
     /// </summary>
     public void Reaper()
     {
+        // Looks for the closest player
+        float p1Distance, p2Distance;
+        try
+        {
+            p1Distance = Vector3.Distance(tankTf.position, GameManager.gm.players[0].tankTf.position);
+        }
+        catch
+        {
+            p1Distance = float.MaxValue;
+        }
+        try
+        {
+            p2Distance = Vector3.Distance(tankTf.position, GameManager.gm.players[1].tankTf.position);
+        }
+        catch
+        {
+            p2Distance = float.MaxValue;
+        }
 
+        if (p1Distance < p2Distance)
+        {
+            controller.SetTarget(GameManager.gm.players[0].tankTf);
+        }
+        else
+        {
+            controller.SetTarget(GameManager.gm.players[1].tankTf);
+        }
+
+        // Check for direct line of sight to player
+        RaycastHit hitInfo;
+        if (!vision.CanSeeTarget(tankTf, controller.currentTarget, 
+            controller.visionDistance * controller.avoidanceRange, out hitInfo))
+        {
+            // If there is a direct line of sight to the player
+            if (hitInfo.collider == null || 
+                hitInfo.collider.GetComponent<TankData>() == controller.targetTankData)
+            {
+                MoveTowardTarget(controller.tankCloseEnough);
+                if (vision.CanSeeTarget(tankTf, controller.currentTarget, 
+                    controller.visionDistance, out hitInfo))
+                {
+                    tankData.tankShooter.FireBullet();
+                }
+            }
+            // If not
+            else
+            {
+                ObstacleAvoidance();
+            }
+        }
+        else
+        {
+            MoveTowardTarget(controller.tankCloseEnough);
+            tankData.tankShooter.FireBullet();
+        }
+    }
+
+    /// <summary>
+    /// Attempts to avoid any obstacles between this tank and its current target.
+    /// </summary>
+    public void ObstacleAvoidance()
+    {
+        float leftHitDistance, rightHitDistance;
+        vision.ObstacleCheck(tankData.leftRaycastTf, tankData.rightRaycastTf,
+            out leftHitDistance, out rightHitDistance);
+        if (leftHitDistance == float.MaxValue && rightHitDistance == float.MaxValue)
+        {
+            tankData.originRayCastTf.rotation = tankTf.rotation;
+            tankData.tankMover.Move(1f);
+        }
+        else
+        {
+            if (leftHitDistance < rightHitDistance)
+            {
+                while (leftHitDistance != float.MaxValue || rightHitDistance != float.MaxValue)
+                {
+                    tankData.tankMover.RotatePart(tankData.originRayCastTf, 1f);
+                    vision.ObstacleCheck(tankData.leftRaycastTf, tankData.rightRaycastTf,
+                        out leftHitDistance, out rightHitDistance);
+                    tankData.tankMover.Rotate(tankData.originRayCastTf.forward);
+                }
+            }
+            else 
+            {
+                while (leftHitDistance != float.MaxValue || rightHitDistance != float.MaxValue)
+                {
+                    tankData.tankMover.RotatePart(tankData.originRayCastTf, -1f);
+                    vision.ObstacleCheck(tankData.leftRaycastTf, tankData.rightRaycastTf,
+                        out leftHitDistance, out rightHitDistance);
+                    tankData.tankMover.Rotate(tankData.originRayCastTf.forward);
+                }
+            }
+        }
     }
 
     /// <summary>

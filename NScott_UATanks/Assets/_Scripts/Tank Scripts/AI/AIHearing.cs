@@ -36,7 +36,6 @@ public class AIHearing : MonoBehaviour
         if (controller.targetTankData == null)
         {
             Collider[] soundSources = Physics.OverlapSphere(tankData.tankTf.position, controller.hearingRadius, GameManager.gm.tankLayer);
-            Debug.Log(soundSources);
 
             foreach (Collider source in soundSources)
             {
