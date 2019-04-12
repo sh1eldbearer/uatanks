@@ -12,6 +12,7 @@ public enum AIPersonality
 [RequireComponent(typeof(AIVision))]
 [RequireComponent(typeof(AIHearing))]
 [RequireComponent(typeof(AIBehaviors))]
+[RequireComponent(typeof(TankUpdateMaterials))]
 
 /*
  * This script allows a designer to set the personality for an enemy (AI-controlled) tank.
@@ -29,7 +30,7 @@ public class AIController : MonoBehaviour
     [HideInInspector] public AIHearing hearing;
 
     public AIPersonality personality;
-
+    
     [Header("Vision Settings")]
     [Range(1f, 50f)] public float visionDistance = 10f;
     [Range(10f, 180f)] public float visionAngle = 90f;
@@ -42,6 +43,7 @@ public class AIController : MonoBehaviour
     public Transform currentTarget;
     public Vector3 targetPosition;
     public TankData targetTankData;
+    public bool canHearPlayer;
 
     [Header("Target Settings")]
     [HideInInspector] public float waypointCloseEnough = 2f;
@@ -49,7 +51,6 @@ public class AIController : MonoBehaviour
     [HideInInspector] public float maxPursuitTime = 3f;
 
     /* Private Variables */
-
 
     private void Awake()
     {
@@ -117,6 +118,7 @@ public class AIController : MonoBehaviour
     {
         ClearCurrentTarget();
         ClearTargetData();
+        canHearPlayer = false;
     }
 
     /// <summary>

@@ -58,6 +58,11 @@ public class BulletCollider : MonoBehaviour
                 }
             }
         }
+        // Ignore bullet collisions
+        if (other.gameObject.GetComponent<BulletCollider>() && !GameManager.gm.bulletCollisions)
+        {
+            return;
+        }
         else
         {
             // Do nothing else except go die

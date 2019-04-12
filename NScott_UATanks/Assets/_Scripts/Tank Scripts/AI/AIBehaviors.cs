@@ -20,6 +20,7 @@ public class AIBehaviors : MonoBehaviour
     private AIController controller;
     private TankData tankData;
     private Transform tankTf;
+    private TankMover mover;
     private AIVision vision;
     private AIHearing hearing;
 
@@ -37,6 +38,7 @@ public class AIBehaviors : MonoBehaviour
     {
         // Component reference assignments dependant on other scripts
         tankTf = tankData.tankTf;
+        mover = tankData.tankMover;
         vision = controller.vision;
         hearing = controller.hearing;
     }
@@ -48,19 +50,27 @@ public class AIBehaviors : MonoBehaviour
         // If the tank doesn't see anything, listens for something
         if (controller.targetTankData == null)
         {
-            hearing.Listen("Player");
+            if (hearing.Listen("Player"))
+            {
+                ResetTimer();
+            }
         }
 
-        RaycastHit hitInfo;
+        // If the tank can hear the player, stop and rotate
+        if (controller.canHearPlayer)
+        {
+            StopAndRotate();
+            UpdateTimer();
+        }
         // So long as the tank has no player tank currently targeted, patrol waypoints
-        if (controller.targetTankData == null &&
+        else if (controller.targetTankData == null &&
             (controller.currentTarget == null || controller.currentTarget.gameObject.GetComponent<TankData>() == null))
         {
             Patrol();
-
         }
         else
         {
+            RaycastHit hitInfo;
             // Check for direct line of sight to player
             if (!vision.CanSeeTarget(tankTf, controller.currentTarget, // No direct line of sight to target
                 controller.visionDistance * controller.avoidanceRange, out hitInfo))
@@ -105,11 +115,20 @@ public class AIBehaviors : MonoBehaviour
         // If the tank doesn't see anything, listens for something
         if (controller.targetTankData == null)
         {
-            hearing.Listen("Player");
+            if (hearing.Listen("Player"))
+            {
+                ResetTimer();
+            }
         }
 
+        // If the tank can hear the player, stop and rotate
+        if (controller.canHearPlayer)
+        {
+            FleeFromTarget();
+            UpdateTimer();
+        }
         // So long as the tank has no player tank currently targeted, patrol waypoints
-        if (controller.targetTankData == null &&
+        else if (controller.targetTankData == null &&
             (controller.currentTarget == null || controller.currentTarget.gameObject.GetComponent<TankData>() == null))
         {
             Patrol();
@@ -123,19 +142,34 @@ public class AIBehaviors : MonoBehaviour
     // Captain AI tank behavior
     public void Captain()
     {
+        // Follows standard behaviors
         Standard();
 
+        // If this tank can see a player, it tells all enemies within the same "room" where to purse their target
         if (controller.targetTankData != null)
         {
             foreach (var enemy in GameManager.gm.enemies)
             {
+                AIController enemyController = enemy.GetComponent<AIController>();
+                // It's redundant to tell yourself what to do
                 if (enemy == tankData)
                 {
                     continue;
                 }
+                // Reaper tanks ignore commands and simply pursue their nearest player target
+                else if (enemyController.personality == AIPersonality.Reaper)
+                {
+                    continue;
+                }
+                // Only command tanks in the same room as this captain (otherwise the game will get ridiculously hard)
+                else if (enemyController.roomData == controller.roomData)
+                {
+                    enemyController.SetTarget(controller.currentTarget);
+                }
+                // Otherwise, don't issue a command to this enemy
                 else
                 {
-                    enemy.GetComponent<AIController>().SetTarget(controller.currentTarget);
+                    continue;
                 }
             }
         }
@@ -216,7 +250,7 @@ public class AIBehaviors : MonoBehaviour
         {
             // Simply move forward
             tankData.originRayCastTf.rotation = tankTf.rotation;
-            tankData.tankMover.Move(1f);
+            mover.Move(1f);
         }
         else
         {
@@ -225,10 +259,10 @@ public class AIBehaviors : MonoBehaviour
                 // Rotates to the right until the tank has a clear path foward
                 while (leftHitDistance != float.MaxValue || rightHitDistance != float.MaxValue)
                 {
-                    tankData.tankMover.RotatePart(tankData.originRayCastTf, 1f);
+                    mover.RotatePart(tankData.originRayCastTf, 1f);
                     vision.ObstacleCheck(tankData.leftRaycastTf, tankData.rightRaycastTf,
                         out leftHitDistance, out rightHitDistance);
-                    tankData.tankMover.Rotate(tankData.originRayCastTf.forward);
+                    mover.Rotate(tankData.originRayCastTf.forward);
                 }
             }
             else  // Obstacle is closer to the right side of the tank, or the distances are equal
@@ -236,10 +270,10 @@ public class AIBehaviors : MonoBehaviour
                 // Rotates to the left until the tank has a clear path foward
                 while (leftHitDistance != float.MaxValue || rightHitDistance != float.MaxValue)
                 {
-                    tankData.tankMover.RotatePart(tankData.originRayCastTf, -1f);
+                    mover.RotatePart(tankData.originRayCastTf, -1f);
                     vision.ObstacleCheck(tankData.leftRaycastTf, tankData.rightRaycastTf,
                         out leftHitDistance, out rightHitDistance);
-                    tankData.tankMover.Rotate(tankData.originRayCastTf.forward);
+                    mover.Rotate(tankData.originRayCastTf.forward);
                 }
             }
         }
@@ -292,6 +326,11 @@ public class AIBehaviors : MonoBehaviour
         pursuitTimer = 0f;
     }
 
+    public void StopAndRotate()
+    {
+        mover.Rotate(controller.targetPosition - tankTf.position);
+    }
+
     /// <summary>
     /// Checks the the distance between this tank's position and another object's 
     /// position
@@ -314,18 +353,18 @@ public class AIBehaviors : MonoBehaviour
         controller.UpdateTargetPosition();
         // Gets a normalized vector toward the target object
         Vector3 rotationVector = Vector3.Normalize(controller.targetPosition - tankTf.position);
-        tankData.tankMover.Rotate(rotationVector);
+        mover.Rotate(rotationVector);
 
         // When this tank gets within a certain distance of the target object, stops moving
         if (DistanceCheck(controller.targetPosition) > closeEnoughDistance)
         {
             if (tankTf.forward != rotationVector)
             {
-                tankData.tankMover.Move(1 * GameManager.gm.reverseSpeedRate);
+                mover.Move(1 * GameManager.gm.reverseSpeedRate);
             }
             else
             {
-                tankData.tankMover.Move(1);
+                mover.Move(1);
             }
         }
         else
@@ -342,8 +381,8 @@ public class AIBehaviors : MonoBehaviour
         controller.UpdateTargetPosition();
         // Gets a normalized vector away from the target object
         Vector3 fleeVector = Vector3.Normalize((controller.targetPosition - tankTf.position) * -1);
-        tankData.tankMover.Rotate(fleeVector);
-
+        mover.Rotate(fleeVector);
+        
         // When this tank gets a certain distance away from the target object, clears this tank's target
         if (DistanceCheck(controller.targetPosition) > controller.visionDistance)
         {
@@ -353,11 +392,11 @@ public class AIBehaviors : MonoBehaviour
         {
             if (tankTf.forward != fleeVector)
             {
-                tankData.tankMover.Move(1 * GameManager.gm.reverseSpeedRate);
+                mover.Move(1 * GameManager.gm.reverseSpeedRate);
             }
             else
             {
-                tankData.tankMover.Move(1);
+                mover.Move(1);
             }
         }
     }

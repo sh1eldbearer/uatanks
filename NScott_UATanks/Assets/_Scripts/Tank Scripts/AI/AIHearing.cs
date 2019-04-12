@@ -31,28 +31,38 @@ public class AIHearing : MonoBehaviour
     /// Listens for the noises being made by enemy tanks
     /// </summary>
     /// <param name="tagName">The tag for which to check for valid targets</param>
-    public void Listen (string tagName)
+    /// <returns>True if a target tank was heard; false if it was not.</returns>
+    public bool Listen (string tagName)
     {
+        // As long as the tank does not have a visible target
         if (controller.targetTankData == null)
         {
+            // Look for all tank objects in a radius around the tank
             Collider[] soundSources = Physics.OverlapSphere(tankData.tankTf.position, controller.hearingRadius, GameManager.gm.tankLayer);
 
             foreach (Collider source in soundSources)
             {
                 TankData otherTank = source.GetComponent<TankData>();
-                if (otherTank != null)
+                // If the other object has a TankData component, see what the tank is tagged with
+                if (otherTank != null) 
                 {
+                    // If the other tank is not tagged as the target type
                     if (otherTank.tag != tagName)
                     {
+                        // Ignore it
                         continue;
                     }
+                    // If it is the target type
                     else if (otherTank.isMakingNoise)
                     {
-                        controller.SetTarget(otherTank.tankTf);
-                        break;
+                        // The other tank is marked as heard and its position is stored
+                        controller.canHearPlayer = true;
+                        controller.targetPosition = otherTank.tankTf.position;
+                        return true;
                     }
                 }
             }
         }
+        return false;
 	}
 }

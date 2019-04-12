@@ -72,6 +72,8 @@ public class GameManager : MonoBehaviour
     public GameObject bulletPrefab;
     [Tooltip("The length of time a bullet should exist in the game world before destroying itself.")]
     [Range(1f, 5f)] public float bulletLifeSpan = 5f;
+    [Tooltip("Determines whether or not bullets should destroy each other when they collide.")]
+    public bool bulletCollisions = false;
 
     [Header("Game Cameras & Camera Settings")]
     [Tooltip("The camera used to render player 1's display")]
@@ -114,7 +116,18 @@ public class GameManager : MonoBehaviour
         "with one more hit point than the starting value would be worth <Base Value> + " +
         "(<Bonus Value> X <Base Value>) X <Number of HP over the starting value>).)")]
     [Range(0f, 3f)] public float bonusModifer = 0.5f;
-    // TODO: Increased values for enemy tanks of different personality types?
+
+    [Header("Tank Materials")]
+    public Material playerBody;
+    public Material playerCannon;
+    public Material enemyStandardBody;
+    public Material enemyStandardCannon;
+    public Material enemyCowardBody;
+    public Material enemyCowardCannon;
+    public Material enemyReaperBody;
+    public Material enemyReaperCannon;
+    public Material enemyCaptainBody;
+    public Material enemyCaptainCannon;
 
     /* Private Variables */
 
@@ -131,7 +144,7 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
+    // test
     // Update is called once per frame
     private void Update()
     {

@@ -166,10 +166,29 @@ public class AIVision : MonoBehaviour
     {
         if (Physics.Raycast(thisTankTf.position, (targetTf.position - thisTankTf.position).normalized, out hitInfo, visionDistance))
         {
-            if (hitInfo.collider.GetComponent<TankData>() == targetTf.GetComponent<TankData>())
+            if (hitInfo.collider.GetComponent<TankData>() != null)
             {
-                // If the object seen is the target tank
-                return true;
+                if (hitInfo.collider.GetComponent<TankData>() == targetTf.GetComponent<TankData>())
+                {
+                    // If the object seen is the target tank
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (hitInfo.collider.GetComponent<AddWaypointToList>() != null)
+            {
+                if (targetTf.GetComponent<AddWaypointToList>() == targetTf.GetComponent<AddWaypointToList>())
+                {
+                    // If the target is a waypoint, and there is nothing between the tank and the waypoint
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -180,7 +199,6 @@ public class AIVision : MonoBehaviour
         {
             if (targetTf.GetComponent<AddWaypointToList>() != null && hitInfo.collider == null)
             {
-                // If the target is a waypoint, and there is nothing between the tank and the waypoint
                 return true;
             }
             else

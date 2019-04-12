@@ -17,6 +17,12 @@ public class TankMover : MonoBehaviour
     
     /* Private Variables */
     private TankData tankData;
+
+    // Use this for initialization
+    private void Start()
+    {
+
+    }
     
     private void Awake ()
     {

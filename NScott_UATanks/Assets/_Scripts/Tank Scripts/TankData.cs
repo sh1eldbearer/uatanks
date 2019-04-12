@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(TankMover))]
 [RequireComponent(typeof(TankShooter))]
 [RequireComponent(typeof(TankHealthManager))]
+[RequireComponent(typeof(TankNoisemaker))]
 
 /*
  * This script holds settings information about a tank object.
@@ -91,6 +92,8 @@ public class TankData : MonoBehaviour
             // This is a player tank
             GameManager.gm.players.Add(this);
             playerNumber = GameManager.gm.players.IndexOf(this) + 1;
+            currentHP = GameManager.gm.playerStartingHP;
+            maxHP = currentHP;
             currentMoveSpeed = GameManager.gm.playerStartingMoveSpeed;
             currentTurnSpeed = GameManager.gm.playerStartingTurnSpeed;
             currentBulletDamage = GameManager.gm.playerStartingBulletDamage;
@@ -101,6 +104,8 @@ public class TankData : MonoBehaviour
         {
             // This is an enemy tank
             GameManager.gm.enemies.Add(this);
+            currentHP = GameManager.gm.enemyStartingHP;
+            maxHP = currentHP;
             currentMoveSpeed = GameManager.gm.enemyStartingMoveSpeed;
             currentTurnSpeed = GameManager.gm.enemyStartingTurnSpeed;
             currentBulletDamage = GameManager.gm.enemyStartingBulletDamage;

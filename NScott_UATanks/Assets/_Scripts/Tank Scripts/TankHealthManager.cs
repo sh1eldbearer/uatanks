@@ -25,15 +25,6 @@ public class TankHealthManager : MonoBehaviour
         tankData = this.gameObject.GetComponent<TankData>();
     }
 
-    // Use this for initialization
-    void Start ()
-    {
-        // Sets the tank's max HP to the starting value in the GameManager
-        tankData.maxHP = GameManager.gm.playerStartingHP;
-        // Sets the tank's starting HP to its max HP
-        tankData.currentHP = tankData.maxHP;
-    }
-
     void Update()
     {
         // If this tank's health has reached or exceeded zero
@@ -44,7 +35,14 @@ public class TankHealthManager : MonoBehaviour
         }
 
         // Makes sure the tank's maximum health cnanot exceed the game-defined maximum
-        tankData.maxHP = Mathf.Clamp(tankData.maxHP, GameManager.gm.playerStartingHP, GameManager.gm.playerHPCap);
+        if (this.tag == "Player")
+        {
+            tankData.maxHP = Mathf.Clamp(tankData.maxHP, GameManager.gm.playerStartingHP, GameManager.gm.playerHPCap);
+        }
+        else
+        {
+            tankData.maxHP = Mathf.Clamp(tankData.maxHP, GameManager.gm.enemyStartingHP, GameManager.gm.enemyHPCap);
+        }
         // Makes sure the tank's current health cannot exceed its maximum health
         tankData.currentHP = Mathf.Clamp(tankData.currentHP, -1, tankData.maxHP);
     }

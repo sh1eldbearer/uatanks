@@ -337,7 +337,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4944977081670864}
   - component: {fileID: 143656605360356920}
-  - component: {fileID: 54270611482922188}
   - component: {fileID: 114387649632910046}
   - component: {fileID: 114389060609219782}
   - component: {fileID: 114166657342159330}
@@ -347,6 +346,7 @@ GameObject:
   - component: {fileID: 114817208350954950}
   - component: {fileID: 114224087218670970}
   - component: {fileID: 114560010724773992}
+  - component: {fileID: 114841954300458592}
   m_Layer: 9
   m_Name: Enemy Tank
   m_TagString: Enemy
@@ -735,7 +735,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: ce480fe58b98ea145a12bf4b69eedc53, type: 2}
+  - {fileID: 2100000, guid: d7ccaecf8ac7e724f8f0417aaf6e9097, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -770,7 +770,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: dd6d9bac0c71195479af54e1db0d691e, type: 2}
+  - {fileID: 2100000, guid: a6708d9a718c6bb449587b08beb8df17, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -840,7 +840,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: ce480fe58b98ea145a12bf4b69eedc53, type: 2}
+  - {fileID: 2100000, guid: d7ccaecf8ac7e724f8f0417aaf6e9097, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -895,21 +895,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1139572835095080}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54270611482922188
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1622881790795316}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &114041271262539322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1016,7 +1001,7 @@ MonoBehaviour:
   behaviors: {fileID: 0}
   vision: {fileID: 0}
   hearing: {fileID: 0}
-  personality: 0
+  personality: 2
   visionDistance: 20
   visionAngle: 60
   avoidanceRange: 0.5
@@ -1024,6 +1009,7 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   targetPosition: {x: 0, y: 0, z: 0}
   targetTankData: {fileID: 0}
+  canHearPlayer: 0
   waypointCloseEnough: 2
   tankCloseEnough: 20
   maxPursuitTime: 3
@@ -1073,7 +1059,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNumber: 0
   currentHP: 0
-  maxHP: 3
+  maxHP: 0
+  tankDamage: 1
   currentMoveSpeed: 8
   currentTurnSpeed: 45
   currentBulletDamage: 1
@@ -1454,6 +1441,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114841954300458592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1622881790795316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1898dcf7a02aaf499d020ba2b486bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyShell: {fileID: 23871265533170356}
+  cannonBase: {fileID: 23984936374567276}
+  cannonBarrel: {fileID: 23728373001531654}
+  controller: {fileID: 114166657342159330}
 --- !u!114 &114843313090411652
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1637,13 +1639,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.65
-  m_SlopeLimit: 45
-  m_StepOffset: 0.2
-  m_SkinWidth: 1
+  m_Height: 1
+  m_Radius: 0.75
+  m_SlopeLimit: 90
+  m_StepOffset: 0
+  m_SkinWidth: 0.065
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0.65, z: 0}
+  m_Center: {x: 0, y: 0.4, z: 0.1}
 --- !u!222 &222032877198045432
 CanvasRenderer:
   m_ObjectHideFlags: 1
