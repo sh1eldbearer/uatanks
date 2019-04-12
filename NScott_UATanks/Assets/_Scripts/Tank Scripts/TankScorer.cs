@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
+
 /*
  * This script adjusts the score accumulated by a player tank.
  * It should only be attached to a player tank object - never to an enemy tank!
@@ -10,15 +12,13 @@ using UnityEngine;
 public class TankScorer : MonoBehaviour
 {
     /* Public Variables */
-
+    [Tooltip("The accumulated score of this tank.")]
+    public int score;
 
     /* Private Variables */
-    private TankData tankData; // Used to get the player number of this tank object
 
     private void Awake()
     {
-        // Component reference assignments
-        tankData = this.gameObject.GetComponent<TankData>();
     }
 
     /// <summary>
@@ -37,6 +37,6 @@ public class TankScorer : MonoBehaviour
         }
 
         // Adds the tank's value to the player's score
-        tankData.score += scoreValue;
+        score += scoreValue;
     }
 }

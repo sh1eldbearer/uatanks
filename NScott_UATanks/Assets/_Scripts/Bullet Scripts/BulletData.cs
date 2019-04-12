@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 [RequireComponent(typeof(BulletMover))]
 [RequireComponent(typeof(BulletCollider))]
 [RequireComponent(typeof(BulletTimer))]
@@ -36,8 +37,8 @@ public class BulletData : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        moveForce = bulletOwner.bulletMoveForce;
-        bulletDamage = bulletOwner.bulletDamage;
+        moveForce = bulletOwner.currentBulletMoveSpeed;
+        bulletDamage = bulletOwner.currentBulletDamage;
         bulletLifeSpan = GameManager.gm.bulletLifeSpan;
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
+
 /*
  * This script handles player input for the game.
  * An InputController component should be placed in an empty game object within the scene.
@@ -24,7 +26,9 @@ public class InputController : MonoBehaviour
 
     // Enumerator for allowing designers to configure input managers for each tank
     private enum PlayerNumber { Player1, Player2 }
+    #pragma warning disable IDE0044 // Removes "make readonly" message from Visual Studio
     [SerializeField] private PlayerNumber playerNumber;
+    #pragma warning restore IDE0044 
 
     private void Awake()
     {
@@ -101,8 +105,8 @@ public class InputController : MonoBehaviour
         }
 
         // Component reference assignments
-        tankMover = tankData.gameObject.GetComponent<TankMover>();
-        tankShooter = tankData.gameObject.GetComponent<TankShooter>();
+        tankMover = tankData.tankMover;
+        tankShooter = tankData.tankShooter;
     }
 	
 	// Update is called once per frame
@@ -120,7 +124,7 @@ public class InputController : MonoBehaviour
             else if (Input.GetAxisRaw("P1_FwdBack") < 0)
             {
                 // Tanks move slower in reverse than they do moving forward
-                tankMover.Move(Input.GetAxisRaw("P1_FwdBack") * tankData.reverseSpeedRate);
+                tankMover.Move(Input.GetAxisRaw("P1_FwdBack") * GameManager.gm.reverseSpeedRate);
             }
             // Rotation left/right
             if (Input.GetAxisRaw("P1_Rotate") != 0)
@@ -149,7 +153,7 @@ public class InputController : MonoBehaviour
             else if (Input.GetAxisRaw("P2_FwdBack") < 0)
             {
                 // Tanks move slower in reverse than they do moving forward
-                tankMover.Move(Input.GetAxisRaw("P2_FwdBack") * tankData.reverseSpeedRate);
+                tankMover.Move(Input.GetAxisRaw("P2_FwdBack") * GameManager.gm.reverseSpeedRate);
             }
             // Rotation left/right
             if (Input.GetAxisRaw("P2_Rotate") != 0)

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
+
 /*
  * Displays a visual representation of time left before a tank can fire again.
  * 
@@ -39,7 +41,7 @@ public class DisplayFiringCooldown : MonoBehaviour
 	private void LateUpdate ()
     {
         // Sets the slider's maximum value every LateUpdate (in case it changes via powerups)
-        slider.maxValue = tankData.firingTimeout;
+        slider.maxValue = tankData.currentFiringCooldown;
 
         // If the tank is waiting to be able to fire again
         if (tankData.firingTimer > 0f)

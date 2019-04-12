@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
+
 /*
  * This script handles the shooting behaviors for tank objects.
  * 
@@ -14,8 +16,8 @@ public class TankShooter : MonoBehaviour
     /* Public Variables */
 
 
-/* Private Variables */
-private TankData tankData; // The TankData component of this tank object
+    /* Private Variables */
+    private TankData tankData; // The TankData component of this tank object
 
     private void Awake()
     {
@@ -30,6 +32,9 @@ private TankData tankData; // The TankData component of this tank object
         tankData.firingTimer -= Time.deltaTime;
     }
 
+    /// <summary>
+    /// Shoots a bullet from this tank.
+    /// </summary>
     public void FireBullet()
     {
         if (tankData.firingTimer <= 0f)
@@ -41,7 +46,9 @@ private TankData tankData; // The TankData component of this tank object
             // Sets the bullet's tag to match the tag of the tank that fired it
             newBullet.tag = this.gameObject.tag;
             // Resets the shot timer
-            tankData.firingTimer = tankData.firingTimeout;
+            tankData.firingTimer = tankData.currentFiringCooldown;
+            // Makes noise
+            tankData.tankNoisemaker.MakeNoise();
         }
     }
 }

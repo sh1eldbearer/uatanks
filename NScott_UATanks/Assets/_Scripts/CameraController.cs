@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
+
 /*
  * Handles the movement of camera objects.
  * This script should be attached to any camera objects in the game scene

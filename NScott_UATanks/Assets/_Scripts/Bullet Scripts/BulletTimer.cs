@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
+
 /*
  * This script handles the lifespan timer of the bullet prefab object. If a bullet exists
  * in the game world longer than the amount of time set in BulletData, it automatically

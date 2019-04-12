@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
+
 /*
  * This script monitors the health of a tank object, and adjusts values as needed.
  * 
@@ -23,15 +25,6 @@ public class TankHealthManager : MonoBehaviour
         tankData = this.gameObject.GetComponent<TankData>();
     }
 
-    // Use this for initialization
-    void Start ()
-    {
-        // Sets the tank's max HP to the starting value in the GameManager
-        tankData.maxHP = GameManager.gm.playerStartingHP;
-        // Sets the tank's starting HP to its max HP
-        tankData.currentHP = tankData.maxHP;
-    }
-
     void Update()
     {
         // If this tank's health has reached or exceeded zero
@@ -42,7 +35,14 @@ public class TankHealthManager : MonoBehaviour
         }
 
         // Makes sure the tank's maximum health cnanot exceed the game-defined maximum
-        tankData.maxHP = Mathf.Clamp(tankData.maxHP, GameManager.gm.playerStartingHP, GameManager.gm.playerHPCap);
+        if (this.tag == "Player")
+        {
+            tankData.maxHP = Mathf.Clamp(tankData.maxHP, GameManager.gm.playerStartingHP, GameManager.gm.playerHPCap);
+        }
+        else
+        {
+            tankData.maxHP = Mathf.Clamp(tankData.maxHP, GameManager.gm.enemyStartingHP, GameManager.gm.enemyHPCap);
+        }
         // Makes sure the tank's current health cannot exceed its maximum health
         tankData.currentHP = Mathf.Clamp(tankData.currentHP, -1, tankData.maxHP);
     }
@@ -57,17 +57,25 @@ public class TankHealthManager : MonoBehaviour
     /// (Used for adjusting scores).</returns>
     public int Damage(int changeValue)
     {
-        tankData.currentHP -= changeValue;
-
-        // If this tank's health has reached or exceeded zero
-        if (tankData.currentHP <= 0)
+        // If the tank is allowed to take damage
+        if (tankData.tankDamage)
         {
-            // Informs the calling function that the tank was destroyed
-            return tankData.maxHP;
+            tankData.currentHP -= changeValue;
+
+            // If this tank's health has reached or exceeded zero
+            if (tankData.currentHP <= 0)
+            {
+                // Informs the calling function that the tank was destroyed
+                return tankData.maxHP;
+            }
+            else
+            {
+                // Informs the calling function that the tank was not destroyed
+                return -1;
+            }
         }
         else
         {
-            // Informs the calling function that the tank was not destroyed
             return -1;
         }
     }
@@ -93,6 +101,14 @@ public class TankHealthManager : MonoBehaviour
         if (tankData.tankTf.tag == "Player")
         {
             // Tank is a player
+            if (tankData.gameObject == GameManager.gm.players[0])
+            {
+                GameManager.gm.player1Camera.transform.parent = null;
+            }
+            else
+            {
+                // GameManager.gm.player2Camera.transform.parent = null;
+            }
             GameManager.gm.players.Remove(tankData);
         }
         else if (tankData.tankTf.tag == "Enemy")

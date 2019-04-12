@@ -1,0 +1,22 @@
+Standard AI
+	• Patrols between waypoints within a room/tile of the map
+	• Looks for and pursues players (if seen)
+		If player is seen (or was recently seen), the Standard AI attempts to pursue the target. So long as the tank has a clear line of sight to the target, the AI will attempt to shoot at the target, regardless of whether or not it is facing the target. Stops pursuing the target after a certain number of seconds without seeing or hearing the target, and returns to pursuing waypoints. The AI will chase players around obstacles if necessary.
+	• Listens for players
+		If a player is initially heard, but not seen, the tank stops and rotates in the dircection of the sound. If the player is seen, the tank begins its pursuit of the player (see above). If the player is not seen or heard within a certain number of seconds, the AI returns to patrolling waypoints.
+		
+Coward AI
+	• Patrols between waypoints within a room/tile of the map
+	• Looks for and flees from players (if seen)
+		If the Coward AI sees a player, it will attempt to Flee in a direct line away from the player. In its panicked state, it will drive into any obstacle in its path, and will not navigate around them (allow themselves to be easily trapped or cornered). If the player is not seen within a certain number of seconds, the Coward will return to patrolling waypoints.
+	• Listens for players
+		If a player is initially heard, but not seen, the tank stops and rotates in the dircection of the sound. If the player is seen, the tank begins its pursuit of the player (see above). If the player is not seen or heard within a certain number of seconds, the AI returns to patrolling waypoints.
+		
+Reaper AI
+	• Relentlessly pursues the the nearest player
+		The Reaper AI will compare the distance between itself and each player in the game, and will always pursue the closest player. Reapers can navigate around obstacles to pursue their prey. Reapers do not stop pursuing players until all players are dead.
+	• Due to their bloodthirsty nature, reapers ignore the commands of any Captain tanks.
+
+Captain AI
+	• The Captain AI generally behaves in the same manner as the Standard AI, with one exception. Should a Captain spot a player, they will immediately alert all tanks in the same room/tile as to the position of that player. Every tank within that room (with the exception of any Reapers) will converge on the player's position, unless the player manages to hide from those tanks and the Captain for a certain number of seconds.
+		
