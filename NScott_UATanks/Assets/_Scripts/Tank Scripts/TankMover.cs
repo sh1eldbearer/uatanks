@@ -17,8 +17,7 @@ public class TankMover : MonoBehaviour
     
     /* Private Variables */
     private TankData tankData;
-
-    // Update is called once per frame
+    
     private void Awake ()
     {
         // Component reference assignmentss

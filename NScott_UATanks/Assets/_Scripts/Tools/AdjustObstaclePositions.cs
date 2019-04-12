@@ -5,6 +5,9 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class AdjustObstaclePositions : MonoBehaviour
 {
+    [Header("Ground")]
+    public GameObject ground;
+
     [Header("Outer Walls")]
     public GameObject northOuterWall;
     public GameObject southOuterWall;
@@ -24,6 +27,8 @@ public class AdjustObstaclePositions : MonoBehaviour
     public GameObject smallWestInnerWall;
 
     [Header("Positions/Scales")]
+    public float groundScale;
+    [Space]
     public float outerWallPosition;
     public float outerWallScale;
     [Space]
@@ -35,20 +40,22 @@ public class AdjustObstaclePositions : MonoBehaviour
 
     protected enum XorZ { X, Z };
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    // Use this for initialization
+    void Start() {
+
+    }
+
+    // Update is called once per frame
+    void Update()
     {
+        UpdateTransform(ground, groundScale);
+
         // North and east are positive directions
         UpdateTransform(northOuterWall, outerWallScale, XorZ.Z, outerWallPosition, false);
         UpdateTransform(southOuterWall, outerWallScale, XorZ.Z, outerWallPosition, true);
         UpdateTransform(eastOuterWall, outerWallScale, XorZ.X, outerWallPosition, false);
         UpdateTransform(westOuterWall, outerWallScale, XorZ.X, outerWallPosition, true);
-    
+
         UpdateTransform(smallNorthInnerWall, smallInnerWallScale, XorZ.Z, smallInnerWallPosition, false);
         UpdateTransform(smallSouthInnerWall, smallInnerWallScale, XorZ.Z, smallInnerWallPosition, true);
         UpdateTransform(smallEastInnerWall, smallInnerWallScale, XorZ.X, smallInnerWallPosition, false);
@@ -58,6 +65,12 @@ public class AdjustObstaclePositions : MonoBehaviour
         UpdateTransform(largeNWInnerWall, largeInnerWallScale, largeInnerWallPosition, true, false);
         UpdateTransform(largeSWInnerWall, largeInnerWallScale, largeInnerWallPosition, true, true);
         UpdateTransform(largeSEInnerWall, largeInnerWallScale, largeInnerWallPosition, false, true);
+    }
+
+    void UpdateTransform(GameObject gameObject, float scale)
+    {
+        Transform tf = gameObject.transform;
+        tf.localScale = new Vector3(scale, 1f, scale);
     }
 
     void UpdateTransform(GameObject gameObject, float scale, XorZ xz, float positionValue, bool negativeDirection)

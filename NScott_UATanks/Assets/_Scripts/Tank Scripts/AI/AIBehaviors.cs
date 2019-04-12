@@ -51,17 +51,48 @@ public class AIBehaviors : MonoBehaviour
             hearing.Listen("Player");
         }
 
+        RaycastHit hitInfo;
         // So long as the tank has no player tank currently targeted, patrol waypoints
         if (controller.targetTankData == null &&
             (controller.currentTarget == null || controller.currentTarget.gameObject.GetComponent<TankData>() == null))
         {
             Patrol();
+
         }
         else
         {
-            MoveTowardTarget(controller.tankCloseEnough);
-            tankData.tankShooter.FireBullet();
-            UpdateTimer();
+            // Check for direct line of sight to player
+            if (!vision.CanSeeTarget(tankTf, controller.currentTarget, // No direct line of sight to target
+                controller.visionDistance * controller.avoidanceRange, out hitInfo))
+            {
+                if (hitInfo.collider == null || // Target out of vision range, or can be seen
+                    hitInfo.collider.gameObject == controller.currentTarget.gameObject)
+                {
+                    MoveTowardTarget(controller.tankCloseEnough); // Pursue target
+                    if (vision.CanSeeTarget(tankTf, controller.currentTarget,
+                        controller.visionDistance, out hitInfo)) // Checks one more time for a line of sight to the target
+                    {
+                        // If the target can be seen, start firing
+                        tankData.tankShooter.FireBullet();
+                    }
+                }
+                else // There is an obstacle between this tank and its target
+                {
+                    ObstacleAvoidance(); // Attempt to move around the obstacle
+                    if (vision.CanSeeTarget(tankTf, controller.currentTarget,
+                        controller.visionDistance, out hitInfo)) // Checks one more time for a line of sight to the target
+                    {
+                        // If the target can be seen, start firing
+                        tankData.tankShooter.FireBullet();
+                    }
+                }
+            }
+            else // Direct line of sight to target
+            {
+                MoveTowardTarget(controller.tankCloseEnough); // Pursue target
+                tankData.tankShooter.FireBullet(); // Start firing
+            }
+            UpdateTimer(); // Update pursuit timer
         }
     }
 
@@ -89,18 +120,25 @@ public class AIBehaviors : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Mechanic AI tank behavior
-    /// </summary>
-    public void Mechanic()
-    {
-
-    }
-
     // Captain AI tank behavior
     public void Captain()
     {
+        Standard();
 
+        if (controller.targetTankData != null)
+        {
+            foreach (var enemy in GameManager.gm.enemies)
+            {
+                if (enemy == tankData)
+                {
+                    continue;
+                }
+                else
+                {
+                    enemy.GetComponent<AIController>().SetTarget(controller.currentTarget);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -138,30 +176,29 @@ public class AIBehaviors : MonoBehaviour
 
         // Check for direct line of sight to player
         RaycastHit hitInfo;
-        if (!vision.CanSeeTarget(tankTf, controller.currentTarget, 
+        if (!vision.CanSeeTarget(tankTf, controller.currentTarget, // No direct line of sight to target
             controller.visionDistance * controller.avoidanceRange, out hitInfo))
         {
-            // If there is a direct line of sight to the player
-            if (hitInfo.collider == null || 
+            if (hitInfo.collider == null || // Target out of vision range, or can be seen
                 hitInfo.collider.GetComponent<TankData>() == controller.targetTankData)
             {
-                MoveTowardTarget(controller.tankCloseEnough);
+                MoveTowardTarget(controller.tankCloseEnough); // Pursue target
                 if (vision.CanSeeTarget(tankTf, controller.currentTarget, 
-                    controller.visionDistance, out hitInfo))
+                    controller.visionDistance, out hitInfo)) // Checks one more time for a line of sight to the target
                 {
+                    // If the target can be seen, start firing
                     tankData.tankShooter.FireBullet();
                 }
             }
-            // If not
-            else
+            else // There is an obstacle between this tank and its target
             {
-                ObstacleAvoidance();
+                ObstacleAvoidance(); // Attempt to move around the obstacle
             }
-        }
-        else
+        }        
+        else // Direct line of sight to target
         {
-            MoveTowardTarget(controller.tankCloseEnough);
-            tankData.tankShooter.FireBullet();
+            MoveTowardTarget(controller.tankCloseEnough); // Pursue target
+            tankData.tankShooter.FireBullet(); // Start firing
         }
     }
 
@@ -171,17 +208,21 @@ public class AIBehaviors : MonoBehaviour
     public void ObstacleAvoidance()
     {
         float leftHitDistance, rightHitDistance;
+        // Checks for collisions along the forward vector of the left and right side of the tank body
         vision.ObstacleCheck(tankData.leftRaycastTf, tankData.rightRaycastTf,
             out leftHitDistance, out rightHitDistance);
-        if (leftHitDistance == float.MaxValue && rightHitDistance == float.MaxValue)
+        // Compares the distances between the collisions
+        if (leftHitDistance == float.MaxValue && rightHitDistance == float.MaxValue) // No collisions
         {
+            // Simply move forward
             tankData.originRayCastTf.rotation = tankTf.rotation;
             tankData.tankMover.Move(1f);
         }
         else
         {
-            if (leftHitDistance < rightHitDistance)
+            if (leftHitDistance < rightHitDistance) // Obstacle is closer to the left side of the tank
             {
+                // Rotates to the right until the tank has a clear path foward
                 while (leftHitDistance != float.MaxValue || rightHitDistance != float.MaxValue)
                 {
                     tankData.tankMover.RotatePart(tankData.originRayCastTf, 1f);
@@ -190,8 +231,9 @@ public class AIBehaviors : MonoBehaviour
                     tankData.tankMover.Rotate(tankData.originRayCastTf.forward);
                 }
             }
-            else 
+            else  // Obstacle is closer to the right side of the tank, or the distances are equal
             {
+                // Rotates to the left until the tank has a clear path foward
                 while (leftHitDistance != float.MaxValue || rightHitDistance != float.MaxValue)
                 {
                     tankData.tankMover.RotatePart(tankData.originRayCastTf, -1f);
@@ -353,7 +395,15 @@ public class AIBehaviors : MonoBehaviour
         // Otherwise, move toward the current waypoint
         else
         {
-            MoveTowardTarget(controller.waypointCloseEnough);
+            RaycastHit hitInfo;
+            if (vision.CanSeeTarget(tankTf, controller.currentTarget, controller.visionDistance * controller.avoidanceRange, out hitInfo))
+            {
+                MoveTowardTarget(controller.waypointCloseEnough);
+            }
+            else
+            {
+                ObstacleAvoidance();
+            }
         }
     }
 

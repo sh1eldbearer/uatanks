@@ -5,7 +5,7 @@ using UnityEngine;
 // Enumerator for selecting tank personalities
 public enum AIPersonality
 {
-    Standard, Coward, Mechanic, Captain, Reaper
+    Standard, Coward, Captain, Reaper
 }
 
 [DisallowMultipleComponent]
@@ -80,9 +80,6 @@ public class AIController : MonoBehaviour
                 break;
             case AIPersonality.Coward:
                 behaviors.Coward();
-                break;
-            case AIPersonality.Mechanic:
-                behaviors.Mechanic();
                 break;
             case AIPersonality.Captain:
                 behaviors.Captain();

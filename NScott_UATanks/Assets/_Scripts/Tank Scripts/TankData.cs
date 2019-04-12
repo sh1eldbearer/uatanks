@@ -23,6 +23,8 @@ public class TankData : MonoBehaviour
     [Range(0, 15)] public int currentHP;
     [Tooltip("The maximum number of HP this tank can have.")]
     [Range(0, 15)] public int maxHP = 3;
+    [Tooltip("Enable tank damage")]
+    public bool tankDamage = true;
 
     [Header("Movement Settings")]
     [Tooltip("The movement speed of this tank.")]

@@ -59,17 +59,25 @@ public class TankHealthManager : MonoBehaviour
     /// (Used for adjusting scores).</returns>
     public int Damage(int changeValue)
     {
-        tankData.currentHP -= changeValue;
-
-        // If this tank's health has reached or exceeded zero
-        if (tankData.currentHP <= 0)
+        // If the tank is allowed to take damage
+        if (tankData.tankDamage)
         {
-            // Informs the calling function that the tank was destroyed
-            return tankData.maxHP;
+            tankData.currentHP -= changeValue;
+
+            // If this tank's health has reached or exceeded zero
+            if (tankData.currentHP <= 0)
+            {
+                // Informs the calling function that the tank was destroyed
+                return tankData.maxHP;
+            }
+            else
+            {
+                // Informs the calling function that the tank was not destroyed
+                return -1;
+            }
         }
         else
         {
-            // Informs the calling function that the tank was not destroyed
             return -1;
         }
     }
