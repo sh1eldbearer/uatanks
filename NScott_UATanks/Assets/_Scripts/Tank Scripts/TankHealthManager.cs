@@ -58,7 +58,7 @@ public class TankHealthManager : MonoBehaviour
     public int Damage(int changeValue)
     {
         // If the tank is allowed to take damage
-        if (tankData.tankDamage)
+        if (tankData.takesDamage)
         {
             tankData.currentHP -= changeValue;
 
