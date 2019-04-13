@@ -148,6 +148,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+
         // Ensures certain values can't be accidentally set too high or low in the inspector
         playerStartingHP = Mathf.Clamp(playerStartingHP, 1, 15);
         playerHPCap = Mathf.Clamp(playerHPCap, 5, 15);

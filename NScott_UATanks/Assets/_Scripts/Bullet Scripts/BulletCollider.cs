@@ -37,13 +37,17 @@ public class BulletCollider : MonoBehaviour
                     (other.gameObject.tag == "Player" && GameManager.gm.friendlyFire))
                 {
                     // Damages the tank
-                    int deadTankHP = other.collider.GetComponent<TankHealthManager>().Damage(bulletData.bulletDamage);
+                    int otherTankHP = other.collider.GetComponent<TankHealthManager>().Damage(bulletData.bulletDamage);
 
                     // If the other tank was destroyed by this shot
-                    if (deadTankHP != -1)
+                    if (otherTankHP != -1)
                     {
-                        bulletData.bulletOwner.tankScorer.IncreaseScore(deadTankHP);
+                        bulletData.bulletOwner.tankScorer.IncreaseScore(otherTankHP);
                     }
+                }
+                else
+                {
+                    return;
                 }
             }
             // If this bullet was fired by an enemy tank
@@ -56,11 +60,16 @@ public class BulletCollider : MonoBehaviour
                     // Damages the tank
                     other.collider.GetComponent<TankHealthManager>().Damage(bulletData.bulletDamage);
                 }
+                else
+                {
+                    return;
+                }
             }
         }
         // Ignore bullet collisions
-        if (other.gameObject.GetComponent<BulletCollider>() && !GameManager.gm.bulletCollisions)
+        else if (other.gameObject.GetComponent<BulletCollider>() && !GameManager.gm.bulletCollisions)
         {
+            this.gameObject.GetComponent<Collider>().enabled = false;
             return;
         }
         else
@@ -69,6 +78,11 @@ public class BulletCollider : MonoBehaviour
         }
 
         Die();
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        this.gameObject.GetComponent<Collider>().enabled = true;
     }
 
     /// <summary>

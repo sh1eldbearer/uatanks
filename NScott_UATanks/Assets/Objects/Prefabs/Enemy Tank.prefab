@@ -337,9 +337,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4944977081670864}
   - component: {fileID: 143656605360356920}
-  - component: {fileID: 114387649632910046}
   - component: {fileID: 114389060609219782}
   - component: {fileID: 114166657342159330}
+  - component: {fileID: 114387649632910046}
   - component: {fileID: 114916699991267740}
   - component: {fileID: 114086549910736748}
   - component: {fileID: 114160411199241922}
@@ -1643,7 +1643,7 @@ CharacterController:
   m_Radius: 0.75
   m_SlopeLimit: 90
   m_StepOffset: 0
-  m_SkinWidth: 0.065
+  m_SkinWidth: 0.75
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.4, z: 0.1}
 --- !u!222 &222032877198045432

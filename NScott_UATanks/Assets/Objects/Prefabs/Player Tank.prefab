@@ -283,8 +283,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4628526269658496}
   - component: {fileID: 143960304183393050}
-  - component: {fileID: 114971140804157456}
   - component: {fileID: 114536502630629596}
+  - component: {fileID: 114971140804157456}
   - component: {fileID: 114196779066419108}
   - component: {fileID: 114766164516339094}
   - component: {fileID: 114988786829537370}
@@ -1164,7 +1164,7 @@ MonoBehaviour:
   playerNumber: 0
   currentHP: 0
   maxHP: 3
-  tankDamage: 0
+  tankDamage: 1
   currentMoveSpeed: 8
   currentTurnSpeed: 45
   currentBulletDamage: 1
@@ -1572,10 +1572,10 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1
-  m_Radius: 0.65
-  m_SlopeLimit: 45
+  m_Radius: 0.75
+  m_SlopeLimit: 90
   m_StepOffset: 0
-  m_SkinWidth: 0.065
+  m_SkinWidth: 0.75
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.4, z: 0.1}
 --- !u!222 &222017402225348628
