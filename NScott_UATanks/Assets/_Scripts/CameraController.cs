@@ -35,6 +35,22 @@ public class CameraController : MonoBehaviour
 
         // Gets the camera's inital rotation
         initialRotation = cameraTf.rotation;
+
+        TankData followData = followObject.GetComponent<TankData>();
+        foreach (var player in GameManager.gm.players)
+        {
+            if (player == followData)
+            {
+                if (GameManager.gm.players.IndexOf(player) == 0)
+                {
+                    GameManager.gm.player1Camera = thisCamera;
+                }
+                else
+                {
+                    GameManager.gm.player2Camera = thisCamera;
+                }
+            }
+        }
     }
 	
 	// Update is called once per frame

@@ -14,9 +14,15 @@ using UnityEngine;
 public class RoomData : MonoBehaviour
 {
     /* Public Variables */
+    [HideInInspector] public Transform roomTf;
+    [Tooltip("The list of waypoints in this room.")]
     public List<Transform> roomWaypoints;
-    
+
     /* Private Variables */
 
-    
+    private void Start()
+    {
+        // Component reference assignments
+        roomTf = this.GetComponent<Transform>();
+    }
 }

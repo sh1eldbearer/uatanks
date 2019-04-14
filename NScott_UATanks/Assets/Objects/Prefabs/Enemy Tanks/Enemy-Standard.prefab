@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 114560010724773992}
   - component: {fileID: 114841954300458592}
   m_Layer: 9
-  m_Name: Enemy Tank
+  m_Name: Enemy-Standard
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1001,7 +1001,7 @@ MonoBehaviour:
   behaviors: {fileID: 0}
   vision: {fileID: 0}
   hearing: {fileID: 0}
-  personality: 2
+  personality: 0
   visionDistance: 20
   visionAngle: 60
   avoidanceRange: 0.5
@@ -1060,7 +1060,7 @@ MonoBehaviour:
   playerNumber: 0
   currentHP: 0
   maxHP: 0
-  tankDamage: 1
+  takesDamage: 1
   currentMoveSpeed: 8
   currentTurnSpeed: 45
   currentBulletDamage: 1

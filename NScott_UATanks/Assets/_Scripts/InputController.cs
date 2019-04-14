@@ -65,13 +65,14 @@ public class InputController : MonoBehaviour
 
             }
         }
+
+        this.gameObject.SetActive(false);
     }
 
     // Use this for initialization
     private void Start ()
     {
         // Gets the tank data component for the appropriate tank
-        // TODO: Need to figure out how to handle enemy tanks - will probably change this entirely
         if (playerNumber == PlayerNumber.Player1)
         {
             // There should always be at least one player in the scene, but we'll be cautious anyway

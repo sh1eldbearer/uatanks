@@ -18,7 +18,7 @@ public class AddWaypointToList : MonoBehaviour
 
 
     /* Private Variables */
-    [SerializeField] private RoomData roomData;
+    private RoomData roomData;
 
 
     // Use this for initialization

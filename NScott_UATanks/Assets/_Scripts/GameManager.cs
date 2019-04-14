@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [DisallowMultipleComponent]
 
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour
     /* Public Variables */
     [HideInInspector] public static GameManager gm; // Reference to a GameManager object for singleton pattern
 
-    [Header("Game Settings")]
+    [Header("General Game Settings")]
     [Tooltip("Determines if player tanks can damage each other.")]
     public bool friendlyFire = false;
     [Tooltip("Determines if enemy tanks can damage each other")]
@@ -27,6 +28,9 @@ public class GameManager : MonoBehaviour
     [Tooltip("The speed at which tanks can move in reverse, represented as a percentage " +
         "of the tank's base movement speed.")]
     [Range(0.1f, 1f)] public float reverseSpeedRate = 0.75f;
+
+    [Header("Player Tank Prefabs")]
+    public GameObject playerPrefab;
 
     [Header("Player Tank Settings")]
     [Tooltip("The amount of HP a player tank starts with.")]
@@ -43,6 +47,12 @@ public class GameManager : MonoBehaviour
     [Range(2.5f, 5f)] public float playerStartingBulletSpeed = 5f;
     [Tooltip("The starting length of the player's firing cooldown.")]
     [Range(1f, 3f)] public float playerStartingFiringCooldown = 1.5f;
+
+    [Header("Enemy Tank Prefabs")]
+    public GameObject standardEnemyPrefab;
+    public GameObject cowardEnemyPrefab;
+    public GameObject reaperEnemyPrefab;
+    public GameObject captainEnemyPrefab;
 
     [Header("Enemy Tank Settings")]
     [Tooltip("The amount of HP an enemy tank starts with.")]
@@ -75,6 +85,10 @@ public class GameManager : MonoBehaviour
     [Tooltip("Determines whether or not bullets should destroy each other when they collide.")]
     public bool bulletCollisions = false;
 
+    [Header("Input Controllers")]
+    public GameObject p1InputController;
+    public GameObject p2InputController;
+
     [Header("Game Cameras & Camera Settings")]
     [Tooltip("The camera used to render player 1's display")]
     public Camera player1Camera;
@@ -102,12 +116,24 @@ public class GameManager : MonoBehaviour
     [Tooltip("The list of currently active enemy tanks.")]
     public List<TankData> enemies;
 
+    [Header("Spawn Point Lists")]
+    [Tooltip("The list of player spawn points active in the game.")]
+    public List<Transform> playerSpawnPoints;
+    [Tooltip("The list of enemy spawn points active in the game.")]
+    public List<Transform> enemySpawnPoints;
+    [Tooltip("The list of power-up spawn points active in the game.")]
+    public List<Transform> powerupSpawnPoints;
+
     [Header("Game Status")]
     [Tooltip("Player 1's score.")]
     public int p1Score = 0;
     [Tooltip("Player 2's score.")]
     public int p2Score = 0;
     [Space]
+    [Tooltip("The number of players to spawn at game start.")]
+    //[HideInInspector] 
+    public int initialNumberOfPlayers = 1;
+
     [Header("Point Values")]
     [Tooltip("The base value an enemy tank is worth when it's destroyed.")]
     [Range(10,10000)] public int baseTankValue = 100;
@@ -137,14 +163,37 @@ public class GameManager : MonoBehaviour
         if (gm == null)
         {
             gm = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
         else
         {
             Destroy(this.gameObject);
         }
     }
-    // test
+
+    private void Start()
+    {
+        for (int index = 1; index <= initialNumberOfPlayers; index++)
+        {
+            if (index > 2)
+            {
+                break;
+            }
+
+            SpawnNewPlayer();
+
+            switch (index)
+            {
+                case 1:
+                    p1InputController.SetActive(true);
+                    break;
+                case 2:
+                    p2InputController.SetActive(true);
+                    break;
+            }
+        }
+    }
+
     // Update is called once per frame
     private void Update()
     {
@@ -170,5 +219,11 @@ public class GameManager : MonoBehaviour
             p2Score = players[1].tankScorer.score;
         }
         catch { }
+    }
+
+    private void SpawnNewPlayer()
+    {
+        int spawnIndex = UnityEngine.Random.Range(0, playerSpawnPoints.Count);
+        Instantiate(playerPrefab, playerSpawnPoints[spawnIndex].position, playerSpawnPoints[spawnIndex].rotation, playerSpawnPoints[spawnIndex].GetComponent<RegisterSpawnPoint>().roomData.roomTf);
     }
 }
