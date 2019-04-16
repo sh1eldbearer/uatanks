@@ -42,7 +42,6 @@ public class InputController : MonoBehaviour
             if (p1Input == null)
             {
                 p1Input = this;
-                DontDestroyOnLoad(this.gameObject);
             }
             else if (p2Input == null)
             {
@@ -56,7 +55,6 @@ public class InputController : MonoBehaviour
             if (p2Input == null)
             {
                 p2Input = this;
-                DontDestroyOnLoad(this.gameObject);
             }
             else if (p1Input == null)
             {
@@ -79,7 +77,7 @@ public class InputController : MonoBehaviour
             try
             {
                 // Assign this input controller to player 1's tank object
-                tankData = GameManager.gm.players[0];
+                SetTankComponentReferences(GameManager.gm.players[0]);
             }
             catch
             {
@@ -87,7 +85,6 @@ public class InputController : MonoBehaviour
                 Debug.Log("No player object found in scene.");
                 return;
             }
-            tankData = GameManager.gm.players[0];
         }
         else if (playerNumber == PlayerNumber.Player2)
         {
@@ -95,7 +92,7 @@ public class InputController : MonoBehaviour
             try
             {
                 // Assign this input controller to player 2's tank object
-                tankData = GameManager.gm.players[1];
+                SetTankComponentReferences(GameManager.gm.players[1]);
             }
             catch
             {
@@ -104,17 +101,11 @@ public class InputController : MonoBehaviour
                 return;
             }
         }
-
-        // Component reference assignments
-        tankMover = tankData.tankMover;
-        tankShooter = tankData.tankShooter;
     }
 	
 	// Update is called once per frame
 	private void Update ()
     {
-        // TODO: Build dictionary and delegate system to allow keybind customization
-
         if (playerNumber == PlayerNumber.Player1)
         {
             // Forward/backward movement
@@ -143,6 +134,11 @@ public class InputController : MonoBehaviour
             {
                 GameManager.gm.p1RotateCamera = !GameManager.gm.p1RotateCamera;
             }
+            
+            if (tankData == null)
+            {
+                GameManager.gm.RespawnPlayer(this);
+            }
         }
         else if (playerNumber == PlayerNumber.Player2)
         {
@@ -168,5 +164,16 @@ public class InputController : MonoBehaviour
                 tankShooter.FireBullet();
             }
         }
+    }
+
+    /// <summary>
+    /// Sets up this InputController's references to the new tank
+    /// </summary>
+    /// <param name="newTankData">The TankData component of the new tank being controlled by this InputController.</param>
+    public void SetTankComponentReferences(TankData newTankData)
+    {
+        tankData = newTankData;
+        tankShooter = newTankData.tankShooter;
+        tankMover = newTankData.tankMover;
     }
 }

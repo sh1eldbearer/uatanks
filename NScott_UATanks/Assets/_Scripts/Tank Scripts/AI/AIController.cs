@@ -59,12 +59,12 @@ public class AIController : MonoBehaviour
         behaviors = this.gameObject.GetComponent<AIBehaviors>();
         vision = this.gameObject.GetComponent<AIVision>();
         hearing = this.gameObject.GetComponent<AIHearing>();
+        roomData = this.gameObject.GetComponentInParent<RoomData>();
     }
 
     // Use this for initialization
     private void Start ()
     {
-        roomData = this.gameObject.GetComponentInParent<RoomData>();
         waypointCloseEnough = GameManager.gm.waypointCloseEnoughDistance;
         tankCloseEnough = GameManager.gm.tankCloseEnoughDistance;
         maxPursuitTime = GameManager.gm.maxPursuitTime;

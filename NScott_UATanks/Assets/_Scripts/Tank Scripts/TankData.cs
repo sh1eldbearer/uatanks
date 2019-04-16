@@ -41,6 +41,7 @@ public class TankData : MonoBehaviour
     [Range(4f, 15f)] public float currentBulletMoveSpeed = 5f;
     [Tooltip("The length of time a tank must wait after firing before being able to fire another shot.")]
     [Range(0f, 2f)] public float currentFiringCooldown = 1.5f;
+    public bool overrideFiringCooldown = false;
     [HideInInspector] public float firingTimer; // A countdown since this tank last successfully fired a shot
 
     [Header("Sound Settings")]
@@ -126,7 +127,49 @@ public class TankData : MonoBehaviour
     private void Update()
     {
         // Ensures certain values can't be accidentally set too high or low in the inspector
-        currentBulletMoveSpeed = Mathf.Clamp(currentBulletMoveSpeed, 4f, 15f);
-        currentFiringCooldown = Mathf.Clamp(currentFiringCooldown, 0f, 2f);
+        if (this.tag == "Player")
+        {
+            // Player settings
+            currentHP = Mathf.Clamp(currentHP, Constants.MIN_HP, maxHP);
+            maxHP = Mathf.Clamp(maxHP, currentHP, GameManager.gm.playerHPCap);
+            currentMoveSpeed = Mathf.Clamp(currentMoveSpeed, Constants.MIN_MOVE_SPEED, GameManager.gm.playerMoveSpeedCap);
+            currentTurnSpeed = Mathf.Clamp(currentTurnSpeed, Constants.MIN_TURN_SPEED, GameManager.gm.playerTurnSpeedCap);
+            currentBulletDamage = Mathf.Clamp(currentBulletDamage, Constants.MIN_BULLET_DAMAGE, GameManager.gm.playerBulletDamageCap);
+            currentBulletMoveSpeed = Mathf.Clamp(currentBulletMoveSpeed, Constants.MIN_BULLET_SPEED, GameManager.gm.playerBulletSpeedCap);
+            if (overrideFiringCooldown)
+            {
+                currentFiringCooldown = Mathf.Clamp(currentFiringCooldown, 0.1f, Constants.MAX_FIRING_COOLDOWN);
+            }
+            else
+            {
+                currentFiringCooldown = Mathf.Clamp(currentFiringCooldown, Constants.MIN_FIRING_COOLDOWN, Constants.MAX_FIRING_COOLDOWN);
+            }
+        }
+        else
+        {
+            // Enemy settings
+            currentHP = Mathf.Clamp(currentHP, Constants.MIN_HP, maxHP);
+            maxHP = Mathf.Clamp(maxHP, currentHP, GameManager.gm.enemyHPCap);
+            currentMoveSpeed = Mathf.Clamp(currentMoveSpeed, Constants.MIN_MOVE_SPEED, GameManager.gm.enemyMoveSpeedCap);
+            currentTurnSpeed = Mathf.Clamp(currentTurnSpeed, Constants.MIN_TURN_SPEED, GameManager.gm.enemyTurnSpeedCap);
+            currentBulletDamage = Mathf.Clamp(currentBulletDamage, Constants.MIN_BULLET_DAMAGE, GameManager.gm.enemyBulletDamageCap);
+            currentBulletMoveSpeed = Mathf.Clamp(currentBulletMoveSpeed, Constants.MIN_BULLET_SPEED, GameManager.gm.enemyBulletSpeedCap);
+            if (!overrideFiringCooldown)
+            {
+                currentFiringCooldown = Mathf.Clamp(currentFiringCooldown, 0.1f, Constants.MAX_FIRING_COOLDOWN);
+            }
+            else
+            {
+                currentFiringCooldown = Mathf.Clamp(currentFiringCooldown, Constants.MIN_FIRING_COOLDOWN, Constants.MAX_FIRING_COOLDOWN);
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Powerup")
+        {
+            other.GetComponent<Powerup>().ApplyEffect(this);
+        }
     }
 }

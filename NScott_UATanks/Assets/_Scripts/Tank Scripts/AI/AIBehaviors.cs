@@ -180,6 +180,11 @@ public class AIBehaviors : MonoBehaviour
     /// </summary>
     public void Reaper()
     {
+        if (GameManager.gm.players.Count == 0)
+        {
+            return;
+        }
+
         // Looks for the closest player
         float p1Distance, p2Distance;
         try

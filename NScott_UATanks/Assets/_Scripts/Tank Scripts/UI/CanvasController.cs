@@ -32,32 +32,36 @@ public class CanvasController : MonoBehaviour
     {
         // TODO: Will need to be reworked when multiple cameras are in play
 
-        // If no camera has been set
-        if (cameraTf == null)
+        try
         {
-            // Determines which camera this canvas should match rotations with
-            if (this.tag == "Player")
+            // If no camera has been set
+            if (cameraTf == null)
             {
-                switch (tankData.playerNumber)
+                // Determines which camera this canvas should match rotations with
+                if (this.tag == "Player")
                 {
-                    case 1: // Player 1 camera
-                        cameraTf = GameManager.gm.player1Camera.GetComponent<Transform>();
-                        break;
-                    case 2: // Player 2 camera
-                        cameraTf = GameManager.gm.player2Camera.GetComponent<Transform>();
-                        break;
-                    default:
-                        Debug.LogError("Could not find corresponding camera for this player.");
-                        break;
+                    switch (tankData.playerNumber)
+                    {
+                        case 1: // Player 1 camera
+                            cameraTf = GameManager.gm.player1Camera.GetComponent<Transform>();
+                            break;
+                        case 2: // Player 2 camera
+                            cameraTf = GameManager.gm.player2Camera.GetComponent<Transform>();
+                            break;
+                        default:
+                            Debug.LogError("Could not find corresponding camera for this player.");
+                            break;
+                    }
+                }
+                else if (this.tag == "Enemy")
+                {
+                    cameraTf = GameManager.gm.player1Camera.GetComponent<Transform>();
                 }
             }
-            else if (this.tag == "Enemy")
-            {
-                cameraTf = GameManager.gm.player1Camera.GetComponent<Transform>();
-            }
-        }
 
-        // Forces the canvas to face the assigned camera
-        canvasTf.rotation = cameraTf.rotation;
+            // Forces the canvas to face the assigned camera
+            canvasTf.rotation = cameraTf.rotation;
+        }
+        catch { }
     }
 }

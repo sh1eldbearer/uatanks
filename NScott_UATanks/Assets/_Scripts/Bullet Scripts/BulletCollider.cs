@@ -67,9 +67,10 @@ public class BulletCollider : MonoBehaviour
             }
         }
         // Ignore bullet collisions
-        else if (other.gameObject.GetComponent<BulletCollider>() && !GameManager.gm.bulletCollisions)
+        else if (other.gameObject.GetComponent<BulletCollider>() != null && !GameManager.gm.bulletCollisions)
         {
-            this.gameObject.GetComponent<Collider>().enabled = false;
+            Physics.IgnoreCollision(this.GetComponent<Collider>(), other.collider);
+            //this.gameObject.GetComponent<Collider>().enabled = false;
             return;
         }
         else

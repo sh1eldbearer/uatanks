@@ -4,6 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum MapGenerateType
+{
+    RandomMap,
+    MapOfTheDay,
+    ProvidedSeed
+}
+
 [DisallowMultipleComponent]
 
 /* 
@@ -17,6 +24,8 @@ public class GameManager : MonoBehaviour
 {
     /* Public Variables */
     [HideInInspector] public static GameManager gm; // Reference to a GameManager object for singleton pattern
+    public GameObject gameContainer;
+    public MapGenerator mapGen;
 
     [Header("General Game Settings")]
     [Tooltip("Determines if player tanks can damage each other.")]
@@ -38,21 +47,36 @@ public class GameManager : MonoBehaviour
     [Tooltip("The maximum amount of HP a player can earn after upgrades during a game.")]
     [Range(5, 15)] public int playerHPCap = 10;
     [Tooltip("The starting movement speed of player tanks.")]
-    [Range(5f, 10f)] public float playerStartingMoveSpeed = 8f;
+    [Range(Constants.MIN_MOVE_SPEED, 10f)] public float playerStartingMoveSpeed = 8f;
+    [Tooltip("The maximum movement speed of player tanks.")]
+    [Range(10f, Constants.MAX_MOVE_SPEED)] public float playerMoveSpeedCap = 15f;
     [Tooltip("The starting turning speed of player tanks.")]
-    [Range(20f, 90f)] public float playerStartingTurnSpeed = 45f;
+    [Range(Constants.MIN_TURN_SPEED, 45f)] public float playerStartingTurnSpeed = 45f;
+    [Tooltip("The maximum turning speed of player tanks.")]
+    [Range(45f, Constants.MAX_TURN_SPEED)] public float playerTurnSpeedCap = 90f;
     [Tooltip("The starting damage of bullets fired by the player.")]
-    [Range(1, 3)] public int playerStartingBulletDamage = 1;
+    [Range(Constants.MIN_BULLET_DAMAGE, 3)] public int playerStartingBulletDamage = 1;
+    [Tooltip("The maximum damage of bullets fired by the player.")]
+    [Range(3, Constants.MAX_BULLET_DAMAGE)] public int playerBulletDamageCap = 3;
     [Tooltip("The starting movement speed of bullets fired by the player.")]
-    [Range(2.5f, 5f)] public float playerStartingBulletSpeed = 5f;
+    [Range(Constants.MIN_BULLET_SPEED, 5f)] public float playerStartingBulletSpeed = 5f;
+    [Tooltip("The maximum movement speed of bullets fired by the player.")]
+    [Range(5f, Constants.MAX_BULLET_SPEED)] public float playerBulletSpeedCap = 10f;
     [Tooltip("The starting length of the player's firing cooldown.")]
-    [Range(1f, 3f)] public float playerStartingFiringCooldown = 1.5f;
+    [Range(1.5f, Constants.MAX_FIRING_COOLDOWN)] public float playerStartingFiringCooldown = 1.5f;
+    [Tooltip("The minimum length of the player's firing cooldown.")]
+    [Range(Constants.MIN_FIRING_COOLDOWN, 1.5f)] public float playerMinimumFiringCooldown = 0.5f;
 
     [Header("Enemy Tank Prefabs")]
     public GameObject standardEnemyPrefab;
+    [Range(1, 100)] public int standardSpawnRate = 6;
     public GameObject cowardEnemyPrefab;
+    [Range(1, 100)] public int cowardSpawnRate = 2;
     public GameObject reaperEnemyPrefab;
+    [Range(1, 100)] public int reaperSpawnRate = 1;
     public GameObject captainEnemyPrefab;
+    [Range(1, 100)] public int captainSpawnRate = 1;
+    public List<GameObject> enemySpawnTable;
 
     [Header("Enemy Tank Settings")]
     [Tooltip("The amount of HP an enemy tank starts with.")]
@@ -60,15 +84,25 @@ public class GameManager : MonoBehaviour
     [Tooltip("The maximum amount of HP an enemy can earn after upgrades during a game.")]
     [Range(5, 15)] public int enemyHPCap = 15;
     [Tooltip("The starting movement speed of enemy tanks.")]
-    [Range(5f, 10f)] public float enemyStartingMoveSpeed = 8f;
+    [Range(Constants.MIN_MOVE_SPEED, 10f)] public float enemyStartingMoveSpeed = 8f;
+    [Tooltip("The maximum movement speed of enemy tanks.")]
+    [Range(10f, 20f)] public float enemyMoveSpeedCap = 15f;
     [Tooltip("The starting turning speed of enemy tanks.")]
-    [Range(20f, 90f)] public float enemyStartingTurnSpeed = 45f;
+    [Range(Constants.MIN_TURN_SPEED, 45f)] public float enemyStartingTurnSpeed = 45f;
+    [Tooltip("The maximum turning speed of enemy tanks.")]
+    [Range(45f, 90f)] public float enemyTurnSpeedCap = 90f;
     [Tooltip("The starting damage of bullets fired by the enemy.")]
-    [Range(1, 3)] public int enemyStartingBulletDamage = 1;
+    [Range(Constants.MIN_BULLET_DAMAGE, 3)] public int enemyStartingBulletDamage = 1;
+    [Tooltip("The maximum damage of bullets fired by the enemy.")]
+    [Range(3, 5)] public int enemyBulletDamageCap = 3;
     [Tooltip("The starting movement speed of bullets fired by the enemy.")]
-    [Range(2.5f, 5f)] public float enemyStartingBulletSpeed = 5f;
+    [Range(Constants.MIN_BULLET_SPEED, 5f)] public float enemyStartingBulletSpeed = 5f;
+    [Tooltip("The maximum movement speed of bullets fired by the enemy.")]
+    [Range(5f, 10f)] public float enemyBulletSpeedCap = 10f;
     [Tooltip("The starting length of the enemy's firing cooldown.")]
-    [Range(1f, 3f)] public float enemyStartingFiringCooldown = 1.5f;
+    [Range(1.5f, 3f)] public float enemyStartingFiringCooldown = 1.5f;
+    [Tooltip("The minimum length of the enemy's firing cooldown.")]
+    [Range(Constants.MIN_FIRING_COOLDOWN, 1.5f)] public float enemyMinimumFiringCooldown = 0.5f;
     [Tooltip("The distance at which an enemy tank considers itself \"close enough\" to a waypoint.")]
     [Range(1f, 10f)] public float waypointCloseEnoughDistance = 2f;
     [Tooltip("The distance at which an enemy tank considers itself \"close enough\" to a target tank.")]
@@ -84,6 +118,30 @@ public class GameManager : MonoBehaviour
     [Range(1f, 5f)] public float bulletLifeSpan = 5f;
     [Tooltip("Determines whether or not bullets should destroy each other when they collide.")]
     public bool bulletCollisions = false;
+
+    [Header("Powerup Settings")]
+    [Tooltip("The initial delay before a powerup spawns into the game world.")]
+    [Range(0f, 45f)] public float initialPowerupSpawnDelay = 10f;
+    [Tooltip("The interval of time between powerups spawning in the game world.")]
+    [Range(15f, 90f)] public float powerupSpawnDelay = 15f;
+    [Tooltip("The time before an unclaimed powerup despawns from the game world.")]
+    [Range(10f, 30f)] public float powerupLifespan = 20f;
+    [Tooltip("The rotation speed of powerups in the game world.")]
+    [Range(0f, 360f)] public float powerupRotateSpeed = 45f;
+    [Tooltip("The bounce speed of powerups in the game world.")]
+    [Range(0f, 25f)] public float powerupBounceSpeed = 5f;
+    [Tooltip("The bounce amplitude of powerups in the game world.")]
+    [Range(0f, 2f)] public float powerupBounceAmplitude = 1f;
+    [Tooltip("The list of powerup objects that can be spawned into the world.")]
+    public List<GameObject> powerupList;
+
+    [Header("Map Generation Settings")]
+    public MapGenerateType mapGenerateType;
+    public int providedSeed = 0;
+    [Range(3, 10)] public int mapWidth = 3;
+    [Range(3, 10)] public int mapHeight = 3;
+    public List<GameObject> roomTiles;
+    public float roomSpacing = 64f;
 
     [Header("Input Controllers")]
     public GameObject p1InputController;
@@ -156,6 +214,8 @@ public class GameManager : MonoBehaviour
     public Material enemyCaptainCannon;
 
     /* Private Variables */
+    private bool runOnce = true;
+    private float powerupSpawnTimer;
 
     private void Awake()
     {
@@ -173,36 +233,29 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        for (int index = 1; index <= initialNumberOfPlayers; index++)
+        powerupSpawnTimer = initialPowerupSpawnDelay;
+        switch (mapGenerateType)
         {
-            if (index > 2)
-            {
+            case MapGenerateType.RandomMap:
+                mapGen.GenerateMap(false);
                 break;
-            }
-
-            SpawnNewPlayer();
-
-            switch (index)
-            {
-                case 1:
-                    p1InputController.SetActive(true);
-                    break;
-                case 2:
-                    p2InputController.SetActive(true);
-                    break;
-            }
+            case MapGenerateType.MapOfTheDay:
+                mapGen.GenerateMap(true);
+                break;
+            case MapGenerateType.ProvidedSeed:
+                mapGen.GenerateMap(providedSeed);
+                break;  
         }
     }
 
     // Update is called once per frame
     private void Update()
     {
-
         // Ensures certain values can't be accidentally set too high or low in the inspector
-        playerStartingHP = Mathf.Clamp(playerStartingHP, 1, 15);
-        playerHPCap = Mathf.Clamp(playerHPCap, 5, 15);
-        enemyStartingHP = Mathf.Clamp(enemyStartingHP, 1, 15);
-        enemyHPCap = Mathf.Clamp(enemyHPCap, 5, 15);
+        playerStartingHP = Mathf.Clamp(playerStartingHP, Constants.MIN_HP, Constants.MAX_HP);
+        playerHPCap = Mathf.Clamp(playerHPCap, playerStartingHP, Constants.MAX_HP);
+        enemyStartingHP = Mathf.Clamp(enemyStartingHP, Constants.MIN_HP, Constants.MAX_HP);
+        enemyHPCap = Mathf.Clamp(enemyHPCap, enemyStartingHP, Constants.MAX_HP);
         barFadeTime = Mathf.Clamp(barFadeTime, 0.1f, 2f);
         baseTankValue = Mathf.Clamp(baseTankValue, 10, 10000);
         bonusModifer = Mathf.Clamp(bonusModifer, 0f, 3f);
@@ -219,11 +272,168 @@ public class GameManager : MonoBehaviour
             p2Score = players[1].tankScorer.score;
         }
         catch { }
+
+        powerupSpawnTimer -= Time.deltaTime;
+        if (powerupSpawnTimer <= 0f)
+        {
+            SpawnPowerup();
+            powerupSpawnTimer = powerupSpawnDelay;
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Transform closestSpawnpoint = null;
+            float closestDistance = float.MaxValue;
+
+            foreach (var spawnPoint in powerupSpawnPoints)
+            {
+                float currentDistance = Vector3.Distance(players[0].tankTf.position, spawnPoint.position);
+                if (currentDistance < closestDistance)
+                {
+                    closestDistance = currentDistance;
+                    closestSpawnpoint = spawnPoint;
+                }
+            }
+            SpawnPowerup(closestSpawnpoint);
+        }
     }
 
+    private void LateUpdate()
+    {
+        if (runOnce)
+        {
+            // Spawns players
+            for (int index = 1; index <= initialNumberOfPlayers; index++)
+            {
+                if (index > 2)
+                {
+                    break;
+                }
+
+                SpawnNewPlayer();
+
+                switch (index)
+                {
+                    case 1:
+                        p1InputController.SetActive(true);
+                        break;
+                    case 2:
+                        p2InputController.SetActive(true);
+                        break;
+                }
+            }
+
+            // Populates spawn table with enemy spawn rates
+            for (int index = 1; index < 100; index++)
+            {
+                bool addedSomething = false;
+
+                if (index <= standardSpawnRate)
+                {
+                    enemySpawnTable.Add(standardEnemyPrefab);
+                    addedSomething = true;
+                }
+                if (index <= cowardSpawnRate)
+                {
+                    enemySpawnTable.Add(cowardEnemyPrefab);
+                    addedSomething = true;
+                }
+                if (index <= captainSpawnRate)
+                {
+                    enemySpawnTable.Add(captainEnemyPrefab);
+                    addedSomething = true;
+                }
+                if (index <= reaperSpawnRate)
+                {
+                    enemySpawnTable.Add(reaperEnemyPrefab);
+                    addedSomething = true;
+                }
+
+                // If nothing was added this pass, exit the loop
+                if (!addedSomething)
+                {
+                    break;
+                }
+            }
+
+            // Spawns enemies
+            int range = UnityEngine.Random.Range((int)(enemySpawnPoints.Count / 2), enemySpawnPoints.Count);
+            for (int index = 0; index < range; index++)
+            {
+                SpawnNewEnemy();
+            }
+
+            // Re-adds all used spawn points to the spawn point lists
+            gameContainer.BroadcastMessage("RegisterThisSpawnPoint");
+
+            // Temp variable - will remove when game has a proper menu
+            runOnce = false;
+        }
+    }
+
+    /// <summary>
+    /// Spawns a player into the game world.
+    /// </summary>
     private void SpawnNewPlayer()
     {
+        // Determines which spawn point to spawn the player at
         int spawnIndex = UnityEngine.Random.Range(0, playerSpawnPoints.Count);
-        Instantiate(playerPrefab, playerSpawnPoints[spawnIndex].position, playerSpawnPoints[spawnIndex].rotation, playerSpawnPoints[spawnIndex].GetComponent<RegisterSpawnPoint>().roomData.roomTf);
+        Instantiate(playerPrefab, playerSpawnPoints[spawnIndex].position, playerSpawnPoints[spawnIndex].rotation, playerSpawnPoints[spawnIndex].parent.parent.parent);
+        // Removes the used spawn point from the spawn point list (prevents overlaps)
+        playerSpawnPoints.RemoveAt(spawnIndex);
+    }
+
+    /// <summary>
+    /// Creates a new player tank being controlled by the InputController that calls this function
+    /// </summary>
+    /// <param name="controller">The InputController requesting a new tank.</param>
+    public void RespawnPlayer(InputController controller)
+    {
+        // Determines which spawn point to spawn the player at
+        int spawnIndex = UnityEngine.Random.Range(0, playerSpawnPoints.Count);
+        GameObject newTank = Instantiate(playerPrefab, playerSpawnPoints[spawnIndex].position, playerSpawnPoints[spawnIndex].rotation, playerSpawnPoints[spawnIndex].parent.parent.parent);
+        // Removes the used spawn point from the spawn point list (prevents overlaps)
+        player1Camera = newTank.GetComponent<Camera>();
+        controller.SetTankComponentReferences(newTank.GetComponent<TankData>());
+    }
+
+    /// <summary>
+    /// Spawns an enemy into the game world.
+    /// </summary>
+    private void SpawnNewEnemy()
+    {
+        // Determines which enemy type to spawn
+        int enemyIndex = UnityEngine.Random.Range(0, enemySpawnTable.Count);
+        GameObject enemyToSpawn = enemySpawnTable[enemyIndex];
+        // Determines which spawn point to spawn the enemy at
+        int spawnIndex = UnityEngine.Random.Range(0, enemySpawnPoints.Count);
+        Instantiate(enemyToSpawn, enemySpawnPoints[spawnIndex].position, enemySpawnPoints[spawnIndex].rotation, enemySpawnPoints[spawnIndex].parent.parent.Find("Tanks").transform);
+        // Removes the used spawn point from the spawn point list (prevents overlaps)
+        enemySpawnPoints.RemoveAt(spawnIndex);
+    }
+
+    /// <summary>
+    /// Spawns a powerup into the game world.
+    /// </summary>
+    private void SpawnPowerup()
+    {
+        // Determines which powerup to spawn
+        int powerupIndex = UnityEngine.Random.Range(0, powerupList.Count);
+        GameObject powerupToSpawn = powerupList[powerupIndex];
+        // Determines which spawn point to spawn the enemy at
+        int spawnIndex = UnityEngine.Random.Range(0, powerupSpawnPoints.Count);
+        Instantiate(powerupToSpawn, powerupSpawnPoints[spawnIndex].position, powerupSpawnPoints[spawnIndex].rotation, powerupSpawnPoints[spawnIndex].parent.parent.transform);
+    }
+
+    /// <summary>
+    /// Spawns a powerup into the game world at the specified location.
+    /// </summary>
+    private void SpawnPowerup(Transform closestWaypoint)
+    {
+        // Determines which powerup to spawn
+        int powerupIndex = UnityEngine.Random.Range(0, powerupList.Count);
+        GameObject powerupToSpawn = powerupList[powerupIndex];
+        // Determines which spawn point to spawn the enemy at
+        Instantiate(powerupToSpawn, closestWaypoint.position, closestWaypoint.rotation, closestWaypoint.parent.parent.transform);
     }
 }

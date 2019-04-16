@@ -32,6 +32,6 @@ public class AddWaypointToList : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-		
+
 	}
 }
