@@ -2,10 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameContainer : MonoBehaviour {
+public class GameContainer : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
+    private void Awake()
+    {
+        // Singleton pattern
+        if (GameManager.gameContainer == null)
+        {
+            GameManager.gameContainer = this.gameObject.GetComponent<Transform>();
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	

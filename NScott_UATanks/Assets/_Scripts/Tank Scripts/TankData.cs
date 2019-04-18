@@ -18,8 +18,14 @@ public class TankData : MonoBehaviour
 {
     /* Public Variables */
     [HideInInspector]public int playerNumber; // This player's player number (determined by its index in GameManager.players)
-    
+    [Space]
+    public GameObject tankVisuals;
+    public GameObject tankCanvas;
+    public Camera tankCamera;
+
     [Header("Health")]
+    [Tooltip("The number of lives this tank currently has.")]
+    public int currentLives;
     [Tooltip("The current number of HP this tank has.")]
     [Range(0, 15)] public int currentHP;
     [Tooltip("The maximum number of HP this tank can have.")]
@@ -91,10 +97,22 @@ public class TankData : MonoBehaviour
         if (tankTf.tag == "Player")
         {
             // This is a player tank
-            GameManager.gm.players.Add(this);
             playerNumber = GameManager.gm.players.IndexOf(this) + 1;
+            if (this.gameObject.GetComponentInChildren<Camera>() != null)
+            {
+                switch (playerNumber)
+                {
+                    case 1:
+                        GameManager.gm.player1Camera = this.gameObject.GetComponentInChildren<Camera>();
+                        break;
+                    case 2:
+                        GameManager.gm.player2Camera = this.gameObject.GetComponentInChildren<Camera>();
+                        break;
+                }
+            }
             currentHP = GameManager.gm.playerStartingHP;
             maxHP = currentHP;
+            currentLives = GameManager.gm.playerStartingLives;
             currentMoveSpeed = GameManager.gm.playerStartingMoveSpeed;
             currentTurnSpeed = GameManager.gm.playerStartingTurnSpeed;
             currentBulletDamage = GameManager.gm.playerStartingBulletDamage;
@@ -107,6 +125,7 @@ public class TankData : MonoBehaviour
             GameManager.gm.enemies.Add(this);
             currentHP = GameManager.gm.enemyStartingHP;
             maxHP = currentHP;
+            currentLives = 1;
             currentMoveSpeed = GameManager.gm.enemyStartingMoveSpeed;
             currentTurnSpeed = GameManager.gm.enemyStartingTurnSpeed;
             currentBulletDamage = GameManager.gm.enemyStartingBulletDamage;
@@ -171,5 +190,18 @@ public class TankData : MonoBehaviour
         {
             other.GetComponent<Powerup>().ApplyEffect(this);
         }
+    }
+
+    public void CopyTankData(TankData otherTankData)
+    {
+        playerNumber = otherTankData.playerNumber;
+        tankCamera = otherTankData.tankCamera;
+        currentLives = otherTankData.currentLives;
+        maxHP = otherTankData.maxHP;
+        currentHP = otherTankData.currentHP;
+        currentTurnSpeed = otherTankData.currentTurnSpeed;
+        currentMoveSpeed = otherTankData.currentMoveSpeed;
+        currentBulletDamage = otherTankData.currentBulletDamage;
+        currentBulletMoveSpeed = otherTankData.currentBulletMoveSpeed;
     }
 }

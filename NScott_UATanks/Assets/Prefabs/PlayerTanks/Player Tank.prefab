@@ -476,7 +476,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4741798734299304}
   - component: {fileID: 20802511023008460}
-  - component: {fileID: 81111089175213676}
   - component: {fileID: 114055411482261798}
   m_Layer: 0
   m_Name: Player Camera
@@ -963,13 +962,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1810088277474428}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!81 &81111089175213676
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1839136524873536}
-  m_Enabled: 1
 --- !u!114 &114055411482261798
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1253,6 +1245,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 0
+  tankVisuals: {fileID: 1856051344395164}
+  tankCanvas: {fileID: 1568194882617814}
+  tankCamera: {fileID: 20802511023008460}
+  currentLives: 0
   currentHP: 0
   maxHP: 3
   takesDamage: 1
@@ -1667,7 +1663,7 @@ CharacterController:
   m_Radius: 0.75
   m_SlopeLimit: 90
   m_StepOffset: 0
-  m_SkinWidth: 0.075
+  m_SkinWidth: 0.1
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.4, z: 0.1}
 --- !u!222 &222017402225348628

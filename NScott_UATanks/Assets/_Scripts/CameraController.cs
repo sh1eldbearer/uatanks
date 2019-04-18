@@ -18,6 +18,7 @@ public class CameraController : MonoBehaviour
     /* Private Variables */
     private Camera thisCamera; // Easy reference to the camera component for determining which settings to check
     private Transform followTf, cameraTf; // Transform components for this camera and the object it's following
+    private TankData followData;
     private Vector3 offsetVector; // The position of the camera in relation to the object it's following
     private Quaternion initialRotation; // The initial rotation of the camera when the game starts
     private bool canRotate; // Holds the value of the appropriate rotation setting in the GameManager
@@ -31,26 +32,12 @@ public class CameraController : MonoBehaviour
         cameraTf = this.gameObject.GetComponent<Transform>();
 
         // Gets the camera's initial offset position
-        offsetVector = cameraTf.position - followTf.position;
+        offsetVector = cameraTf.localPosition - followTf.localPosition;
 
         // Gets the camera's inital rotation
         initialRotation = cameraTf.rotation;
 
-        TankData followData = followObject.GetComponent<TankData>();
-        foreach (var player in GameManager.gm.players)
-        {
-            if (player == followData)
-            {
-                if (GameManager.gm.players.IndexOf(player) == 0)
-                {
-                    GameManager.gm.player1Camera = thisCamera;
-                }
-                else
-                {
-                    GameManager.gm.player2Camera = thisCamera;
-                }
-            }
-        }
+        followData = followObject.GetComponent<TankData>();
     }
 	
 	// Update is called once per frame
@@ -67,7 +54,7 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Could not determine which player this camera is meant to follow.");
+            //Debug.LogError("Could not determine which player this camera is meant to follow.");
         }
 
         /* Camera rotation is a work in progress (will rework once improved tank model is in game) */
@@ -110,7 +97,34 @@ public class CameraController : MonoBehaviour
             }
 
             // Maintains the camera's original offset from the object it's following, wherever that object goes
-            cameraTf.position = followTf.position + offsetVector;
+            cameraTf.localPosition = followTf.localPosition + offsetVector;
         }
 	}
+
+    public void SetNewFollowObject(TankData newFollowData)
+    {
+        followObject = newFollowData.gameObject;
+        followData = newFollowData;
+        followTf = newFollowData.tankTf;
+        offsetVector = cameraTf.localPosition - followTf.localPosition;
+        cameraTf.localPosition = followTf.localPosition + offsetVector;
+    }
+
+    public void AssignCameras()
+    {
+        foreach (var player in GameManager.gm.players)
+        {
+            if (player == followData)
+            {
+                if (GameManager.gm.players.IndexOf(player) == 0)
+                {
+                    GameManager.gm.player1Camera = thisCamera;
+                }
+                else
+                {
+                    GameManager.gm.player2Camera = thisCamera;
+                }
+            }
+        }
+    }
 }

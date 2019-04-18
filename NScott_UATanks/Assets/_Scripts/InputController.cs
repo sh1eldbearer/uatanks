@@ -140,11 +140,6 @@ public class InputController : MonoBehaviour
             {
                 GameManager.gm.p1RotateCamera = !GameManager.gm.p1RotateCamera;
             }
-            
-            if (tankData == null)
-            {
-                GameManager.gm.RespawnPlayer(this);
-            }
         }
         else if (playerNumber == PlayerNumber.Player2)
         {

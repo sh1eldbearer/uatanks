@@ -1058,6 +1058,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 0
+  tankVisuals: {fileID: 1967255990436530}
+  tankCanvas: {fileID: 1431680169440070}
+  tankCamera: {fileID: 0}
   currentHP: 0
   maxHP: 0
   takesDamage: 1
@@ -1644,7 +1647,7 @@ CharacterController:
   m_Radius: 0.75
   m_SlopeLimit: 90
   m_StepOffset: 0
-  m_SkinWidth: 0.075
+  m_SkinWidth: 0.1
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.4, z: 0.1}
 --- !u!222 &222032877198045432

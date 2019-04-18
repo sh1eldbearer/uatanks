@@ -24,12 +24,19 @@ public class GameManager : MonoBehaviour
 {
     /* Public Variables */
     [HideInInspector] public static GameManager gm; // Reference to a GameManager object for singleton pattern
+    [HideInInspector] public static SaveManager saveMgr;
     [HideInInspector] public static MapGenerator mapGen;
     [HideInInspector] public static AudioListenerPositioner listenerPositioner;
+    [HideInInspector] public static MultiplayerCameraSetup cameraSetup;
+    [HideInInspector] public static Transform gameContainer;
 
     [Header("Input Controllers")]
     [HideInInspector] public GameObject p1InputController;
     [HideInInspector] public GameObject p2InputController;
+
+    [Header("Volume Settings")]
+    [Range(0f, 1f)] public float soundVolume;
+    [Range(0f, 1f)] public float musicVolume;
 
     [Header("General Game Settings")]
     [Tooltip("The number of players to spawn at game start.")]
@@ -44,8 +51,10 @@ public class GameManager : MonoBehaviour
     [Tooltip("The speed at which tanks can move in reverse, represented as a percentage " +
         "of the tank's base movement speed.")]
     [Range(0.1f, 1f)] public float reverseSpeedRate = 0.75f;
-    
+
     [Header("Player Tank Settings")]
+    [Tooltip("The amount lives a player starts with.")]
+    [Range(Constants.MIN_PLAYER_LIVES, Constants.MAX_PLAYER_LIVES)] public int playerStartingLives = 3;
     [Tooltip("The amount of HP a player tank starts with.")]
     [Range(1, 5)] public int playerStartingHP = 3;
     [Tooltip("The maximum amount of HP a player can earn after upgrades during a game.")]
@@ -169,6 +178,10 @@ public class GameManager : MonoBehaviour
     [Header("Layers & LayerMasks")]
     [Tooltip("The layer for tank objects.")]
     public LayerMask tankLayer;
+    [Tooltip("The layer for showing player 1's UI")]
+    public LayerMask p1layer;
+    [Tooltip("The layer for showing player 2's UI")]
+    public LayerMask p2Layer;
 
     [Header("UI Settings")]
     [Tooltip("The length of time it takes for any cooldown bars to fade out when " +
@@ -197,6 +210,7 @@ public class GameManager : MonoBehaviour
     public int p2Score = 0;
 
     [Header("Point Values")]
+    public int highScore = 0;
     [Tooltip("The base value an enemy tank is worth when it's destroyed.")]
     [Range(10,10000)] public int baseTankValue = 100;
     [Tooltip("For every hit point over the starting value, an enemy tank will be worth " +
@@ -233,11 +247,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-    }
-
-    private void Start()
-    {
-
     }
 
     /// <summary>
@@ -329,7 +338,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Re-adds all used spawn points to the spawn point lists
-        gm.gameObject.BroadcastMessage("RegisterThisSpawnPoint");
+        gameContainer.BroadcastMessage("RegisterThisSpawnPoint");
 
         // Sets the spawn time of the first powerup
         powerupSpawnTimer = initialPowerupSpawnDelay;
@@ -397,7 +406,8 @@ public class GameManager : MonoBehaviour
     {
         // Determines which spawn point to spawn the player at
         int spawnIndex = UnityEngine.Random.Range(0, playerSpawnPoints.Count);
-        Instantiate(playerPrefab, playerSpawnPoints[spawnIndex].position, playerSpawnPoints[spawnIndex].rotation, playerSpawnPoints[spawnIndex].parent.parent.parent);
+        GameObject newTank = Instantiate(playerPrefab, playerSpawnPoints[spawnIndex].position, playerSpawnPoints[spawnIndex].rotation, playerSpawnPoints[spawnIndex].parent.parent.parent);
+        players.Add(newTank.GetComponent<TankData>());
         // Removes the used spawn point from the spawn point list (prevents overlaps)
         playerSpawnPoints.RemoveAt(spawnIndex);
     }
@@ -406,14 +416,31 @@ public class GameManager : MonoBehaviour
     /// Creates a new player tank being controlled by the InputController that calls this function
     /// </summary>
     /// <param name="controller">The InputController requesting a new tank.</param>
-    public void RespawnPlayer(InputController controller)
+    public void RespawnPlayer(InputController controller, TankData oldTankData)
     {
         // Determines which spawn point to spawn the player at
         int spawnIndex = UnityEngine.Random.Range(0, playerSpawnPoints.Count);
         GameObject newTank = Instantiate(playerPrefab, playerSpawnPoints[spawnIndex].position, playerSpawnPoints[spawnIndex].rotation, playerSpawnPoints[spawnIndex].parent.parent.parent);
-        // Removes the used spawn point from the spawn point list (prevents overlaps)
-        player1Camera = newTank.GetComponent<Camera>();
-        controller.SetTankComponentReferences(newTank.GetComponent<TankData>());
+        TankData newTankData = newTank.GetComponent<TankData>();
+        Destroy(newTankData.tankCamera.gameObject);
+        oldTankData.tankCamera.transform.parent = newTankData.tankTf;
+        
+        if (players[0] == oldTankData)
+        {
+            players[0] = newTankData;
+            player1Camera = oldTankData.tankCamera;
+        }
+        else
+        {
+            players[1] = newTankData;
+            player2Camera = oldTankData.tankCamera;
+        }
+        newTankData.CopyTankData(oldTankData);
+        newTankData.tankCamera.GetComponent<CameraController>().SetNewFollowObject(newTankData);
+        Destroy(oldTankData.gameObject);
+        controller.SetTankComponentReferences(newTankData);
+        newTankData.tankCamera.GetComponent<CameraController>().AssignCameras();
+        cameraSetup.ConfigureViewports();
     }
 
     /// <summary>
@@ -424,6 +451,7 @@ public class GameManager : MonoBehaviour
         // Determines which enemy type to spawn
         int enemyIndex = UnityEngine.Random.Range(0, enemySpawnTable.Count);
         GameObject enemyToSpawn = enemySpawnTable[enemyIndex];
+        enemies.Add(enemyToSpawn.GetComponent<TankData>());
         // Determines which spawn point to spawn the enemy at
         int spawnIndex = UnityEngine.Random.Range(0, enemySpawnPoints.Count);
         Instantiate(enemyToSpawn, enemySpawnPoints[spawnIndex].position, enemySpawnPoints[spawnIndex].rotation, enemySpawnPoints[spawnIndex].parent.parent.Find("Tanks").transform);
@@ -454,5 +482,20 @@ public class GameManager : MonoBehaviour
         GameObject powerupToSpawn = powerupPrefabs[powerupIndex];
         // Determines which spawn point to spawn the enemy at
         Instantiate(powerupToSpawn, closestWaypoint.position, closestWaypoint.rotation, closestWaypoint.parent.parent.transform);
+    }
+
+    /// <summary>
+    /// Changes the spawn rates of each type of enemy tank. Only has an effect before the game is initialized.
+    /// </summary>
+    /// <param name="standardRate"></param>
+    /// <param name="cowardRate"></param>
+    /// <param name="captainRate"></param>
+    /// <param name="reaperRate"></param>
+    public void SetSpawnRates(int standardRate, int cowardRate, int captainRate, int reaperRate)
+    {
+        standardSpawnRate = standardRate;
+        cowardSpawnRate = cowardRate;
+        captainSpawnRate = captainRate;
+        reaperSpawnRate = reaperRate;
     }
 }

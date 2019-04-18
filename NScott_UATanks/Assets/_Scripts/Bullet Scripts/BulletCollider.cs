@@ -26,8 +26,16 @@ public class BulletCollider : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        TankData otherTankData = other.gameObject.GetComponent<TankData>();
+        BulletCollider otherBulletCollider = other.gameObject.GetComponent<BulletCollider>();
+
+        if (otherTankData == bulletData.bulletOwner)
+        {
+            Physics.IgnoreCollision(this.gameObject.GetComponent<Collider>(), other.collider);
+            return;
+        }
         // If this bullet hits a tank
-        if (other.gameObject.GetComponent<TankData>() != null)
+        else if (otherTankData != null)
         {
             // If this bullet was fired by a player tank
             if (this.tag == "Player")
@@ -37,7 +45,7 @@ public class BulletCollider : MonoBehaviour
                     (other.gameObject.tag == "Player" && GameManager.gm.friendlyFire))
                 {
                     // Damages the tank
-                    int otherTankHP = other.collider.GetComponent<TankHealthManager>().Damage(bulletData.bulletDamage);
+                    int otherTankHP = otherTankData.tankHealthMan.Damage(bulletData.bulletDamage);
 
                     // If the other tank was destroyed by this shot
                     if (otherTankHP != -1)
@@ -47,7 +55,7 @@ public class BulletCollider : MonoBehaviour
                 }
                 else
                 {
-                    return;
+                    // Nothing to do but go die
                 }
             }
             // If this bullet was fired by an enemy tank
@@ -58,16 +66,16 @@ public class BulletCollider : MonoBehaviour
                     (other.gameObject.tag == "Enemy" && GameManager.gm.enemyFriendlyFire))
                 {
                     // Damages the tank
-                    other.collider.GetComponent<TankHealthManager>().Damage(bulletData.bulletDamage);
+                    otherTankData.tankHealthMan.Damage(bulletData.bulletDamage);
                 }
                 else
                 {
-                    return;
+                    // Nothing to do but go die
                 }
             }
         }
         // Ignore bullet collisions
-        else if (other.gameObject.GetComponent<BulletCollider>() != null && !GameManager.gm.bulletCollisions)
+        else if (otherBulletCollider != null && !GameManager.gm.bulletCollisions)
         {
             Physics.IgnoreCollision(this.GetComponent<Collider>(), other.collider);
             //this.gameObject.GetComponent<Collider>().enabled = false;

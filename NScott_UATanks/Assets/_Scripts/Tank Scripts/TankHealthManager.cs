@@ -100,24 +100,33 @@ public class TankHealthManager : MonoBehaviour
         // Looks at the tag of this tank, and removes this tank from the appropriate TankData list
         if (tankData.tankTf.tag == "Player")
         {
+            // Decreases this tank's lives count
+            tankData.currentLives--;
             // Tank is a player
             if (tankData == GameManager.gm.players[0])
             {
-                this.gameObject.GetComponentInChildren<Camera>().GetComponent<Transform>().parent = null;
+                // Prevents Die() from running endlessly after the first time
+                tankData.currentHP = tankData.maxHP;
+                // Detach the camera from this tank
+                tankData.tankCamera.gameObject.transform.parent = tankData.tankTf.parent;
+                Destroy(tankData.tankVisuals);
+                Destroy(tankData.tankCanvas);
+                if (tankData.currentLives > 0)
+                {
+                    GameManager.gm.RespawnPlayer(GameManager.gm.p1InputController.GetComponent<InputController>(), tankData);
+                }
             }
             else
             {
-                // GameManager.gm.player2Camera.transform.parent = null;
+                GameManager.gm.player2Camera.transform.parent = null;
             }
-            GameManager.gm.players.Remove(tankData);
         }
         else if (tankData.tankTf.tag == "Enemy")
         {
             // Tank is an enemy
             GameManager.gm.enemies.Remove(tankData);
+            // Destroy this tank!
+            Destroy(this.gameObject);
         }
-
-        // Kill the tank!
-        Destroy(this.gameObject);
     }
 }

@@ -4,7 +4,19 @@ using UnityEngine;
 
 public static class Constants
 {
-    [Header("Tank Setting Constants")]
+    // Main menu button string constants
+    public const string START_GAME_STRING = "Start Game";
+    public const string OPTIONS_STRING = "Options";
+    public const string HIGH_SCORES_STRING = "High Scores";
+    public const string MENU_OPEN_STRING = ">>>";
+    public const string MAP_WIDTH_STRING = "Map Width: ";
+    public const string MAP_HEIGHT_STRING = "Map Height: ";
+    public const string SOUND_VOLUME_STRING = "Sound Volume: ";
+    public const string MUSIC_VOLUME_STRING = "Music Volume: ";
+
+    // Tank Setting constants
+    public const int MIN_PLAYER_LIVES = 1;
+    public const int MAX_PLAYER_LIVES = 6;
     public const int MIN_HP = -1;
     public const int MAX_HP = 15;
     public const float MIN_MOVE_SPEED = 5f;
@@ -17,4 +29,9 @@ public static class Constants
     public const float MAX_BULLET_SPEED = 10f;
     public const float MIN_FIRING_COOLDOWN = 0.5f;
     public const float MAX_FIRING_COOLDOWN = 3f;
+
+    // Player pref key values
+    public const string HIGHSCORE_KEY = "HighScore";
+    public const string SOUNDVOLUME_KEY = "SoundVolume";
+    public const string MUSICVOLUME_KEY = "MusicVolume";
 }

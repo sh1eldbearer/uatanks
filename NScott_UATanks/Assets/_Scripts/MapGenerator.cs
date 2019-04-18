@@ -69,7 +69,7 @@ public class MapGenerator : MonoBehaviour
                 // Determine the new room's position in the game world
                 Vector3 spawnPosition = new Vector3(GameManager.gm.roomSpacing * widthIndex, 0f, GameManager.gm.roomSpacing * heightIndex);
                 // Spawn the new room
-                GameObject newRoom = Instantiate(GameManager.gm.roomTiles[gameMap[heightIndex, widthIndex]], spawnPosition, Quaternion.identity, GameManager.gm.gameObject.GetComponent<Transform>());
+                GameObject newRoom = Instantiate(GameManager.gm.roomTiles[gameMap[heightIndex, widthIndex]], spawnPosition, Quaternion.identity, GameManager.gameContainer.GetComponent<Transform>());
                 RoomData roomData = newRoom.GetComponent<RoomData>();
 
                 // Remove the appropriate doors so players can move between rooms
