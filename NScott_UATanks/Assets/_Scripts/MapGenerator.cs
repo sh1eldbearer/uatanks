@@ -9,6 +9,19 @@ public class MapGenerator : MonoBehaviour
     /* Private Variables */
     private int[,] gameMap; // Each element holds a numerical value representing the room tile that should be spawned
 
+    private void Awake()
+    {
+        // Singleton pattern
+        if (GameManager.mapGen == null)
+        {
+            GameManager.mapGen = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
     /// <summary>
     /// Seeds the random number generator with an automatically-determined value, then builds the game map.
     /// </summary>
@@ -56,7 +69,7 @@ public class MapGenerator : MonoBehaviour
                 // Determine the new room's position in the game world
                 Vector3 spawnPosition = new Vector3(GameManager.gm.roomSpacing * widthIndex, 0f, GameManager.gm.roomSpacing * heightIndex);
                 // Spawn the new room
-                GameObject newRoom = Instantiate(GameManager.gm.roomTiles[gameMap[heightIndex, widthIndex]], spawnPosition, Quaternion.identity, GameManager.gm.gameContainer.GetComponent<Transform>());
+                GameObject newRoom = Instantiate(GameManager.gm.roomTiles[gameMap[heightIndex, widthIndex]], spawnPosition, Quaternion.identity, GameManager.gm.gameObject.GetComponent<Transform>());
                 RoomData roomData = newRoom.GetComponent<RoomData>();
 
                 // Remove the appropriate doors so players can move between rooms

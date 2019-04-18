@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Enumerator for allowing designers to configure input managers for each tank
+public enum PlayerNumber
+{
+    Player1,
+    Player2
+}
+
 [DisallowMultipleComponent]
 
 /*
@@ -14,6 +21,7 @@ using UnityEngine;
 public class InputController : MonoBehaviour
 {
     /* Public Variables */
+    public PlayerNumber playerNumber;
 
     /* Private Variables */
     // References to two input controller objects for singleton pattern
@@ -22,18 +30,12 @@ public class InputController : MonoBehaviour
 
     private TankData tankData; // The TankData component of this tank object
     private TankMover tankMover; // The TankMover component of this tank object
-    private TankShooter tankShooter; // The TankShooter component of this tank object
-
-    // Enumerator for allowing designers to configure input managers for each tank
-    private enum PlayerNumber { Player1, Player2 }
-    #pragma warning disable IDE0044 // Removes "make readonly" message from Visual Studio
-    [SerializeField] private PlayerNumber playerNumber;
-    #pragma warning restore IDE0044 
+    private TankShooter tankShooter; // The TankShooter component of this tank object    
 
     private void Awake()
     {
         // Singleton pattern for input controllers
-        if (p1Input != null && p2Input == null)
+        if (p1Input != null && p2Input != null)
         {
             Destroy(this.gameObject);
         }
@@ -42,12 +44,14 @@ public class InputController : MonoBehaviour
             if (p1Input == null)
             {
                 p1Input = this;
+                GameManager.gm.p1InputController = this.gameObject;
+                DontDestroyOnLoad(this.gameObject);
             }
-            else if (p2Input == null)
+            else if (p1Input != null)
             {
-                Debug.LogWarning("Warning: multiple InputControllers detected for player 1.\n" +
-                    "Please reassign " + this.name + " to player 2.");
-                
+                Debug.LogWarning(string.Format("Warning: multiple InputControllers detected for player 1.\n" +
+                    "Please reassign {0} to player 2. Destroying {0}.", this.name));
+                Destroy(this.gameObject);
             }
         }
         else if (playerNumber == PlayerNumber.Player2)
@@ -55,12 +59,14 @@ public class InputController : MonoBehaviour
             if (p2Input == null)
             {
                 p2Input = this;
+                GameManager.gm.p2InputController = this.gameObject;
+                DontDestroyOnLoad(this.gameObject);
             }
-            else if (p1Input == null)
+            else if (p2Input != null)
             {
-                Debug.LogWarning("Warning: multiple InputControllers detected for player 2.\n" +
-                    "Please reassign " + this.name + " to player 1.");
-
+                Debug.LogWarning(string.Format("Warning: multiple InputControllers detected for player 1.\n" +
+                    "Please reassign {0} to player 1. Destroying {0}.", this.name));
+                Destroy(this.gameObject);
             }
         }
 

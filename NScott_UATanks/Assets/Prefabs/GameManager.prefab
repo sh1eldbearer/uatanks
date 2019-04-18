@@ -1,0 +1,167 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1351179823962686}
+  m_IsPrefabAsset: 1
+--- !u!1 &1351179823962686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4493394485944598}
+  - component: {fileID: 114558350149594178}
+  - component: {fileID: 114617208979325214}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4493394485944598
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1351179823962686}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114558350149594178
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1351179823962686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3a943cd8c6cf3247824decd58a4530d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  p1InputController: {fileID: 0}
+  p2InputController: {fileID: 0}
+  initialNumberOfPlayers: 1
+  friendlyFire: 0
+  enemyFriendlyFire: 0
+  reverseSpeedRate: 0.75
+  playerStartingHP: 3
+  playerHPCap: 15
+  playerStartingMoveSpeed: 8
+  playerMoveSpeedCap: 15
+  playerStartingTurnSpeed: 45
+  playerTurnSpeedCap: 90
+  playerStartingBulletDamage: 1
+  playerBulletDamageCap: 3
+  playerStartingBulletSpeed: 5
+  playerBulletSpeedCap: 10
+  playerStartingFiringCooldown: 1.5
+  playerMinimumFiringCooldown: 0.5
+  playerPrefab: {fileID: 1420480299007700, guid: adf35d827d7b7ca44b3a5893d10b14e7,
+    type: 2}
+  enemyStartingHP: 3
+  enemyHPCap: 15
+  enemyStartingMoveSpeed: 5
+  enemyMoveSpeedCap: 15
+  enemyStartingTurnSpeed: 30
+  enemyTurnSpeedCap: 90
+  enemyStartingBulletDamage: 1
+  enemyBulletDamageCap: 3
+  enemyStartingBulletSpeed: 5
+  enemyBulletSpeedCap: 10
+  enemyStartingFiringCooldown: 1.5
+  enemyMinimumFiringCooldown: 0.5
+  waypointCloseEnoughDistance: 2
+  tankCloseEnoughDistance: 8
+  maxPursuitTime: 3
+  standardEnemyPrefab: {fileID: 1622881790795316, guid: ca9df129184f62145bf6c7df895dc686,
+    type: 2}
+  cowardEnemyPrefab: {fileID: 1396584017906516, guid: 7e95bbfeb61cdf6449d1880882cbdd3d,
+    type: 2}
+  reaperEnemyPrefab: {fileID: 1674603459948050, guid: ae9eb3d8401e38a47a040fb457f1ac02,
+    type: 2}
+  captainEnemyPrefab: {fileID: 1895630649390914, guid: 414223c785ae3814895c4dbd407111e2,
+    type: 2}
+  standardSpawnRate: 6
+  cowardSpawnRate: 2
+  reaperSpawnRate: 1
+  captainSpawnRate: 1
+  enemySpawnTable: []
+  bulletPrefab: {fileID: 1969518993299966, guid: 4c8de7ba608c1da40b5009425dfae397,
+    type: 2}
+  bulletLifeSpan: 2.5
+  bulletCollisions: 0
+  initialPowerupSpawnDelay: 0
+  powerupSpawnDelay: 15
+  powerupLifespan: 30
+  powerupRotateSpeed: 135
+  powerupBounceSpeed: 5
+  powerupBounceAmplitude: 0.25
+  powerupPrefabs:
+  - {fileID: 1767874392725342, guid: 43bb97fce8421394fb7465dc857e1639, type: 2}
+  - {fileID: 1688369565350474, guid: a7813803a9510904db13cbba9d78c44f, type: 2}
+  - {fileID: 1250467661649028, guid: 0b18290d3f1592248b8ad0ac64cf91a5, type: 2}
+  - {fileID: 1694430239894630, guid: 234be28e47aaea44ab7b90c6740bcabd, type: 2}
+  - {fileID: 1097721334914356, guid: cdc7e7cf922a58848b81c71ab23f282f, type: 2}
+  - {fileID: 1386088731955774, guid: ebecbbf5fbf04484fb73a992f891d5e5, type: 2}
+  - {fileID: 1857784266171722, guid: 91b9605e8c5f9764090fdefe6796dae5, type: 2}
+  mapGenerateType: 0
+  providedSeed: 702
+  mapWidth: 3
+  mapHeight: 3
+  roomTiles:
+  - {fileID: 1642739485870194, guid: a3a64db6a0674f9459513fde2c1e5a47, type: 2}
+  - {fileID: 1729291927505136, guid: 5b115eabf0a402f4d90faffa4773d0f6, type: 2}
+  - {fileID: 1082959422563648, guid: 8150b9bda6f78514bacd8f0758ab9258, type: 2}
+  roomSpacing: 64
+  player1Camera: {fileID: 0}
+  p1RotateCamera: 1
+  player2Camera: {fileID: 0}
+  p2RotateCamera: 1
+  tankLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  barFadeTime: 0.5
+  players: []
+  enemies: []
+  playerSpawnPoints: []
+  enemySpawnPoints: []
+  powerupSpawnPoints: []
+  p1Score: 0
+  p2Score: 0
+  baseTankValue: 500
+  bonusModifer: 0.5
+  playerBody: {fileID: 2100000, guid: 8716cce6e31193b4c95eda5bbccc0a4a, type: 2}
+  playerCannon: {fileID: 2100000, guid: d87a6532212200c439132eec034d207e, type: 2}
+  enemyStandardBody: {fileID: 2100000, guid: dd6d9bac0c71195479af54e1db0d691e, type: 2}
+  enemyStandardCannon: {fileID: 2100000, guid: ce480fe58b98ea145a12bf4b69eedc53, type: 2}
+  enemyCowardBody: {fileID: 2100000, guid: 1f9d8d44a5706564eae8c0017d939547, type: 2}
+  enemyCowardCannon: {fileID: 2100000, guid: d6c9fc1aeb8f48345a5982a0d92b4149, type: 2}
+  enemyReaperBody: {fileID: 2100000, guid: 391c06d5dcb43204184f1a67bb8fd019, type: 2}
+  enemyReaperCannon: {fileID: 2100000, guid: db839b244aef52849839db6e881ca881, type: 2}
+  enemyCaptainBody: {fileID: 2100000, guid: a6708d9a718c6bb449587b08beb8df17, type: 2}
+  enemyCaptainCannon: {fileID: 2100000, guid: d7ccaecf8ac7e724f8f0417aaf6e9097, type: 2}
+--- !u!114 &114617208979325214
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1351179823962686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 834b86d919fa67e44b692efcf14a5d90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
