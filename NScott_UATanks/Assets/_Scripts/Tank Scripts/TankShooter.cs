@@ -49,6 +49,7 @@ public class TankShooter : MonoBehaviour
             tankData.firingTimer = tankData.currentFiringCooldown;
             // Makes noise
             tankData.tankNoisemaker.MakeNoise();
+            GameManager.soundMgr.PlayTankFireSound();
         }
     }
 }

@@ -57,7 +57,7 @@ public class AIBehaviors : MonoBehaviour
         }
 
         // If the tank can hear the player, stop and rotate
-        if (controller.canHearPlayer)
+        if (controller.canHearPlayer && controller.targetTankData == null)
         {
             StopAndRotate();
             UpdateTimer();
@@ -122,7 +122,7 @@ public class AIBehaviors : MonoBehaviour
         }
 
         // If the tank can hear the player, stop and rotate
-        if (controller.canHearPlayer)
+        if (controller.canHearPlayer && controller.targetTankData == null)
         {
             FleeFromTarget();
             UpdateTimer();

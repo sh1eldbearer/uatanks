@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65811336798686034}
   - component: {fileID: 114816467585893356}
   - component: {fileID: 114603472565571460}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Powerup_FiringCooldown
   m_TagString: Powerup
   m_Icon: {fileID: 0}
@@ -122,3 +122,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerupProperties: {fileID: 11400000, guid: 1050210b48847674a98d445a580139a4, type: 2}
   attachedTank: {fileID: 0}
+  ignoreLifespan: 0

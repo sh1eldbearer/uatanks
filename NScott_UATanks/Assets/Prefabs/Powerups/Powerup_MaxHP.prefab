@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65828270015539026}
   - component: {fileID: 114361991274352324}
   - component: {fileID: 114647988852692990}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Powerup_MaxHP
   m_TagString: Powerup
   m_Icon: {fileID: 0}
@@ -111,6 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerupProperties: {fileID: 11400000, guid: ef5cb54aa7f86ae4aa189504b4739694, type: 2}
   attachedTank: {fileID: 0}
+  ignoreLifespan: 0
 --- !u!114 &114647988852692990
 MonoBehaviour:
   m_ObjectHideFlags: 1

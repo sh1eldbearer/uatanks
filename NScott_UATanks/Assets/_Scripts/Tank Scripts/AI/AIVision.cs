@@ -58,7 +58,7 @@ public class AIVision : MonoBehaviour
                 RaycastHit hitInfo;
 
                 if (Physics.Raycast(tankTf.position, vectorToPlayers[index], out hitInfo, 
-                    controller.visionDistance))
+                    controller.visionDistance, GameManager.gm.ignorePowerupLayer))
                 {
                     if (hitInfo.collider.gameObject == player.gameObject)
                     {
@@ -164,7 +164,7 @@ public class AIVision : MonoBehaviour
     /// <returns>Returns true if the first object seen is the target. Otherwise, returns false.</returns>
     public bool CanSeeTarget(Transform thisTankTf, Transform targetTf, float visionDistance, out RaycastHit hitInfo)
     {
-        if (Physics.Raycast(thisTankTf.position, (targetTf.position - thisTankTf.position).normalized, out hitInfo, visionDistance))
+        if (Physics.Raycast(thisTankTf.position, (targetTf.position - thisTankTf.position).normalized, out hitInfo, visionDistance, GameManager.gm.ignorePowerupLayer))
         {
             if (hitInfo.collider.GetComponent<TankData>() != null)
             {

@@ -97,34 +97,39 @@ public class TankHealthManager : MonoBehaviour
     /// </summary>
     public void Die()
     {
+        GameManager.soundMgr.StopBulletHitSound();
+        GameManager.soundMgr.PlayTankDeathSound();
         // Looks at the tag of this tank, and removes this tank from the appropriate TankData list
         if (tankData.tankTf.tag == "Player")
         {
+            // Tank is a player
+
             // Decreases this tank's lives count
             tankData.currentLives--;
-            // Tank is a player
-            if (tankData == GameManager.gm.players[0])
+
+            // Checks to see if this player has remaining lives
+            if (tankData.currentLives > 0)
             {
-                // Prevents Die() from running endlessly after the first time
-                tankData.currentHP = tankData.maxHP;
-                // Detach the camera from this tank
-                tankData.tankCamera.gameObject.transform.parent = tankData.tankTf.parent;
-                Destroy(tankData.tankVisuals);
-                Destroy(tankData.tankCanvas);
-                if (tankData.currentLives > 0)
-                {
-                    GameManager.gm.RespawnPlayer(GameManager.gm.p1InputController.GetComponent<InputController>(), tankData);
-                }
+                // If it does, respawns the player (moves the player tank to a new spawn point and resets its health)
+                GameManager.gm.RespawnPlayer(tankData);
             }
             else
             {
-                GameManager.gm.player2Camera.transform.parent = null;
+                // Removes this player from the player list, and destroys the tank
+                GameManager.gm.players.Remove(tankData);
+                if (GameManager.gm.players.Count > 0)
+                {
+                    // Adjust the camera viewports
+                    GameManager.cameraSetup.ConfigureViewports();
+                }
+                // Destroy the tank
+                Destroy(this.gameObject);
             }
         }
         else if (tankData.tankTf.tag == "Enemy")
         {
             // Tank is an enemy
-            GameManager.gm.enemies.Remove(tankData);
+            GameManager.gm.enemies[GameManager.gm.enemies.IndexOf(tankData)] = null;
             // Destroy this tank!
             Destroy(this.gameObject);
         }

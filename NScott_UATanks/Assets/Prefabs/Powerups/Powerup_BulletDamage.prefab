@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65236559335274158}
   - component: {fileID: 114889835383166668}
   - component: {fileID: 114524787477704488}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Powerup_BulletDamage
   m_TagString: Powerup
   m_Icon: {fileID: 0}
@@ -122,3 +122,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerupProperties: {fileID: 11400000, guid: bcd03d5200f9a794fb054a32a1086bc3, type: 2}
   attachedTank: {fileID: 0}
+  ignoreLifespan: 0

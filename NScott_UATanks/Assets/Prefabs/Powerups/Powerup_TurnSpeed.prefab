@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65771431572476604}
   - component: {fileID: 114005154252267904}
   - component: {fileID: 114334473408510884}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Powerup_TurnSpeed
   m_TagString: Powerup
   m_Icon: {fileID: 0}
@@ -111,6 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerupProperties: {fileID: 11400000, guid: c8c9af0cf63c64d4b9297148d229a43f, type: 2}
   attachedTank: {fileID: 0}
+  ignoreLifespan: 0
 --- !u!114 &114334473408510884
 MonoBehaviour:
   m_ObjectHideFlags: 1

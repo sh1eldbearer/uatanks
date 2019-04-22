@@ -26,9 +26,12 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public static GameManager gm; // Reference to a GameManager object for singleton pattern
     [HideInInspector] public static SaveManager saveMgr;
     [HideInInspector] public static MapGenerator mapGen;
+    [HideInInspector] public static SoundManager soundMgr;
     [HideInInspector] public static AudioListenerPositioner listenerPositioner;
     [HideInInspector] public static MultiplayerCameraSetup cameraSetup;
     [HideInInspector] public static Transform gameContainer;
+
+    public bool gameOverScreen = false;
 
     [Header("Input Controllers")]
     [HideInInspector] public GameObject p1InputController;
@@ -158,8 +161,8 @@ public class GameManager : MonoBehaviour
     [Header("Map Generation Settings")]
     public MapGenerateType mapGenerateType;
     public int providedSeed = 0;
-    [Range(3, 10)] public int mapWidth = 3;
-    [Range(3, 10)] public int mapHeight = 3;
+    [Range(1, 10)] public int mapWidth = 3;
+    [Range(1, 10)] public int mapHeight = 3;
     public List<GameObject> roomTiles;
     public float roomSpacing = 64f;
 
@@ -178,10 +181,12 @@ public class GameManager : MonoBehaviour
     [Header("Layers & LayerMasks")]
     [Tooltip("The layer for tank objects.")]
     public LayerMask tankLayer;
+    [Tooltip("A LayerMask that ignores powerups.")]
+    public LayerMask ignorePowerupLayer;
     [Tooltip("The layer for showing player 1's UI")]
-    public LayerMask p1layer;
+    public LayerMask p1UILayer;
     [Tooltip("The layer for showing player 2's UI")]
-    public LayerMask p2Layer;
+    public LayerMask p2UILayer;
 
     [Header("UI Settings")]
     [Tooltip("The length of time it takes for any cooldown bars to fade out when " +
@@ -254,7 +259,15 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void InitializeGame()
     {
-        // Set game difficulty
+        // Initializes game values
+        p1Score = 0;
+        p2Score = 0;
+        players.Clear();
+        enemies.Clear();
+        enemySpawnTable.Clear();
+        playerSpawnPoints.Clear();
+        enemySpawnPoints.Clear();
+        powerupSpawnPoints.Clear();
 
         // Position the audio listener
         listenerPositioner.PositionListener(); // This line is a tongue twister
@@ -290,9 +303,11 @@ public class GameManager : MonoBehaviour
             {
                 case 1:
                     p1InputController.SetActive(true);
+                    InputController.p1Input.Initialize();
                     break;
                 case 2:
                     p2InputController.SetActive(true);
+                    InputController.p2Input.Initialize();
                     break;
             }
         }
@@ -343,6 +358,9 @@ public class GameManager : MonoBehaviour
         // Sets the spawn time of the first powerup
         powerupSpawnTimer = initialPowerupSpawnDelay;
 
+        // Changes from menu music to game music
+        soundMgr.PlayGameMusic();
+
         isGameRunning = true;
     }
 
@@ -360,6 +378,12 @@ public class GameManager : MonoBehaviour
 
         if (isGameRunning)
         {
+            if (players.Count == 0)
+            {
+                // No players left - the game is over
+                    EndGame();
+            }
+
             // Updates player's scores
             try
             {
@@ -372,6 +396,8 @@ public class GameManager : MonoBehaviour
                 p2Score = players[1].tankScorer.score;
             }
             catch { }
+            // Updates the score values stored in the gameManager
+            CompareScores();
 
             powerupSpawnTimer -= Time.deltaTime;
             if (powerupSpawnTimer <= 0f)
@@ -396,6 +422,47 @@ public class GameManager : MonoBehaviour
                 }
                 SpawnPowerup(closestSpawnpoint);
             }
+
+            foreach (var enemy in enemies)
+            {
+                if (enemy == null)
+                {
+                    enemies.Remove(enemy);
+                    SpawnNewEnemy();
+                    break;
+                }
+            }
+
+            // Developer commands for demos and testing
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                EndGame();
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        // Developer commands for demos and testing
+        if (Input.GetKey(KeyCode.Minus))
+        {
+            soundVolume = Mathf.Clamp(soundVolume -= 0.01f, 0f, 1f);
+            soundMgr.AdjustSoundVolume();
+        }
+        else if (Input.GetKey(KeyCode.Equals))
+        {
+            soundVolume = Mathf.Clamp(soundVolume += 0.01f, 0f, 1f);
+            soundMgr.AdjustSoundVolume();
+        }
+        if (Input.GetKey(KeyCode.LeftBracket))
+        {
+            musicVolume = Mathf.Clamp(musicVolume -= 0.01f, 0f, 1f);
+            soundMgr.AdjustMusicVolume();
+        }
+        else if (Input.GetKey(KeyCode.RightBracket))
+        {
+            musicVolume = Mathf.Clamp(musicVolume += 0.01f, 0f, 1f);
+            soundMgr.AdjustMusicVolume();
         }
     }
 
@@ -416,31 +483,14 @@ public class GameManager : MonoBehaviour
     /// Creates a new player tank being controlled by the InputController that calls this function
     /// </summary>
     /// <param name="controller">The InputController requesting a new tank.</param>
-    public void RespawnPlayer(InputController controller, TankData oldTankData)
+    public void RespawnPlayer(TankData tankData)
     {
         // Determines which spawn point to spawn the player at
         int spawnIndex = UnityEngine.Random.Range(0, playerSpawnPoints.Count);
-        GameObject newTank = Instantiate(playerPrefab, playerSpawnPoints[spawnIndex].position, playerSpawnPoints[spawnIndex].rotation, playerSpawnPoints[spawnIndex].parent.parent.parent);
-        TankData newTankData = newTank.GetComponent<TankData>();
-        Destroy(newTankData.tankCamera.gameObject);
-        oldTankData.tankCamera.transform.parent = newTankData.tankTf;
-        
-        if (players[0] == oldTankData)
-        {
-            players[0] = newTankData;
-            player1Camera = oldTankData.tankCamera;
-        }
-        else
-        {
-            players[1] = newTankData;
-            player2Camera = oldTankData.tankCamera;
-        }
-        newTankData.CopyTankData(oldTankData);
-        newTankData.tankCamera.GetComponent<CameraController>().SetNewFollowObject(newTankData);
-        Destroy(oldTankData.gameObject);
-        controller.SetTankComponentReferences(newTankData);
-        newTankData.tankCamera.GetComponent<CameraController>().AssignCameras();
-        cameraSetup.ConfigureViewports();
+        // Moves the tank to the spawn point
+        tankData.tankTf.position = playerSpawnPoints[spawnIndex].position;
+        // Resets the tank's health
+        tankData.currentHP = tankData.maxHP;
     }
 
     /// <summary>
@@ -451,7 +501,6 @@ public class GameManager : MonoBehaviour
         // Determines which enemy type to spawn
         int enemyIndex = UnityEngine.Random.Range(0, enemySpawnTable.Count);
         GameObject enemyToSpawn = enemySpawnTable[enemyIndex];
-        enemies.Add(enemyToSpawn.GetComponent<TankData>());
         // Determines which spawn point to spawn the enemy at
         int spawnIndex = UnityEngine.Random.Range(0, enemySpawnPoints.Count);
         Instantiate(enemyToSpawn, enemySpawnPoints[spawnIndex].position, enemySpawnPoints[spawnIndex].rotation, enemySpawnPoints[spawnIndex].parent.parent.Find("Tanks").transform);
@@ -497,5 +546,29 @@ public class GameManager : MonoBehaviour
         cowardSpawnRate = cowardRate;
         captainSpawnRate = captainRate;
         reaperSpawnRate = reaperRate;
+    }
+
+    public void EndGame()
+    {
+        isGameRunning = false;
+        gameOverScreen = true;
+        Destroy(gameContainer.gameObject);
+        gameContainer = null;
+        soundMgr.PlayMenuMusic();
+        SceneManager.LoadScene(0);
+    }
+
+    public void CompareScores()
+    {
+        if (p1Score > highScore)
+        {
+            highScore = p1Score;
+            saveMgr.SaveHighScore();
+        }
+        else if (p2Score > highScore)
+        {
+            highScore = p2Score;
+            saveMgr.SaveHighScore();
+        }
     }
 }

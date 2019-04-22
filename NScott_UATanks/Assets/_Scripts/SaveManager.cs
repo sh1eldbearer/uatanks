@@ -10,6 +10,7 @@ public class SaveManager : MonoBehaviour
         if (GameManager.saveMgr == null)
         {
             GameManager.saveMgr = this;
+            DontDestroyOnLoad(this.gameObject);
         }
         else
         {
@@ -38,7 +39,9 @@ public class SaveManager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-	}
+        GameManager.soundMgr.AdjustMusicVolume();
+        GameManager.soundMgr.AdjustSoundVolume();
+    }
 
     /// <summary>
     /// Loads all the values stored in PlayerPrefs to the GameManager.

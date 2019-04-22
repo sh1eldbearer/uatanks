@@ -21,16 +21,19 @@ public enum PlayerNumber
 public class InputController : MonoBehaviour
 {
     /* Public Variables */
+    // References to two input controller objects for singleton pattern
+    public static InputController p1Input;
+    public static InputController p2Input;
+
+    [HideInInspector] public TankData tankData; // The TankData component of this tank object
+
     public PlayerNumber playerNumber;
 
     /* Private Variables */
-    // References to two input controller objects for singleton pattern
-    private static InputController p1Input;
-    private static InputController p2Input; 
-
-    private TankData tankData; // The TankData component of this tank object
     private TankMover tankMover; // The TankMover component of this tank object
-    private TankShooter tankShooter; // The TankShooter component of this tank object    
+    private TankShooter tankShooter; // The TankShooter component of this tank object
+
+    private bool devMode = false;
 
     private void Awake()
     {
@@ -74,7 +77,7 @@ public class InputController : MonoBehaviour
     }
 
     // Use this for initialization
-    private void Start ()
+    public void Initialize()
     {
         // Gets the tank data component for the appropriate tank
         if (playerNumber == PlayerNumber.Player1)
@@ -135,10 +138,26 @@ public class InputController : MonoBehaviour
                 // Fires a bullet
                 tankShooter.FireBullet();
             }
-            // TEMP: Camera adjust
+            // Camera adjust
             if (Input.GetKeyDown(KeyCode.C))
             {
                 GameManager.gm.p1RotateCamera = !GameManager.gm.p1RotateCamera;
+            }
+            // Developer testing
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                if (p1Input.devMode)
+                {
+                    tankData.takesDamage = true;
+                    tankData.currentBulletDamage = GameManager.gm.playerStartingBulletDamage;
+                    p1Input.devMode = false;
+                }
+                else
+                {
+                    tankData.takesDamage = false;
+                    tankData.currentBulletDamage = Constants.MAX_BULLET_DAMAGE;
+                    p1Input.devMode = true;
+                }
             }
         }
         else if (playerNumber == PlayerNumber.Player2)
@@ -164,6 +183,27 @@ public class InputController : MonoBehaviour
                 // Fires a bullet
                 tankShooter.FireBullet();
             }
+            // Camera adjust
+            if (Input.GetKeyDown(KeyCode.Keypad0))
+            {
+                GameManager.gm.p1RotateCamera = !GameManager.gm.p1RotateCamera;
+            }
+            // Developer testing
+            if (Input.GetKeyDown(KeyCode.Keypad5))
+            {
+                if (p2Input.devMode)
+                {
+                    tankData.takesDamage = true;
+                    tankData.currentBulletDamage = GameManager.gm.playerStartingBulletDamage;
+                    p2Input.devMode = false;
+                }
+                else
+                {
+                    tankData.takesDamage = false;
+                    tankData.currentBulletDamage = Constants.MAX_BULLET_DAMAGE;
+                    p2Input.devMode = true;
+                }
+            }
         }
     }
 
@@ -176,5 +216,13 @@ public class InputController : MonoBehaviour
         tankData = newTankData;
         tankShooter = newTankData.tankShooter;
         tankMover = newTankData.tankMover;
+        if (playerNumber == PlayerNumber.Player1)
+        {
+            tankData.tankCamera.cullingMask = GameManager.gm.p1UILayer;
+        }
+        else if (playerNumber == PlayerNumber.Player2)
+        {
+            tankData.tankCamera.cullingMask = GameManager.gm.p2UILayer;
+        }
     }
 }

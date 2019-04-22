@@ -5,9 +5,9 @@ using UnityEngine;
 public static class Constants
 {
     // Main menu button string constants
-    public const string START_GAME_STRING = "Start Game";
-    public const string OPTIONS_STRING = "Options";
-    public const string HIGH_SCORES_STRING = "High Scores";
+    public const string START_GAME_BUTTON_STRING = "Start Game";
+    public const string OPTIONS_BUTTON_STRING = "Options";
+    public const string CREDITS_BUTTON_STRING = "Credits";
     public const string MENU_OPEN_STRING = ">>>";
     public const string MAP_WIDTH_STRING = "Map Width: ";
     public const string MAP_HEIGHT_STRING = "Map Height: ";

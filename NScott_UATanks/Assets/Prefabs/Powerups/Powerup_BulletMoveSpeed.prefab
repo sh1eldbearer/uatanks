@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65742923904384760}
   - component: {fileID: 114609983032184594}
   - component: {fileID: 114325147063506066}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Powerup_BulletMoveSpeed
   m_TagString: Powerup
   m_Icon: {fileID: 0}
@@ -122,3 +122,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerupProperties: {fileID: 11400000, guid: dcd34b381e4bb0a4f9763af615bfad6f, type: 2}
   attachedTank: {fileID: 0}
+  ignoreLifespan: 0

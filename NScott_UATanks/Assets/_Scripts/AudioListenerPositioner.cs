@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioListener))]
+
 public class AudioListenerPositioner : MonoBehaviour
 {
     /* Public Variables */

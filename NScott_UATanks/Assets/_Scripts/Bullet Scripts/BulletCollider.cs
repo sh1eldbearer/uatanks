@@ -85,7 +85,7 @@ public class BulletCollider : MonoBehaviour
         {
             // Do nothing else except go die
         }
-
+        GameManager.soundMgr.PlayBulletHitSound();
         Die();
     }
 

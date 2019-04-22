@@ -20,7 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4493394485944598}
   - component: {fileID: 114558350149594178}
+  - component: {fileID: 114542577808756164}
   - component: {fileID: 114617208979325214}
+  - component: {fileID: 81125352774065988}
+  - component: {fileID: 114588149286077546}
+  - component: {fileID: 114117224377870944}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -41,6 +45,43 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &81125352774065988
+AudioListener:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1351179823962686}
+  m_Enabled: 1
+--- !u!114 &114117224377870944
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1351179823962686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 032eba6c0b22b894c82a382136279445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114542577808756164
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1351179823962686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69794d899bdfc3b458260b0b986ef3e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuMusic: {fileID: 0}
+  gameMusic: {fileID: 0}
+  tankFireSound: {fileID: 0}
+  tankDeathSound: {fileID: 0}
+  bulletHitSound: {fileID: 0}
+  powerupPickupSound: {fileID: 0}
+  buttonPressSound: {fileID: 0}
+  buttonReleaseSound: {fileID: 0}
 --- !u!114 &114558350149594178
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,12 +93,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3a943cd8c6cf3247824decd58a4530d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverScreen: 0
   p1InputController: {fileID: 0}
   p2InputController: {fileID: 0}
+  soundVolume: 0
+  musicVolume: 0
   initialNumberOfPlayers: 1
   friendlyFire: 0
   enemyFriendlyFire: 0
   reverseSpeedRate: 0.75
+  playerStartingLives: 3
   playerStartingHP: 3
   playerHPCap: 15
   playerStartingMoveSpeed: 8
@@ -119,7 +164,7 @@ MonoBehaviour:
   - {fileID: 1386088731955774, guid: ebecbbf5fbf04484fb73a992f891d5e5, type: 2}
   - {fileID: 1857784266171722, guid: 91b9605e8c5f9764090fdefe6796dae5, type: 2}
   mapGenerateType: 0
-  providedSeed: 702
+  providedSeed: 0
   mapWidth: 3
   mapHeight: 3
   roomTiles:
@@ -134,6 +179,15 @@ MonoBehaviour:
   tankLayer:
     serializedVersion: 2
     m_Bits: 512
+  ignorePowerupLayer:
+    serializedVersion: 2
+    m_Bits: 6293303
+  p1UILayer:
+    serializedVersion: 2
+    m_Bits: 2101047
+  p2UILayer:
+    serializedVersion: 2
+    m_Bits: 4198199
   barFadeTime: 0.5
   players: []
   enemies: []
@@ -142,6 +196,7 @@ MonoBehaviour:
   powerupSpawnPoints: []
   p1Score: 0
   p2Score: 0
+  highScore: 0
   baseTankValue: 500
   bonusModifer: 0.5
   playerBody: {fileID: 2100000, guid: 8716cce6e31193b4c95eda5bbccc0a4a, type: 2}
@@ -154,6 +209,17 @@ MonoBehaviour:
   enemyReaperCannon: {fileID: 2100000, guid: db839b244aef52849839db6e881ca881, type: 2}
   enemyCaptainBody: {fileID: 2100000, guid: a6708d9a718c6bb449587b08beb8df17, type: 2}
   enemyCaptainCannon: {fileID: 2100000, guid: d7ccaecf8ac7e724f8f0417aaf6e9097, type: 2}
+--- !u!114 &114588149286077546
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1351179823962686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7893fbd5310c624383bd4d11c520384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114617208979325214
 MonoBehaviour:
   m_ObjectHideFlags: 1

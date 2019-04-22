@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public class MainMenuFunctions : MonoBehaviour
 {
     /* Public Variables */
+    [Space] public GameObject mainMenu;
+    [Space] public GameObject gameOverMenu;
+
     [Header("Start Game Menu")]
     public Button startButton;
     public GameObject startPanel;
@@ -33,41 +36,72 @@ public class MainMenuFunctions : MonoBehaviour
     public Text musicText;
     public Slider musicSlider;
 
+    [Header("Credits Menu")]
+    public Button creditsButton;
+    public GameObject creditsPanel;
+
+    [Header("Game Over Menu")]
+    public Text p1ScoreText;
+    public Text p2ScoreText;
+    public Text highScoreText;
+
     /* Private Variables */
     private Text startText;
     private Text optionsText;
+    private Text creditsText;
 
 	// Use this for initialization
 	void Start ()
     {
         startText = startButton.GetComponentInChildren<Text>();
         optionsText = optionsButton.GetComponentInChildren<Text>();
+        creditsText = creditsButton.GetComponentInChildren<Text>();
 
         soundText.text = Constants.SOUND_VOLUME_STRING + GameManager.gm.soundVolume * 100;
         soundSlider.value = GameManager.gm.soundVolume * 100;
         musicText.text = Constants.MUSIC_VOLUME_STRING + GameManager.gm.musicVolume * 100;
         musicSlider.value = GameManager.gm.musicVolume * 100;
+
+        p1ScoreText.text = GameManager.gm.p1Score.ToString();
+        p2ScoreText.text = GameManager.gm.p2Score.ToString();
+        highScoreText.text = GameManager.gm.highScore.ToString();
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-		
+		if (GameManager.gm.gameOverScreen)
+        {
+            gameOverMenu.SetActive(true);
+            mainMenu.SetActive(false);
+        }
+        else
+        {
+            mainMenu.SetActive(true);
+            gameOverMenu.SetActive(false);
+        }
 	}
+
+    public void InitializeGame()
+    {
+        GameManager.gm.InitializeGame();
+    }
 
     public void ToggleStartPanel()
     {
         if (startPanel.activeInHierarchy)
         {
             startPanel.SetActive(false);
-            startText.text = Constants.START_GAME_STRING;
+            startText.text = Constants.START_GAME_BUTTON_STRING;
         }
         else
         {
             startPanel.SetActive(true);
             startText.text = Constants.MENU_OPEN_STRING;
             optionsPanel.SetActive(false);
-            optionsText.text = Constants.OPTIONS_STRING;
+            optionsText.text = Constants.OPTIONS_BUTTON_STRING;
+            creditsPanel.SetActive(false);
+            creditsText.text = Constants.CREDITS_BUTTON_STRING;
         }
     }
 
@@ -76,14 +110,34 @@ public class MainMenuFunctions : MonoBehaviour
         if (optionsPanel.activeInHierarchy)
         {
             optionsPanel.SetActive(false);
-            optionsText.text = Constants.OPTIONS_STRING;
+            optionsText.text = Constants.OPTIONS_BUTTON_STRING;
         }
         else
         {
+            startPanel.SetActive(false);
+            startText.text = Constants.START_GAME_BUTTON_STRING;
             optionsPanel.SetActive(true);
             optionsText.text = Constants.MENU_OPEN_STRING;
+            creditsPanel.SetActive(false);
+            creditsText.text = Constants.CREDITS_BUTTON_STRING;
+        }
+    }
+
+    public void ToggleCreditsPanel()
+    {
+        if (creditsPanel.activeInHierarchy)
+        {
+            creditsPanel.SetActive(false);
+            creditsText.text = Constants.CREDITS_BUTTON_STRING;
+        }
+        else
+        {
             startPanel.SetActive(false);
-            startText.text = Constants.START_GAME_STRING;
+            startText.text = Constants.START_GAME_BUTTON_STRING;
+            optionsPanel.SetActive(false);
+            optionsText.text = Constants.OPTIONS_BUTTON_STRING;
+            creditsPanel.SetActive(true);
+            creditsText.text = Constants.MENU_OPEN_STRING;
         }
     }
 
@@ -176,14 +230,21 @@ public class MainMenuFunctions : MonoBehaviour
 
     public void SetSoundVolume()
     {
-        GameManager.gm.soundVolume = soundSlider.value * .01f;
-        soundText.text = Constants.SOUND_VOLUME_STRING + soundSlider.value.ToString();
+        GameManager.gm.soundVolume = soundSlider.value * 0.01f;
+        GameManager.soundMgr.AdjustSoundVolume();
+        soundText.text = Constants.SOUND_VOLUME_STRING + ((int)(soundSlider.value)).ToString();
     }
 
     public void SetMusicVolume()
     {
-        GameManager.gm.musicVolume = musicSlider.value * .01f;
-        musicText.text = Constants.MUSIC_VOLUME_STRING + musicSlider.value.ToString();
+        GameManager.gm.musicVolume = musicSlider.value * 0.01f;
+        GameManager.soundMgr.AdjustMusicVolume();
+        musicText.text = Constants.MUSIC_VOLUME_STRING + ((int)(musicSlider.value)).ToString();
+    }
+
+    public void BackToMainMenu()
+    {
+        GameManager.gm.gameOverScreen = false;
     }
 
     public void QuitGame()

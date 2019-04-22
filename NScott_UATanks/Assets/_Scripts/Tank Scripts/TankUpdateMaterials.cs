@@ -62,7 +62,7 @@ public class TankUpdateMaterials : MonoBehaviour
         }
         catch
         {
-            Debug.LogWarning("Tank materials not found. Don't panic - this message will disappear after the current code base has been run once.");
+            //Debug.LogWarning("Tank materials not found. Don't panic - this message will disappear after the current code base has been run once.");
         }
     }
 
