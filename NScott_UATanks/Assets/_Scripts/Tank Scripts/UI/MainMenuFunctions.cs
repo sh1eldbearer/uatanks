@@ -13,6 +13,9 @@ public class MainMenuFunctions : MonoBehaviour
     public Button startButton;
     public GameObject startPanel;
     [Space]
+    public Toggle player1Toggle;
+    public Toggle player2Toggle;
+    [Space]
     public ToggleGroup difficultyToggles;
     public Toggle easyToggle;
     public Toggle mediumToggle;
@@ -61,6 +64,36 @@ public class MainMenuFunctions : MonoBehaviour
         soundSlider.value = GameManager.gm.soundVolume * 100;
         musicText.text = Constants.MUSIC_VOLUME_STRING + GameManager.gm.musicVolume * 100;
         musicSlider.value = GameManager.gm.musicVolume * 100;
+
+        if (GameManager.gm.initialNumberOfPlayers == 1)
+        {
+            player1Toggle.isOn = true;
+            player2Toggle.isOn = false;
+        }
+        else
+        {
+            player1Toggle.isOn = false;
+            player2Toggle.isOn = true;
+        }
+
+        ChangeDifficulty();
+
+        switch (GameManager.gm.mapGenerateType)
+        {
+            case MapGenerateType.RandomMap:
+                mapTypeMenu.value = 0;
+                break;
+            case MapGenerateType.MapOfTheDay:
+                mapTypeMenu.value = 1;
+                break;
+            case MapGenerateType.ProvidedSeed:
+                mapTypeMenu.value = 3;
+                break;
+        }
+        seedInputField.text = GameManager.gm.providedSeed.ToString();
+
+        heightSlider.value = GameManager.gm.mapHeight;
+        widthSlider.value = GameManager.gm.mapWidth;
 
         p1ScoreText.text = GameManager.gm.p1Score.ToString();
         p2ScoreText.text = GameManager.gm.p2Score.ToString();
@@ -173,7 +206,7 @@ public class MainMenuFunctions : MonoBehaviour
         }
     }
 
-    public void SetDifficulty()
+    public void SetMapType()
     {
         if (mapTypeMenu.value == 2)
         {

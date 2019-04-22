@@ -224,18 +224,6 @@ public class GameManager : MonoBehaviour
         "(<Bonus Value> X <Base Value>) X <Number of HP over the starting value>).)")]
     [Range(0f, 3f)] public float bonusModifer = 0.5f;
 
-    [Header("Tank Materials")]
-    public Material playerBody;
-    public Material playerCannon;
-    public Material enemyStandardBody;
-    public Material enemyStandardCannon;
-    public Material enemyCowardBody;
-    public Material enemyCowardCannon;
-    public Material enemyReaperBody;
-    public Material enemyReaperCannon;
-    public Material enemyCaptainBody;
-    public Material enemyCaptainCannon;
-
     /* Private Variables */
     private bool isGameRunning = false;
     private float powerupSpawnTimer;
@@ -387,13 +375,13 @@ public class GameManager : MonoBehaviour
             // Updates player's scores
             try
             {
-                p1Score = players[0].tankScorer.score;
+                p1Score = InputController.p1Input.tankData.tankScorer.score;
             }
             catch { }
 
             try
             {
-                p2Score = players[1].tankScorer.score;
+                p2Score = InputController.p2Input.tankData.tankScorer.score;
             }
             catch { }
             // Updates the score values stored in the gameManager
@@ -491,6 +479,26 @@ public class GameManager : MonoBehaviour
         tankData.tankTf.position = playerSpawnPoints[spawnIndex].position;
         // Resets the tank's health
         tankData.currentHP = tankData.maxHP;
+    }
+
+    public void DestroyPlayer(TankData player)
+    {
+        if (player == InputController.p1Input.tankData)
+        {
+            InputController.p1Input.gameObject.SetActive(false);
+        }
+        else if (player == InputController.p2Input.tankData)
+        {
+            InputController.p2Input.gameObject.SetActive(false);
+        }
+
+        // Destroys the player tank
+        Destroy(player.gameObject);
+        if (GameManager.gm.players.Count > 0)
+        {
+            // Adjust the camera viewports
+            GameManager.cameraSetup.ConfigureViewports();
+        }
     }
 
     /// <summary>

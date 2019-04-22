@@ -12,7 +12,6 @@ public enum AIPersonality
 [RequireComponent(typeof(AIVision))]
 [RequireComponent(typeof(AIHearing))]
 [RequireComponent(typeof(AIBehaviors))]
-[RequireComponent(typeof(TankUpdateMaterials))]
 
 /*
  * This script allows a designer to set the personality for an enemy (AI-controlled) tank.

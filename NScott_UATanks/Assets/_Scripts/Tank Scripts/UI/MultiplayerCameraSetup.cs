@@ -24,7 +24,14 @@ public class MultiplayerCameraSetup : MonoBehaviour
         // Single player
         if (GameManager.gm.players.Count == 1)
         {
-            GameManager.gm.player1Camera.rect = new Rect(0f, 0f, 1f, 1f);
+            if (GameManager.gm.player1Camera != null)
+            {
+                GameManager.gm.player1Camera.rect = new Rect(0f, 0f, 1f, 1f);
+            }
+            if (GameManager.gm.player2Camera !=null)
+            {
+                GameManager.gm.player2Camera.rect = new Rect(0f, 0f, 1f, 1f);
+            }
         }
         // Multiplayer
         else if (GameManager.gm.players.Count == 2)

@@ -117,13 +117,8 @@ public class TankHealthManager : MonoBehaviour
             {
                 // Removes this player from the player list, and destroys the tank
                 GameManager.gm.players.Remove(tankData);
-                if (GameManager.gm.players.Count > 0)
-                {
-                    // Adjust the camera viewports
-                    GameManager.cameraSetup.ConfigureViewports();
-                }
                 // Destroy the tank
-                Destroy(this.gameObject);
+                GameManager.gm.DestroyPlayer(tankData);
             }
         }
         else if (tankData.tankTf.tag == "Enemy")

@@ -388,7 +388,6 @@ GameObject:
   - component: {fileID: 114926489688973296}
   - component: {fileID: 114900637750282900}
   - component: {fileID: 114212773033978452}
-  - component: {fileID: 114636618086521374}
   m_Layer: 9
   m_Name: Enemy-Reaper
   m_TagString: Enemy
@@ -1543,21 +1542,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114636618086521374
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1674603459948050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1898dcf7a02aaf499d020ba2b486bfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bodyShell: {fileID: 0}
-  cannonBase: {fileID: 0}
-  cannonBarrel: {fileID: 0}
-  controller: {fileID: 114179079409455012}
 --- !u!114 &114647897205667726
 MonoBehaviour:
   m_ObjectHideFlags: 1
