@@ -49,3 +49,13 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+NScott_UATanks_Data/
+
+Mono/
+
+NScott_UATanks\.exe
+
+UnityCrashHandler64\.exe
+
+UnityPlayer\.dll
