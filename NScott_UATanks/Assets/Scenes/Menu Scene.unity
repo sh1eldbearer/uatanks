@@ -1109,6 +1109,11 @@ Prefab:
       propertyPath: initialNumberOfPlayers
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114558350149594178, guid: 04a19b21473a413499883f7b2b3f12d5,
+        type: 2}
+      propertyPath: enemyStartingTurnSpeed
+      value: 45
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04a19b21473a413499883f7b2b3f12d5, type: 2}
   m_IsPrefabAsset: 0

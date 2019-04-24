@@ -57,6 +57,7 @@ public class AIHearing : MonoBehaviour
                     {
                         // The other tank is marked as heard and its position is stored
                         controller.canHearPlayer = true;
+                        controller.currentTarget = otherTank.tankTf;    
                         controller.targetPosition = otherTank.tankTf.position;
                         return true;
                     }

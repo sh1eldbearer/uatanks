@@ -1238,7 +1238,7 @@ MonoBehaviour:
   maxHP: 0
   takesDamage: 1
   currentMoveSpeed: 8
-  currentTurnSpeed: 45
+  currentTurnSpeed: 90
   currentBulletDamage: 1
   currentBulletMoveSpeed: 5
   currentFiringCooldown: 1.5
